@@ -1,85 +1,219 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Cashier Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
 </head>
+
 
 <body>
 
+
+<!-- =========================================
+     MOBILE MENU BUTTON
+========================================== -->
+
+<button
+    type="button"
+    class="mobile-menu-button"
+    id="mobileMenuButton"
+    onclick="toggleCashierSidebar()"
+    aria-label="Open menu"
+    aria-expanded="false"
+>
+    ☰
+</button>
+
+
+<!-- =========================================
+     MOBILE SIDEBAR OVERLAY
+========================================== -->
+
+<div
+    class="mobile-sidebar-overlay"
+    id="mobileSidebarOverlay"
+    onclick="closeCashierSidebar()"
+></div>
+
+
 <div class="admin-layout">
 
-    <aside class="sidebar">
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside
+        class="sidebar"
+        id="cashierSidebar"
+    >
+
+
+        <!-- LOGO -->
 
         <div class="sidebar-logo">
-            <img src="{{ url_for('static', filename='images/school_logo.jpeg') }}" alt="School Logo">
-            <span>Student Queue</span>
+
+            <img
+                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
+                alt="School Logo"
+            >
+
+            <span>
+                Student Queue
+            </span>
+
         </div>
 
+
+        <!-- =====================================
+             SIDEBAR MENU
+        ====================================== -->
 
         <div class="sidebar-menu">
 
-            <a href="{{ url_for('cashier_dashboard') }}"
-               class="sidebar-item {% if request.endpoint == 'cashier_dashboard' %}active{% endif %}">
-                <span class="sidebar-icon">🏠</span>
-                <span>Dashboard</span>
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="{{ url_for('cashier_dashboard') }}"
+                class="sidebar-item {% if request.endpoint == 'cashier_dashboard' %}active{% endif %}"
+                onclick="closeCashierSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    🏠
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
             </a>
 
 
-            <a href="{{ url_for('cashier_schedules') }}"
-               class="sidebar-item {% if request.endpoint == 'cashier_schedules' %}active{% endif %}">
-                <span class="sidebar-icon">📅</span>
-                <span>Create Schedule</span>
+            <!-- CREATE SCHEDULE -->
+
+            <a
+                href="{{ url_for('cashier_schedules') }}"
+                class="sidebar-item {% if request.endpoint == 'cashier_schedules' %}active{% endif %}"
+                onclick="closeCashierSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    📅
+                </span>
+
+                <span>
+                    Create Schedule
+                </span>
+
             </a>
 
 
-            <a href="{{ url_for('cashier_all_queue') }}"
-               class="sidebar-item {% if request.endpoint == 'cashier_all_queue' %}active{% endif %}">
-                <span class="sidebar-icon">📋</span>
-                <span>All Queue</span>
+            <!-- ALL QUEUE -->
+
+            <a
+                href="{{ url_for('cashier_all_queue') }}"
+                class="sidebar-item {% if request.endpoint == 'cashier_all_queue' %}active{% endif %}"
+                onclick="closeCashierSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    📋
+                </span>
+
+                <span>
+                    All Queue
+                </span>
+
             </a>
+
 
         </div>
 
+
+        <!-- =====================================
+             LOGOUT
+        ====================================== -->
 
         <div class="sidebar-bottom">
 
-            <a href="javascript:void(0)"
-               class="sidebar-item"
-               onclick="openLogoutModal()">
+            <a
+                href="javascript:void(0)"
+                class="sidebar-item"
+                onclick="closeCashierSidebar(); openLogoutModal();"
+            >
 
-                <span class="sidebar-icon">🚪</span>
-                <span>Logout</span>
+                <span class="sidebar-icon">
+                    🚪
+                </span>
+
+                <span>
+                    Logout
+                </span>
 
             </a>
 
         </div>
+
 
     </aside>
 
 
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
 
     <main class="admin-content">
 
+
+        <!-- =====================================
+             TOPBAR
+        ====================================== -->
+
         <header class="admin-topbar">
+
 
             <div>
 
-                <h2>Cashier Dashboard</h2>
+                <h2>
+                    Cashier Dashboard
+                </h2>
 
-                <p>Manage your current queue</p>
+                <p>
+                    Manage your current queue
+                </p>
 
             </div>
 
+
+            <!-- PROFILE -->
 
             <div class="admin-profile">
 
                 <div>
 
-                    <strong>{{ user.name }}</strong>
+                    <strong>
+                        {{ user.name }}
+                    </strong>
 
-                    <small>Cashier</small>
+                    <small>
+                        Cashier
+                    </small>
 
                 </div>
 
@@ -92,129 +226,178 @@
 
             </div>
 
+
         </header>
 
 
+        <!-- =====================================
+             PAGE CONTENT
+        ====================================== -->
 
         <div class="page-content">
 
 
-            <!-- SELECT SCHEDULE -->
+            <!-- =================================
+                 SELECT SCHEDULE
+            ================================== -->
 
             <div class="admin-card">
 
-                <h2>Select Schedule</h2>
+
+                <h2>
+                    Select Schedule
+                </h2>
 
 
                 <form method="GET">
 
-                    <select name="schedule_id"
-                            onchange="this.form.submit()">
+
+                    <select
+                        name="schedule_id"
+                        onchange="this.form.submit()"
+                    >
 
                         {% for s in schedules %}
 
-                        <option value="{{ s.id }}"
+                            <option
+                                value="{{ s.id }}"
+                                {% if selected_schedule and selected_schedule.id == s.id %}
+                                    selected
+                                {% endif %}
+                            >
 
-                            {% if selected_schedule and selected_schedule.id == s.id %}
-                                selected
-                            {% endif %}>
+                                {{ s.day }}
+                                -
+                                {{ s.date }}
 
-                            {{ s.day }} - {{ s.date }}
-                            {{ s.start_time }} - {{ s.end_time }}
+                                {{ s.start_time }}
+                                -
+                                {{ s.end_time }}
 
-                        </option>
+                            </option>
 
                         {% endfor %}
 
                     </select>
 
+
                 </form>
+
 
             </div>
 
 
+            <!-- =================================
+                 SELECTED SCHEDULE
+            ================================== -->
 
             {% if selected_schedule %}
 
-            <!-- NOW SERVING -->
 
-            <div class="admin-card latest-queue">
+                <!-- NOW SERVING -->
 
-                <p>NOW SERVING</p>
+                <div class="admin-card latest-queue">
 
-
-                {% if latest %}
-
-                    <h1>
-                        CKCM - {{ latest.queue_number }}
-                    </h1>
-
-
-                    <h3>
-                        {{ latest.student.name }}
-                    </h3>
-
-
-                    <span class="status serving">
-                        Serving
-                    </span>
-
-                {% else %}
-
-                    <h1>—</h1>
 
                     <p>
-                        No student is currently being served.
+                        NOW SERVING
                     </p>
 
-                {% endif %}
+
+                    {% if latest %}
 
 
+                        <h1>
+                            CKCM - {{ latest.queue_number }}
+                        </h1>
 
-                <form method="POST"
-                      action="{{ url_for('cashier_next') }}">
 
-                    <input
-                        type="hidden"
-                        name="schedule_id"
-                        value="{{ selected_schedule.id }}"
+                        <h3>
+                            {{ latest.student.name }}
+                        </h3>
+
+
+                        <span class="status serving">
+                            Serving
+                        </span>
+
+
+                    {% else %}
+
+
+                        <h1>
+                            —
+                        </h1>
+
+
+                        <p>
+                            No student is currently being served.
+                        </p>
+
+
+                    {% endif %}
+
+
+                    <!-- NEXT STUDENT -->
+
+                    <form
+                        method="POST"
+                        action="{{ url_for('cashier_next') }}"
                     >
 
 
-                    <button class="btn primary large">
-
-                        NEXT STUDENT
-
-                    </button>
-
-                </form>
+                        <input
+                            type="hidden"
+                            name="schedule_id"
+                            value="{{ selected_schedule.id }}"
+                        >
 
 
+                        <button
+                            type="submit"
+                            class="btn primary large"
+                        >
+                            NEXT STUDENT
+                        </button>
 
-                <a class="btn secondary large"
-                   href="{{ url_for('cashier_scan') }}">
 
-                    📷 SCAN QR
+                    </form>
 
-                </a>
 
-            </div>
+                    <!-- SCAN QR -->
+
+                    <a
+                        class="btn secondary large"
+                        href="{{ url_for('cashier_scan') }}"
+                    >
+                        📷 SCAN QR
+                    </a>
+
+
+                </div>
+
 
             {% endif %}
 
 
-
         </div>
 
+
     </main>
+
 
 </div>
 
 
+<!-- =========================================
+     LOGOUT CONFIRMATION MODAL
+========================================== -->
 
-<!-- LOGOUT CONFIRMATION MODAL -->
+<div
+    id="logoutModal"
+    class="logout-modal"
+>
 
-<div id="logoutModal" class="logout-modal">
 
     <div class="logout-modal-card">
 
@@ -224,13 +407,19 @@
         </div>
 
 
-        <h2>Logout?</h2>
+        <h2>
+            Logout?
+        </h2>
 
 
         <p>
+
             Are you sure you want to logout?
+
             <br>
+
             You will need to login again to access your account.
+
         </p>
 
 
@@ -240,35 +429,44 @@
             <button
                 type="button"
                 class="logout-cancel"
-                onclick="closeLogoutModal()">
-
+                onclick="closeLogoutModal()"
+            >
                 Cancel
-
             </button>
 
 
             <a
                 href="{{ url_for('logout') }}"
-                class="logout-confirm">
-
+                class="logout-confirm"
+            >
                 Logout
-
             </a>
 
 
         </div>
 
+
     </div>
+
 
 </div>
 
 
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
 
 <script>
 
+
+/* =========================================
+   LOGOUT MODAL
+========================================= */
+
 function openLogoutModal() {
 
-    const modal = document.getElementById("logoutModal");
+    const modal =
+        document.getElementById("logoutModal");
 
     modal.classList.add("show");
 
@@ -277,22 +475,143 @@ function openLogoutModal() {
 
 function closeLogoutModal() {
 
-    const modal = document.getElementById("logoutModal");
+    const modal =
+        document.getElementById("logoutModal");
 
     modal.classList.remove("show");
 
 }
 
 
-document.getElementById("logoutModal").addEventListener("click", function(event) {
+/* CLOSE LOGOUT WHEN CLICKING OUTSIDE */
 
-    if (event.target === this) {
+document
+    .getElementById("logoutModal")
+    .addEventListener("click", function(event) {
 
-        closeLogoutModal();
+        if (event.target === this) {
+
+            closeLogoutModal();
+
+        }
+
+    });
+
+
+/* =========================================
+   MOBILE CASHIER SIDEBAR
+========================================= */
+
+function openCashierSidebar() {
+
+    const sidebar =
+        document.getElementById("cashierSidebar");
+
+    const overlay =
+        document.getElementById("mobileSidebarOverlay");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    sidebar.classList.add("mobile-open");
+
+    overlay.classList.add("show");
+
+    button.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+
+    button.innerHTML = "✕";
+
+}
+
+
+function closeCashierSidebar() {
+
+    const sidebar =
+        document.getElementById("cashierSidebar");
+
+    const overlay =
+        document.getElementById("mobileSidebarOverlay");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    sidebar.classList.remove("mobile-open");
+
+    overlay.classList.remove("show");
+
+    button.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+    button.innerHTML = "☰";
+
+}
+
+
+function toggleCashierSidebar() {
+
+    const sidebar =
+        document.getElementById("cashierSidebar");
+
+
+    if (
+        sidebar.classList.contains("mobile-open")
+    ) {
+
+        closeCashierSidebar();
+
+    } else {
+
+        openCashierSidebar();
 
     }
 
-});
+}
+
+
+/* =========================================
+   ESCAPE KEY
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            closeCashierSidebar();
+
+            closeLogoutModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   CLOSE SIDEBAR ON DESKTOP
+========================================= */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        if (window.innerWidth > 900) {
+
+            closeCashierSidebar();
+
+        }
+
+    }
+);
+
 
 </script>
 

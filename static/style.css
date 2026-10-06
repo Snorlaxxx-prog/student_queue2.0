@@ -1629,3 +1629,226 @@ p {
     }
 
 }
+
+/* =========================================
+   CASHIER DASHBOARD MOBILE
+========================================= */
+
+@media (max-width: 900px) {
+
+    .admin-layout {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .admin-content {
+        width: 100% !important;
+        margin-left: 0 !important;
+        padding: 20px 15px !important;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+
+    .admin-topbar {
+        width: 100%;
+        padding-left: 60px;
+        box-sizing: border-box;
+        gap: 15px;
+    }
+
+    .admin-topbar > div:first-child {
+        min-width: 0;
+    }
+
+    .admin-topbar h2 {
+        font-size: 22px;
+    }
+
+    .admin-topbar p {
+        font-size: 13px;
+    }
+
+    .admin-profile {
+        flex-shrink: 0;
+    }
+
+    .page-content {
+        width: 100%;
+        padding: 15px 0;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+
+    .admin-card {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 15px;
+    }
+
+    .admin-card form {
+        width: 100%;
+    }
+
+    .admin-card select {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .latest-queue {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .latest-queue h1 {
+        font-size: 42px;
+        word-break: break-word;
+    }
+
+    .latest-queue h3 {
+        font-size: 20px;
+        word-break: break-word;
+    }
+
+    .latest-queue form {
+        width: 100%;
+    }
+
+    .latest-queue .btn {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    .latest-queue .btn:last-child {
+        margin-bottom: 0;
+    }
+
+    .mobile-menu-button {
+        display: flex;
+    }
+
+    .sidebar {
+        width: 260px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 2999;
+    }
+
+    .sidebar:hover {
+        width: 260px;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    .sidebar-logo {
+        justify-content: flex-start;
+    }
+
+    .sidebar-logo span {
+        opacity: 1;
+        width: auto;
+    }
+
+    .sidebar-menu .sidebar-item,
+    .sidebar-bottom .sidebar-item {
+        justify-content: flex-start;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .sidebar-menu .sidebar-item > span:last-child,
+    .sidebar-bottom .sidebar-item > span:last-child {
+        opacity: 1;
+        width: auto;
+        min-width: 0;
+        text-align: left;
+        font-size: 15px;
+    }
+
+    .sidebar-menu .sidebar-icon,
+    .sidebar-bottom .sidebar-icon {
+        width: 40px;
+        min-width: 40px;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .mobile-sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 2998;
+    }
+
+    .mobile-sidebar-overlay.show {
+        display: block;
+    }
+}
+
+
+/* =========================================
+   SMALL PHONE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .admin-content {
+        padding: 15px 10px !important;
+    }
+
+    .admin-topbar {
+        padding-left: 55px;
+        align-items: flex-start;
+    }
+
+    .admin-topbar h2 {
+        font-size: 19px;
+    }
+
+    .admin-topbar p {
+        font-size: 12px;
+    }
+
+    .admin-profile {
+        display: none;
+    }
+
+    .page-content {
+        padding: 10px 0;
+    }
+
+    .admin-card {
+        padding: 18px !important;
+        border-radius: 12px;
+    }
+
+    .admin-card h2 {
+        font-size: 19px;
+    }
+
+    .latest-queue h1 {
+        font-size: 36px;
+    }
+
+    .latest-queue h3 {
+        font-size: 18px;
+    }
+
+    .latest-queue .btn {
+        min-height: 48px;
+        font-size: 14px;
+    }
+
+    .mobile-menu-button {
+        top: 12px;
+        left: 12px;
+        width: 43px;
+        height: 43px;
+        font-size: 22px;
+    }
+}
