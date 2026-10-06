@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>View Schedule</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
 
 </head>
 
@@ -14,13 +23,47 @@
 <body>
 
 
+<!-- =========================================
+     MOBILE MENU BUTTON
+========================================== -->
+
+<button
+    type="button"
+    class="mobile-menu-button"
+    id="mobileMenuButton"
+    onclick="toggleStudentSidebar()"
+    aria-label="Open menu"
+    aria-expanded="false"
+>
+    ☰
+</button>
+
+
+<!-- =========================================
+     MOBILE SIDEBAR OVERLAY
+========================================== -->
+
+<div
+    class="mobile-sidebar-overlay"
+    id="mobileSidebarOverlay"
+    onclick="closeStudentSidebar()"
+></div>
+
+
 <div class="admin-layout">
 
 
-    <!-- SIDEBAR -->
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
 
-    <aside class="sidebar">
+    <aside
+        class="sidebar"
+        id="studentSidebar"
+    >
 
+
+        <!-- LOGO -->
 
         <div class="sidebar-logo">
 
@@ -36,15 +79,19 @@
         </div>
 
 
-
-        <!-- SIDEBAR MENU -->
+        <!-- =====================================
+             SIDEBAR MENU
+        ====================================== -->
 
         <div class="sidebar-menu">
 
 
+            <!-- DASHBOARD -->
+
             <a
                 href="{{ url_for('student_dashboard') }}"
                 class="sidebar-item {% if request.endpoint == 'student_dashboard' %}active{% endif %}"
+                onclick="closeStudentSidebar()"
             >
 
                 <span class="sidebar-icon">
@@ -58,10 +105,12 @@
             </a>
 
 
+            <!-- MY QUEUE -->
 
             <a
                 href="{{ url_for('student_my_queue') }}"
                 class="sidebar-item {% if request.endpoint == 'student_my_queue' %}active{% endif %}"
+                onclick="closeStudentSidebar()"
             >
 
                 <span class="sidebar-icon">
@@ -75,10 +124,12 @@
             </a>
 
 
+            <!-- VIEW SCHEDULE -->
 
             <a
                 href="{{ url_for('student_schedules') }}"
                 class="sidebar-item {% if request.endpoint == 'student_schedules' %}active{% endif %}"
+                onclick="closeStudentSidebar()"
             >
 
                 <span class="sidebar-icon">
@@ -92,10 +143,12 @@
             </a>
 
 
+            <!-- VIEW QUEUE -->
 
             <a
                 href="{{ url_for('student_view_queue') }}"
                 class="sidebar-item {% if request.endpoint == 'student_view_queue' %}active{% endif %}"
+                onclick="closeStudentSidebar()"
             >
 
                 <span class="sidebar-icon">
@@ -112,16 +165,16 @@
         </div>
 
 
-
-        <!-- LOGOUT -->
+        <!-- =====================================
+             LOGOUT
+        ====================================== -->
 
         <div class="sidebar-bottom">
-
 
             <a
                 href="javascript:void(0)"
                 class="sidebar-item"
-                onclick="openLogoutModal()"
+                onclick="closeStudentSidebar(); openLogoutModal();"
             >
 
                 <span class="sidebar-icon">
@@ -134,20 +187,22 @@
 
             </a>
 
-
         </div>
 
 
     </aside>
 
 
-
-    <!-- MAIN CONTENT -->
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
 
     <main class="admin-content">
 
 
-        <!-- TOPBAR -->
+        <!-- =====================================
+             TOPBAR
+        ====================================== -->
 
         <header class="admin-topbar">
 
@@ -165,9 +220,9 @@
             </div>
 
 
+            <!-- PROFILE -->
 
             <div class="admin-profile">
-
 
                 <div>
 
@@ -182,13 +237,11 @@
                 </div>
 
 
-
                 <div class="profile-icon">
 
                     {{ user.name[0] }}
 
                 </div>
-
 
             </div>
 
@@ -196,8 +249,9 @@
         </header>
 
 
-
-        <!-- PAGE CONTENT -->
+        <!-- =====================================
+             PAGE CONTENT
+        ====================================== -->
 
         <div class="page-content">
 
@@ -205,8 +259,9 @@
             <section class="admin-section">
 
 
-                <div class="section-title">
+                <!-- SECTION TITLE -->
 
+                <div class="section-title">
 
                     <div>
 
@@ -220,10 +275,12 @@
 
                     </div>
 
-
                 </div>
 
 
+                <!-- =================================
+                     SCHEDULE GRID
+                ================================== -->
 
                 <div class="schedule-grid">
 
@@ -231,20 +288,21 @@
                     {% for schedule in schedules %}
 
 
-                        <div class="admin-card">
+                        <div class="admin-card schedule-card">
 
+
+                            <!-- SCHEDULE HEADER -->
 
                             <div class="queue-header">
-
 
                                 <h2>
                                     {{ schedule.day }}
                                 </h2>
 
-
                             </div>
 
 
+                            <!-- SCHEDULE DETAILS -->
 
                             <div class="queue-details">
 
@@ -303,22 +361,19 @@
                             </div>
 
 
+                            <!-- GET TICKET -->
 
                             <form
                                 method="POST"
                                 action="{{ url_for('get_ticket', schedule_id=schedule.id) }}"
                             >
 
-
                                 <button
                                     type="submit"
                                     class="btn primary full-width"
                                 >
-
                                     🎫 GET TICKET
-
                                 </button>
-
 
                             </form>
 
@@ -328,6 +383,10 @@
 
                     {% else %}
 
+
+                        <!-- =================================
+                             NO SCHEDULE
+                        ================================== -->
 
                         <div class="empty-state admin-card">
 
@@ -368,8 +427,9 @@
 </div>
 
 
-
-<!-- LOGOUT CONFIRMATION MODAL -->
+<!-- =========================================
+     LOGOUT CONFIRMATION MODAL
+========================================== -->
 
 <div
     id="logoutModal"
@@ -381,9 +441,7 @@
 
 
         <div class="logout-modal-icon">
-
             🚪
-
         </div>
 
 
@@ -411,9 +469,7 @@
                 class="logout-cancel"
                 onclick="closeLogoutModal()"
             >
-
                 Cancel
-
             </button>
 
 
@@ -421,9 +477,7 @@
                 href="{{ url_for('logout') }}"
                 class="logout-confirm"
             >
-
                 Logout
-
             </a>
 
 
@@ -436,10 +490,16 @@
 </div>
 
 
-
-<!-- LOGOUT MODAL JAVASCRIPT -->
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
 
 <script>
+
+
+/* =========================================
+   LOGOUT MODAL
+========================================= */
 
 function openLogoutModal() {
 
@@ -461,6 +521,8 @@ function closeLogoutModal() {
 }
 
 
+/* CLOSE LOGOUT WHEN CLICKING OUTSIDE */
+
 document
     .getElementById("logoutModal")
     .addEventListener("click", function(event) {
@@ -472,6 +534,122 @@ document
         }
 
     });
+
+
+/* =========================================
+   MOBILE STUDENT SIDEBAR
+========================================= */
+
+function openStudentSidebar() {
+
+    const sidebar =
+        document.getElementById("studentSidebar");
+
+    const overlay =
+        document.getElementById("mobileSidebarOverlay");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    sidebar.classList.add("mobile-open");
+
+    overlay.classList.add("show");
+
+    button.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+
+    button.innerHTML = "✕";
+
+}
+
+
+function closeStudentSidebar() {
+
+    const sidebar =
+        document.getElementById("studentSidebar");
+
+    const overlay =
+        document.getElementById("mobileSidebarOverlay");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    sidebar.classList.remove("mobile-open");
+
+    overlay.classList.remove("show");
+
+    button.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+    button.innerHTML = "☰";
+
+}
+
+
+function toggleStudentSidebar() {
+
+    const sidebar =
+        document.getElementById("studentSidebar");
+
+
+    if (
+        sidebar.classList.contains("mobile-open")
+    ) {
+
+        closeStudentSidebar();
+
+    } else {
+
+        openStudentSidebar();
+
+    }
+
+}
+
+
+/* =========================================
+   ESCAPE KEY
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            closeStudentSidebar();
+
+            closeLogoutModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   CLOSE SIDEBAR WHEN RETURNING TO DESKTOP
+========================================= */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        if (window.innerWidth > 900) {
+
+            closeStudentSidebar();
+
+        }
+
+    }
+);
+
 
 </script>
 
