@@ -15,18 +15,9 @@
 
     <style>
 
-        /* =========================================
-           FINANCE CASHIER PAGE
-        ========================================= */
-
         .cashier-page-content {
             padding: 30px;
         }
-
-
-        /* =========================================
-           CASHIER CARD
-        ========================================= */
 
         .cashier-card {
             width: 100%;
@@ -37,11 +28,6 @@
             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
         }
 
-
-        /* =========================================
-           SECTION HEADER
-        ========================================= */
-
         .cashier-section-header {
             display: flex;
             justify-content: space-between;
@@ -50,7 +36,6 @@
             margin-bottom: 22px;
         }
 
-
         .cashier-section-header h2 {
             margin: 0 0 6px;
             font-size: 25px;
@@ -58,17 +43,11 @@
             color: #222222;
         }
 
-
         .cashier-section-header p {
             margin: 0;
             font-size: 15px;
             color: #666666;
         }
-
-
-        /* =========================================
-           CASHIER COUNT
-        ========================================= */
 
         .cashier-count {
             min-width: 150px;
@@ -84,22 +63,16 @@
             white-space: nowrap;
         }
 
-
         .cashier-count::before {
             content: "👥";
             margin-right: 8px;
         }
 
-
-        /* =========================================
-           TABLE
-        ========================================= */
-
         .cashier-table-wrapper {
             width: 100%;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
-
 
         .cashier-table {
             width: 100%;
@@ -107,14 +80,12 @@
             table-layout: fixed;
         }
 
-
         .cashier-table th,
         .cashier-table td {
             padding: 15px 18px;
             text-align: left;
             vertical-align: middle;
         }
-
 
         .cashier-table th {
             background: #f8f8f8;
@@ -124,58 +95,45 @@
             border-bottom: 2px solid #eeeeee;
         }
 
-
         .cashier-table td {
             color: #444444;
             font-size: 14px;
             border-bottom: 1px solid #eeeeee;
         }
 
-
         .cashier-table tbody tr:hover {
             background: #fffaf6;
         }
-
 
         .cashier-table th:nth-child(1),
         .cashier-table td:nth-child(1) {
             width: 8%;
         }
 
-
         .cashier-table th:nth-child(2),
         .cashier-table td:nth-child(2) {
             width: 27%;
         }
-
 
         .cashier-table th:nth-child(3),
         .cashier-table td:nth-child(3) {
             width: 25%;
         }
 
-
         .cashier-table th:nth-child(4),
         .cashier-table td:nth-child(4) {
             width: 15%;
         }
-
 
         .cashier-table th:nth-child(5),
         .cashier-table td:nth-child(5) {
             width: 25%;
         }
 
-
         .cashier-name {
             font-weight: 600;
             color: #222222;
         }
-
-
-        /* =========================================
-           ROLE
-        ========================================= */
 
         .cashier-role {
             display: inline-block;
@@ -187,18 +145,12 @@
             font-weight: 600;
         }
 
-
-        /* =========================================
-           ACTION BUTTONS
-        ========================================= */
-
         .cashier-actions {
             display: flex;
             align-items: center;
             gap: 8px;
             flex-wrap: wrap;
         }
-
 
         .cashier-edit-btn,
         .cashier-delete-btn {
@@ -211,45 +163,31 @@
             transition: 0.2s ease;
         }
 
-
         .cashier-edit-btn {
             background: #ff4b00;
             color: #ffffff;
         }
-
 
         .cashier-edit-btn:hover {
             background: #e64100;
             transform: translateY(-1px);
         }
 
-
         .cashier-delete-btn {
             background: #dc3545;
             color: #ffffff;
         }
-
 
         .cashier-delete-btn:hover {
             background: #b52a37;
             transform: translateY(-1px);
         }
 
-
-        /* =========================================
-           EMPTY STATE
-        ========================================= */
-
         .cashier-empty {
             text-align: center !important;
             padding: 35px !important;
             color: #777777 !important;
         }
-
-
-        /* =========================================
-           EDIT MODAL
-        ========================================= */
 
         .edit-modal {
             display: none;
@@ -260,17 +198,19 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
+            padding: 20px;
+            box-sizing: border-box;
         }
-
 
         .edit-modal.show {
             display: flex;
         }
 
-
         .edit-modal-card {
             width: 420px;
-            max-width: 90%;
+            max-width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
             background: #ffffff;
             border-radius: 18px;
             padding: 30px;
@@ -279,13 +219,11 @@
             animation: modalShow 0.25s ease;
         }
 
-
         .edit-modal-card h2 {
             margin: 0 0 8px;
             color: #222222;
             font-size: 24px;
         }
-
 
         .edit-modal-card p {
             margin: 0 0 25px;
@@ -294,11 +232,9 @@
             line-height: 1.5;
         }
 
-
         .edit-form-group {
             margin-bottom: 18px;
         }
-
 
         .edit-form-group label {
             display: block;
@@ -307,7 +243,6 @@
             font-size: 14px;
             font-weight: 600;
         }
-
 
         .edit-form-group input {
             width: 100%;
@@ -320,12 +255,10 @@
             transition: 0.2s ease;
         }
 
-
         .edit-form-group input:focus {
             border-color: #ff4b00;
             box-shadow: 0 0 0 3px rgba(255, 75, 0, 0.10);
         }
-
 
         .edit-modal-actions {
             display: flex;
@@ -333,7 +266,6 @@
             gap: 10px;
             margin-top: 25px;
         }
-
 
         .edit-cancel,
         .edit-save {
@@ -346,33 +278,24 @@
             transition: 0.2s ease;
         }
 
-
         .edit-cancel {
             background: #eeeeee;
             color: #333333;
         }
 
-
         .edit-cancel:hover {
             background: #dddddd;
         }
-
 
         .edit-save {
             background: #ff4b00;
             color: #ffffff;
         }
 
-
         .edit-save:hover {
             background: #e64100;
             transform: translateY(-1px);
         }
-
-
-        /* =========================================
-           DELETE MODAL
-        ========================================= */
 
         .delete-modal {
             display: none;
@@ -383,17 +306,17 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
+            padding: 20px;
+            box-sizing: border-box;
         }
-
 
         .delete-modal.show {
             display: flex;
         }
 
-
         .delete-modal-card {
             width: 420px;
-            max-width: 90%;
+            max-width: 100%;
             background: #ffffff;
             border-radius: 18px;
             padding: 30px;
@@ -402,7 +325,6 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
             animation: modalShow 0.25s ease;
         }
-
 
         .delete-modal-icon {
             width: 65px;
@@ -416,13 +338,11 @@
             font-size: 30px;
         }
 
-
         .delete-modal-card h2 {
             margin: 0 0 10px;
             color: #222222;
             font-size: 24px;
         }
-
 
         .delete-modal-card p {
             margin: 0 auto 25px;
@@ -432,14 +352,12 @@
             max-width: 340px;
         }
 
-
         .delete-modal-actions {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 12px;
         }
-
 
         .delete-cancel,
         .delete-confirm {
@@ -452,33 +370,24 @@
             transition: 0.2s ease;
         }
 
-
         .delete-cancel {
             background: #eeeeee;
             color: #333333;
         }
 
-
         .delete-cancel:hover {
             background: #dddddd;
         }
-
 
         .delete-confirm {
             background: #dc3545;
             color: #ffffff;
         }
 
-
         .delete-confirm:hover {
             background: #b52a37;
             transform: translateY(-1px);
         }
-
-
-        /* =========================================
-           LOGOUT MODAL
-        ========================================= */
 
         .logout-modal {
             display: none;
@@ -489,17 +398,17 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
+            padding: 20px;
+            box-sizing: border-box;
         }
-
 
         .logout-modal.show {
             display: flex;
         }
 
-
         .logout-modal-card {
             width: 420px;
-            max-width: 90%;
+            max-width: 100%;
             background: #ffffff;
             border-radius: 18px;
             padding: 30px;
@@ -508,7 +417,6 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
             animation: modalShow 0.25s ease;
         }
-
 
         .logout-modal-icon {
             width: 65px;
@@ -522,13 +430,11 @@
             font-size: 30px;
         }
 
-
         .logout-modal-card h2 {
             margin: 0 0 10px;
             color: #222222;
             font-size: 24px;
         }
-
 
         .logout-modal-card p {
             margin: 0 auto 25px;
@@ -538,14 +444,12 @@
             max-width: 340px;
         }
 
-
         .logout-modal-actions {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 12px;
         }
-
 
         .logout-cancel,
         .logout-confirm {
@@ -560,32 +464,26 @@
             display: inline-block;
         }
 
-
         .logout-cancel {
             background: #eeeeee;
             color: #333333;
         }
 
-
         .logout-cancel:hover {
             background: #dddddd;
         }
-
 
         .logout-confirm {
             background: #ff4b00;
             color: #ffffff;
         }
 
-
         .logout-confirm:hover {
             background: #e64100;
             transform: translateY(-1px);
         }
 
-
         @keyframes modalShow {
-
             from {
                 opacity: 0;
                 transform: scale(0.92) translateY(10px);
@@ -595,39 +493,116 @@
                 opacity: 1;
                 transform: scale(1) translateY(0);
             }
-
         }
 
 
         /* =========================================
-           MOBILE
+           MOBILE CASHIER PAGE
         ========================================= */
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
 
             .cashier-page-content {
-                padding: 20px;
+                padding: 20px 15px;
             }
-
 
             .cashier-card {
                 padding: 18px;
             }
 
-
             .cashier-section-header {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: stretch;
+                gap: 15px;
             }
-
 
             .cashier-count {
                 width: 100%;
             }
 
-
             .cashier-table {
                 min-width: 700px;
+            }
+
+            .cashier-table th,
+            .cashier-table td {
+                padding: 12px 14px;
+            }
+
+            .cashier-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cashier-edit-btn,
+            .cashier-delete-btn {
+                width: 100%;
+            }
+
+            .edit-modal-card,
+            .delete-modal-card,
+            .logout-modal-card {
+                padding: 24px 20px;
+            }
+
+            .edit-modal-actions,
+            .delete-modal-actions,
+            .logout-modal-actions {
+                flex-wrap: wrap;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .cashier-page-content {
+                padding: 15px 10px;
+            }
+
+            .cashier-card {
+                padding: 15px;
+                border-radius: 12px;
+            }
+
+            .cashier-section-header h2 {
+                font-size: 21px;
+            }
+
+            .cashier-section-header p {
+                font-size: 13px;
+            }
+
+            .cashier-count {
+                min-width: 0;
+                font-size: 15px;
+                padding: 12px;
+            }
+
+            .cashier-table {
+                min-width: 680px;
+            }
+
+            .cashier-table th,
+            .cashier-table td {
+                padding: 11px 12px;
+                font-size: 13px;
+            }
+
+            .edit-modal-actions,
+            .delete-modal-actions,
+            .logout-modal-actions {
+                width: 100%;
+            }
+
+            .edit-cancel,
+            .edit-save,
+            .delete-cancel,
+            .delete-confirm,
+            .logout-cancel,
+            .logout-confirm {
+                flex: 1;
+                text-align: center;
             }
 
         }
@@ -640,12 +615,38 @@
 <body>
 
 
+<!-- MOBILE MENU BUTTON -->
+
+<button
+    type="button"
+    class="mobile-menu-button"
+    id="mobileMenuButton"
+    onclick="toggleAdminSidebar()"
+    aria-label="Open menu"
+    aria-expanded="false"
+>
+    ☰
+</button>
+
+
+<!-- MOBILE SIDEBAR OVERLAY -->
+
+<div
+    class="mobile-sidebar-overlay"
+    id="mobileSidebarOverlay"
+    onclick="closeAdminSidebar()"
+></div>
+
+
 <div class="admin-layout">
 
 
     <!-- SIDEBAR -->
 
-    <aside class="sidebar">
+    <aside
+        class="sidebar"
+        id="adminSidebar"
+    >
 
         <div class="sidebar-logo">
 
@@ -666,6 +667,7 @@
             <a
                 href="{{ url_for('admin_dashboard') }}"
                 class="sidebar-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}"
+                onclick="closeAdminSidebar()"
             >
                 <span class="sidebar-icon">🏠</span>
                 <span>Dashboard</span>
@@ -675,6 +677,7 @@
             <a
                 href="{{ url_for('admin_students') }}"
                 class="sidebar-item {% if request.endpoint == 'admin_students' %}active{% endif %}"
+                onclick="closeAdminSidebar()"
             >
                 <span class="sidebar-icon">👨‍🎓</span>
                 <span>View Student</span>
@@ -684,6 +687,7 @@
             <a
                 href="{{ url_for('admin_cashiers') }}"
                 class="sidebar-item {% if request.endpoint == 'admin_cashiers' %}active{% endif %}"
+                onclick="closeAdminSidebar()"
             >
                 <span class="sidebar-icon">💰</span>
                 <span>View Finance</span>
@@ -693,6 +697,7 @@
             <a
                 href="{{ url_for('admin_add_accounts') }}"
                 class="sidebar-item {% if request.endpoint == 'admin_add_accounts' %}active{% endif %}"
+                onclick="closeAdminSidebar()"
             >
                 <span class="sidebar-icon">➕</span>
                 <span>Add Account</span>
@@ -706,7 +711,7 @@
             <a
                 href="javascript:void(0)"
                 class="sidebar-item"
-                onclick="openLogoutModal()"
+                onclick="closeAdminSidebar(); openLogoutModal()"
             >
                 <span class="sidebar-icon">🚪</span>
                 <span>Logout</span>
@@ -941,9 +946,7 @@
 </div>
 
 
-<!-- =========================================
-     EDIT CASHIER MODAL
-========================================= -->
+<!-- EDIT CASHIER MODAL -->
 
 <div
     id="editModal"
@@ -1025,9 +1028,7 @@
 </div>
 
 
-<!-- =========================================
-     DELETE CASHIER MODAL
-========================================= -->
+<!-- DELETE CASHIER MODAL -->
 
 <div
     id="deleteModal"
@@ -1091,9 +1092,7 @@
 </div>
 
 
-<!-- =========================================
-     LOGOUT MODAL
-========================================= -->
+<!-- LOGOUT MODAL -->
 
 <div
     id="logoutModal"
@@ -1152,10 +1151,91 @@
 
 
 /* =========================================
+   ADMIN MOBILE SIDEBAR
+========================================= */
+
+function openAdminSidebar() {
+
+    const sidebar =
+        document.getElementById("adminSidebar");
+
+    const overlay =
+        document.getElementById("mobileSidebarOverlay");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    sidebar.classList.add("mobile-open");
+
+    overlay.classList.add("show");
+
+    button.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+
+    button.innerHTML = "✕";
+
+}
+
+
+function closeAdminSidebar() {
+
+    const sidebar =
+        document.getElementById("adminSidebar");
+
+    const overlay =
+        document.getElementById("mobileSidebarOverlay");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    sidebar.classList.remove("mobile-open");
+
+    overlay.classList.remove("show");
+
+    button.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+    button.innerHTML = "☰";
+
+}
+
+
+function toggleAdminSidebar() {
+
+    const sidebar =
+        document.getElementById("adminSidebar");
+
+
+    if (
+        sidebar.classList.contains("mobile-open")
+    ) {
+
+        closeAdminSidebar();
+
+    } else {
+
+        openAdminSidebar();
+
+    }
+
+}
+
+
+/* =========================================
    EDIT CASHIER
 ========================================= */
 
-function openEditModal(id, name, username) {
+function openEditModal(
+    id,
+    name,
+    username
+) {
 
     const modal =
         document.getElementById("editModal");
@@ -1175,7 +1255,10 @@ function openEditModal(id, name, username) {
 
 
     form.action =
-        editUrl.replace("999999", id);
+        editUrl.replace(
+            "999999",
+            id
+        );
 
 
     nameInput.value =
@@ -1203,7 +1286,10 @@ function closeEditModal() {
    DELETE CASHIER
 ========================================= */
 
-function openDeleteModal(id, name) {
+function openDeleteModal(
+    id,
+    name
+) {
 
     const modal =
         document.getElementById("deleteModal");
@@ -1217,11 +1303,15 @@ function openDeleteModal(id, name) {
 
 
     form.action =
-        deleteUrl.replace("999999", id);
+        deleteUrl.replace(
+            "999999",
+            id
+        );
 
 
-    document.getElementById("deleteCashierName")
-        .textContent = name;
+    document.getElementById(
+        "deleteCashierName"
+    ).textContent = name;
 
 
     modal.classList.add("show");
@@ -1271,7 +1361,9 @@ document
         function(event) {
 
             if (event.target === this) {
+
                 closeEditModal();
+
             }
 
         }
@@ -1285,7 +1377,9 @@ document
         function(event) {
 
             if (event.target === this) {
+
                 closeDeleteModal();
+
             }
 
         }
@@ -1299,11 +1393,52 @@ document
         function(event) {
 
             if (event.target === this) {
+
                 closeLogoutModal();
+
             }
 
         }
     );
+
+
+/* =========================================
+   ESC KEY
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            closeAdminSidebar();
+            closeEditModal();
+            closeDeleteModal();
+            closeLogoutModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   CLOSE SIDEBAR ON DESKTOP
+========================================= */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        if (window.innerWidth > 900) {
+
+            closeAdminSidebar();
+
+        }
+
+    }
+);
 
 
 </script>
