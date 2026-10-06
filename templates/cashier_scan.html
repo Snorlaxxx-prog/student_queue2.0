@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Scan QR</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     MOBILE MENU BUTTON
+========================================== -->
+
+<button
+    type="button"
+    class="mobile-menu-button"
+    id="mobileMenuButton"
+    onclick="toggleCashierSidebar()"
+    aria-label="Open menu"
+    aria-expanded="false"
+>
+    ☰
+</button>
+
+
+<!-- =========================================
+     MOBILE SIDEBAR OVERLAY
+========================================== -->
+
+<div
+    class="mobile-sidebar-overlay"
+    id="mobileSidebarOverlay"
+    onclick="closeCashierSidebar()"
+></div>
+
+
+<div class="admin-layout">
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside
+        class="sidebar"
+        id="cashierSidebar"
+    >
+
+
+        <!-- LOGO -->
+
+        <div class="sidebar-logo">
+
+            <img
+                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
+                alt="School Logo"
+            >
+
+            <span>
+                Student Queue
+            </span>
+
+        </div>
+
+
+        <!-- =====================================
+             SIDEBAR MENU
+        ====================================== -->
+
+        <div class="sidebar-menu">
+
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="{{ url_for('cashier_dashboard') }}"
+                class="sidebar-item {% if request.endpoint == 'cashier_dashboard' %}active{% endif %}"
+                onclick="closeCashierSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    🏠
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- CREATE SCHEDULE -->
+
+            <a
+                href="{{ url_for('cashier_schedules') }}"
+                class="sidebar-item {% if request.endpoint == 'cashier_schedules' %}active{% endif %}"
+                onclick="closeCashierSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    📅
+                </span>
+
+                <span>
+                    Create Schedule
+                </span>
+
+            </a>
+
+
+            <!-- ALL QUEUE -->
+
+            <a
+                href="{{ url_for('cashier_all_queue') }}"
+                class="sidebar-item {% if request.endpoint == 'cashier_all_queue' %}active{% endif %}"
+                onclick="closeCashierSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    📋
+                </span>
+
+                <span>
+                    All Queue
+                </span>
+
+            </a>
+
+
+        </div>
+
+
+        <!-- =====================================
+             LOGOUT
+        ====================================== -->
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="javascript:void(0)"
+                class="sidebar-item"
+                onclick="closeCashierSidebar(); openLogoutModal();"
+            >
+
+                <span class="sidebar-icon">
+                    🚪
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="admin-content">
+
+
+        <!-- =====================================
+             TOPBAR
+        ====================================== -->
+
+        <header class="admin-topbar">
+
+
+            <div>
+
+                <h2>
+                    Scan QR
+                </h2>
+
+                <p>
+                    Scan the student's queue ticket.
+                </p>
+
+            </div>
+
+
+            <!-- PROFILE -->
+
+            <div class="admin-profile">
+
+                <div>
+
+                    <strong>
+                        {{ user.name }}
+                    </strong>
+
+                    <small>
+                        Cashier
+                    </small>
+
+                </div>
+
+
+                <div class="profile-icon">
+
+                    {{ user.name[0] }}
+
+                </div>
+
+            </div>
+
+
+        </header>
+
+
+        <!-- =====================================
+             PAGE CONTENT
+        ====================================== -->
+
+        <div class="page-content">
+
+
+            <!-- =================================
+                 FLASH MESSAGES
+            ================================== -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    <div class="flash-container">
+
+                        {% for category, message in messages %}
+
+                            <div class="flash-message {{ category }}">
+
+                                {{ message }}
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            {% if not scanned_queue %}
+
+
+                <!-- =================================
+                     SCANNER
+                ================================== -->
+
+                <section class="admin-section">
+
+
+                    <div class="section-title">
+
+                        <div>
+
+                            <h2>
+                                Scan Student QR Code
+                            </h2>
+
+                            <p>
+                                Use your camera to scan the student's queue ticket.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-card qr-scanner-card">
+
+
+                        <div
+                            id="reader"
+                            class="qr-reader"
+                        ></div>
+
+
+                        <form
+                            method="POST"
+                            action="{{ url_for('cashier_scan_result') }}"
+                            id="scan-form"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="token"
+                                id="token"
+                            >
+
+                        </form>
+
+
+                    </div>
+
+
+                </section>
+
+
+            {% else %}
+
+
+                <!-- =================================
+                     QUEUE FOUND
+                ================================== -->
+
+                <section class="admin-section">
+
+
+                    <div class="section-title">
+
+                        <div>
+
+                            <h2>
+                                Queue Found
+                            </h2>
+
+                            <p>
+                                The student's queue ticket was successfully scanned.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-card scanned-queue-card">
+
+
+                        <h1>
+                            CKCM - {{ scanned_queue.queue_number }}
+                        </h1>
+
+
+                        <h3>
+                            {{ student.name }}
+                        </h3>
+
+
+                        <p class="queue-detail">
+
+                            <strong>
+                                Date:
+                            </strong>
+
+                            {{ schedule.date }}
+
+                        </p>
+
+
+                        <p class="queue-detail">
+
+                            <strong>
+                                Time:
+                            </strong>
+
+                            {{ schedule.start_time }}
+
+                            -
+
+                            {{ schedule.end_time }}
+
+                        </p>
+
+
+                        <p class="queue-detail">
+
+                            <strong>
+                                Status:
+                            </strong>
+
+
+                            <span
+                                class="status {{ scanned_queue.status|lower }}"
+                            >
+
+                                {{ scanned_queue.status }}
+
+                            </span>
+
+                        </p>
+
+
+                        <a
+                            class="btn primary"
+                            href="{{ url_for('cashier_dashboard', schedule_id=schedule.id) }}"
+                        >
+                            GO TO QUEUE
+                        </a>
+
+
+                    </div>
+
+
+                </section>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+<!-- =========================================
+     LOGOUT CONFIRMATION MODAL
+========================================== -->
+
+<div
+    id="logoutModal"
+    class="logout-modal"
+>
+
+
+    <div class="logout-modal-card">
+
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+
+        <h2>
+            Logout?
+        </h2>
+
+
+        <p>
+
+            Are you sure you want to logout?
+
+            <br>
+
+            You will need to login again to access your account.
+
+        </p>
+
+
+        <div class="logout-modal-actions">
+
+
+            <button
+                type="button"
+                class="logout-cancel"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout-confirm"
+            >
+                Logout
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
+
+{% if not scanned_queue %}
+
+<script>
+
+/* =========================================
+   QR SCANNER
+========================================= */
+
+function qrSuccess(decodedText) {
+
+    const token =
+        document.getElementById("token");
+
+    const form =
+        document.getElementById("scan-form");
+
+
+    token.value = decodedText;
+
+    form.submit();
+
+}
+
+
+function qrError(error) {
+
+}
+
+
+/* =========================================
+   START QR SCANNER
+========================================= */
+
+const scanner =
+    new Html5QrcodeScanner(
+        "reader",
+        {
+            fps: 10,
+            qrbox: 250
+        }
+    );
+
+
+scanner.render(
+    qrSuccess,
+    qrError
+);
+
+</script>
+
+{% endif %}
+
+
+<script>
+
+/* =========================================
+   LOGOUT MODAL
+========================================= */
+
+function openLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.add("show");
+
+}
+
+
+function closeLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.remove("show");
+
+}
+
+
+/* CLOSE LOGOUT WHEN CLICKING OUTSIDE */
+
+document
+    .getElementById("logoutModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeLogoutModal();
+
+        }
+
+    });
+
+
+/* =========================================
+   MOBILE CASHIER SIDEBAR
+========================================= */
+
+function openCashierSidebar() {
+
+    const sidebar =
+        document.getElementById("cashierSidebar");
+
+    const overlay =
+        document.getElementById("mobileSidebarOverlay");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    sidebar.classList.add("mobile-open");
+
+    overlay.classList.add("show");
+
+    button.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+
+    button.innerHTML = "✕";
+
+}
+
+
+function closeCashierSidebar() {
+
+    const sidebar =
+        document.getElementById("cashierSidebar");
+
+    const overlay =
+        document.getElementById("mobileSidebarOverlay");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    sidebar.classList.remove("mobile-open");
+
+    overlay.classList.remove("show");
+
+    button.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+    button.innerHTML = "☰";
+
+}
+
+
+function toggleCashierSidebar() {
+
+    const sidebar =
+        document.getElementById("cashierSidebar");
+
+
+    if (
+        sidebar.classList.contains("mobile-open")
+    ) {
+
+        closeCashierSidebar();
+
+    } else {
+
+        openCashierSidebar();
+
+    }
+
+}
+
+
+/* =========================================
+   ESCAPE KEY
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            closeCashierSidebar();
+
+            closeLogoutModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   CLOSE SIDEBAR ON DESKTOP
+========================================= */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        if (window.innerWidth > 900) {
+
+            closeCashierSidebar();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

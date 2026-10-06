@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Queue System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* =========================================
+           LOGIN BACKGROUND
+        ========================================= */
+
+        body.login-page {
+
+            min-height: 100vh;
+            width: 100%;
+
+            margin: 0;
+
+            background-image:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 75, 0, 0.20),
+                    rgba(0, 0, 0, 0.35)
+                ),
+                url("/static/images/background.jpg");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        /* =========================================
+           SUBTLE BACKGROUND EFFECT
+        ========================================= */
+
+        body.login-page::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 450px;
+            height: 450px;
+
+            top: -180px;
+            left: -150px;
+
+            background: rgba(255, 255, 255, 0.08);
+
+            border-radius: 50%;
+
+            filter: blur(5px);
+
+            pointer-events: none;
+        }
+
+
+        body.login-page::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 500px;
+            height: 500px;
+
+            right: -200px;
+            bottom: -220px;
+
+            background: rgba(255, 75, 0, 0.12);
+
+            border-radius: 50%;
+
+            filter: blur(10px);
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================
+           LOGIN CARD
+        ========================================= */
+
+        .login-card {
+
+            position: relative;
+
+            z-index: 2;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            backdrop-filter: blur(10px);
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0, 0, 0, 0.25);
+        }
+
+
+        /* =========================================
+           LOGO
+        ========================================= */
+
+        .login-logo {
+
+            width: 140px !important;
+            height: 140px !important;
+
+            object-fit: contain;
+
+            display: block;
+
+            margin: 0 auto 15px;
+        }
+
+
+        /* =========================================
+           REGISTER LINK
+        ========================================= */
+
+        .register-link {
+
+            margin-top: 18px;
+
+            text-align: center;
+
+            font-size: 14px;
+
+            color: #666;
+        }
+
+
+        .register-link a {
+
+            display: inline-block;
+
+            margin-top: 5px;
+
+            color: #ff4b00;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition: 0.2s ease;
+        }
+
+
+        .register-link a:hover {
+
+            color: #e64100;
+
+            text-decoration: underline;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 600px) {
+
+            body.login-page {
+
+                padding: 20px;
+
+                box-sizing: border-box;
+            }
+
+
+            .login-card {
+
+                width: 100%;
+
+                max-width: 420px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="login-page">
+
+
+<div class="login-card">
+
+
+    <!-- BRAND -->
+
+    <div class="brand">
+
+        <img
+            src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
+            alt="School Logo"
+            class="login-logo"
+        >
+
+
+        <h1>
+            CKCM Student Queue
+        </h1>
+
+
+        <p>
+            Queue Management System
+        </p>
+
+    </div>
+
+
+    <!-- FLASH MESSAGES -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="alert {{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- LOGIN FORM -->
+
+    <form
+        method="POST"
+        action="{{ url_for('login') }}"
+    >
+
+
+        <label>
+            Username
+        </label>
+
+
+        <input
+            type="text"
+            name="username"
+            placeholder="Enter your username"
+            required
+        >
+
+
+        <label>
+            Password
+        </label>
+
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+        >
+
+
+        <button
+            class="btn primary"
+            type="submit"
+        >
+            Login
+        </button>
+
+
+        <!-- REGISTER -->
+
+        <div class="register-link">
+
+            <span>
+                Don't have an account?
+            </span>
+
+
+            <a href="{{ url_for('register') }}">
+                Create an Account for Student Only
+            </a>
+
+        </div>
+
+
+    </form>
+
+
+</div>
+
+
+</body>
+
+</html>

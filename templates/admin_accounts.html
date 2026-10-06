@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Add Accounts</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* =========================================
+           ADD ACCOUNT PAGE
+        ========================================= */
+
+        .add-account-page {
+            padding: 30px;
+        }
+
+
+        /* =========================================
+           FORM GRID
+        ========================================= */
+
+        .admin-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+
+        .account-card {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+
+        .account-card h2 {
+            margin: 0 0 22px;
+            color: #222222;
+            font-size: 21px;
+        }
+
+
+        .account-form label {
+            display: block;
+            margin: 0 0 7px;
+            color: #333333;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        .account-form input,
+        .account-form select {
+            width: 100%;
+            min-height: 44px;
+            padding: 11px 13px;
+            margin-bottom: 17px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            outline: none;
+            box-sizing: border-box;
+            background: #ffffff;
+            color: #333333;
+            font-size: 14px;
+            transition: 0.2s ease;
+        }
+
+
+        .account-form input:focus,
+        .account-form select:focus {
+            border-color: #ff4b00;
+            box-shadow: 0 0 0 3px rgba(255, 75, 0, 0.10);
+        }
+
+
+        .account-form input::placeholder {
+            color: #999999;
+        }
+
+
+        .account-form select {
+            cursor: pointer;
+        }
+
+
+        .account-submit {
+            width: 100%;
+            min-height: 45px;
+            border: none;
+            border-radius: 8px;
+            background: #ff4b00;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+
+        .account-submit:hover {
+            background: #e64100;
+            transform: translateY(-1px);
+        }
+
+
+        .account-submit:active {
+            transform: translateY(0);
+        }
+
+
+        /* =========================================
+           SECTION
+        ========================================= */
+
+        .account-section {
+            margin-bottom: 35px;
+        }
+
+
+        .account-section-title {
+            margin: 0 0 15px;
+            color: #222222;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+
+        /* =========================================
+           TABLE CARD
+        ========================================= */
+
+        .account-table-card {
+            width: 100%;
+            overflow: hidden;
+        }
+
+
+        .account-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+
+        .account-table {
+            width: 100%;
+            min-width: 650px;
+            border-collapse: collapse;
+        }
+
+
+        .account-table th,
+        .account-table td {
+            padding: 14px 16px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+
+        .account-table th {
+            background: #f8f8f8;
+            color: #333333;
+            font-size: 14px;
+            font-weight: 700;
+            border-bottom: 2px solid #eeeeee;
+        }
+
+
+        .account-table td {
+            color: #444444;
+            font-size: 14px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+
+        .account-table tbody tr:hover {
+            background: #fffaf6;
+        }
+
+
+        .account-edit-form {
+            margin: 0;
+        }
+
+
+        .account-edit-button {
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: #ff4b00;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+
+        .account-edit-button:hover {
+            background: #e64100;
+            transform: translateY(-1px);
+        }
+
+
+        .account-empty {
+            padding: 30px !important;
+            text-align: center !important;
+            color: #777777 !important;
+        }
+
+
+        /* =========================================
+           CASHIER TABLE
+        ========================================= */
+
+        .cashier-table {
+            min-width: 450px;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 900px) {
+
+            .add-account-page {
+                padding: 20px 15px;
+            }
+
+
+            .admin-form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+
+
+            .account-card {
+                padding: 22px;
+            }
+
+
+            .account-section-title {
+                font-size: 20px;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .add-account-page {
+                padding: 15px 10px;
+            }
+
+
+            .admin-form-grid {
+                gap: 15px;
+            }
+
+
+            .account-card {
+                padding: 18px 15px;
+                border-radius: 12px;
+            }
+
+
+            .account-card h2 {
+                font-size: 19px;
+                margin-bottom: 18px;
+            }
+
+
+            .account-form input,
+            .account-form select {
+                min-height: 43px;
+                font-size: 14px;
+            }
+
+
+            .account-submit {
+                min-height: 44px;
+            }
+
+
+            .account-section-title {
+                font-size: 19px;
+            }
+
+
+            .account-table {
+                min-width: 650px;
+            }
+
+
+            .cashier-table {
+                min-width: 450px;
+            }
+
+
+            .account-table th,
+            .account-table td {
+                padding: 11px 12px;
+                font-size: 13px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     MOBILE MENU BUTTON
+========================================= -->
+
+<button
+    type="button"
+    class="mobile-menu-button"
+    id="mobileMenuButton"
+    onclick="toggleAdminSidebar()"
+    aria-label="Open menu"
+    aria-expanded="false"
+>
+    ☰
+</button>
+
+
+<!-- =========================================
+     MOBILE SIDEBAR OVERLAY
+========================================= -->
+
+<div
+    class="mobile-sidebar-overlay"
+    id="mobileSidebarOverlay"
+    onclick="closeAdminSidebar()"
+></div>
+
+
+<div class="admin-layout">
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================= -->
+
+    <aside
+        class="sidebar"
+        id="adminSidebar"
+    >
+
+
+        <div class="sidebar-logo">
+
+            <img
+                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
+                alt="School Logo"
+            >
+
+            <span>
+                Student Queue
+            </span>
+
+        </div>
+
+
+        <div class="sidebar-menu">
+
+
+            <a
+                href="{{ url_for('admin_dashboard') }}"
+                class="sidebar-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}"
+                onclick="closeAdminSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    🏠
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin_students') }}"
+                class="sidebar-item {% if request.endpoint == 'admin_students' %}active{% endif %}"
+                onclick="closeAdminSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    👨‍🎓
+                </span>
+
+                <span>
+                    View Student
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin_cashiers') }}"
+                class="sidebar-item {% if request.endpoint == 'admin_cashiers' %}active{% endif %}"
+                onclick="closeAdminSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    💰
+                </span>
+
+                <span>
+                    View Finance
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin_add_accounts') }}"
+                class="sidebar-item {% if request.endpoint == 'admin_add_accounts' %}active{% endif %}"
+                onclick="closeAdminSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    ➕
+                </span>
+
+                <span>
+                    Add Account
+                </span>
+
+            </a>
+
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+
+            <a
+                href="javascript:void(0)"
+                class="sidebar-item"
+                onclick="closeAdminSidebar(); openLogoutModal()"
+            >
+
+                <span class="sidebar-icon">
+                    🚪
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================= -->
+
+    <main class="admin-content">
+
+
+        <!-- =========================================
+             TOP BAR
+        ========================================= -->
+
+        <header class="admin-topbar">
+
+
+            <div>
+
+                <h2>
+                    Add Student or Cashier
+                </h2>
+
+                <p>
+                    Create and edit accounts.
+                </p>
+
+            </div>
+
+
+            <div class="admin-profile">
+
+
+                <div>
+
+                    <strong>
+                        {{ user.name }}
+                    </strong>
+
+                    <small>
+                        Administrator
+                    </small>
+
+                </div>
+
+
+                <div class="profile-icon">
+
+                    {{ user.name[0] }}
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+        <!-- =========================================
+             PAGE CONTENT
+        ========================================= -->
+
+        <div class="add-account-page">
+
+
+            <!-- =========================================
+                 ADD ACCOUNT FORMS
+            ========================================= -->
+
+            <div class="admin-form-grid">
+
+
+                <!-- =====================================
+                     ADD STUDENT
+                ====================================== -->
+
+                <div class="admin-card account-card">
+
+
+                    <h2>
+                        ➕ Add Student
+                    </h2>
+
+
+                    <form
+                        method="POST"
+                        action="{{ url_for('admin_add_student') }}"
+                        class="account-form"
+                    >
+
+
+                        <label for="studentName">
+                            Student Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="studentName"
+                            name="name"
+                            placeholder="Enter student name"
+                            autocomplete="name"
+                            required
+                        >
+
+
+                        <label for="studentDepartment">
+                            Department
+                        </label>
+
+                        <select
+                            id="studentDepartment"
+                            name="department"
+                            required
+                        >
+
+                            <option value="">
+                                Select Department
+                            </option>
+
+
+                            {% for d in departments %}
+
+                            <option value="{{ d }}">
+                                {{ d }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+
+                        <label for="studentYear">
+                            Year
+                        </label>
+
+                        <select
+                            id="studentYear"
+                            name="year"
+                            required
+                        >
+
+                            <option value="">
+                                Select Year
+                            </option>
+
+
+                            {% for y in years %}
+
+                            <option value="{{ y }}">
+                                {{ y }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+
+                        <label for="studentUsername">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="studentUsername"
+                            name="username"
+                            placeholder="Enter username"
+                            autocomplete="username"
+                            required
+                        >
+
+
+                        <label for="studentPassword">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="studentPassword"
+                            name="password"
+                            placeholder="Enter password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+
+                        <button
+                            class="account-submit"
+                            type="submit"
+                        >
+                            ADD STUDENT
+                        </button>
+
+
+                    </form>
+
+
+                </div>
+
+
+                <!-- =====================================
+                     ADD CASHIER
+                ====================================== -->
+
+                <div class="admin-card account-card">
+
+
+                    <h2>
+                        ➕ Add Cashier
+                    </h2>
+
+
+                    <form
+                        method="POST"
+                        action="{{ url_for('admin_add_cashier') }}"
+                        class="account-form"
+                    >
+
+
+                        <label for="cashierName">
+                            Cashier Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cashierName"
+                            name="name"
+                            placeholder="Enter cashier name"
+                            autocomplete="name"
+                            required
+                        >
+
+
+                        <label for="cashierUsername">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cashierUsername"
+                            name="username"
+                            placeholder="Enter username"
+                            autocomplete="username"
+                            required
+                        >
+
+
+                        <label for="cashierPassword">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="cashierPassword"
+                            name="password"
+                            placeholder="Enter password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+
+                        <button
+                            class="account-submit"
+                            type="submit"
+                        >
+                            ADD CASHIER
+                        </button>
+
+
+                    </form>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================================
+                 STUDENTS
+            ========================================= -->
+
+            <section class="account-section">
+
+
+                <h2 class="account-section-title">
+                    Students
+                </h2>
+
+
+                <div class="admin-card account-table-card">
+
+
+                    <div class="account-table-wrapper">
+
+
+                        <table class="account-table">
+
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Name
+                                    </th>
+
+                                    <th>
+                                        Department
+                                    </th>
+
+                                    <th>
+                                        Year
+                                    </th>
+
+                                    <th>
+                                        Username
+                                    </th>
+
+                                    <th>
+                                        Edit
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+
+                                {% for student in students %}
+
+                                <tr>
+
+
+                                    <td>
+                                        {{ student.name }}
+                                    </td>
+
+
+                                    <td>
+                                        {{ student.department }}
+                                    </td>
+
+
+                                    <td>
+                                        {{ student.year }}
+                                    </td>
+
+
+                                    <td>
+                                        {{ student.username }}
+                                    </td>
+
+
+                                    <td>
+
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for('admin_edit_user', user_id=student.id) }}"
+                                            class="account-edit-form"
+                                        >
+
+
+                                            <input
+                                                type="hidden"
+                                                name="name"
+                                                value="{{ student.name }}"
+                                            >
+
+
+                                            <input
+                                                type="hidden"
+                                                name="username"
+                                                value="{{ student.username }}"
+                                            >
+
+
+                                            <input
+                                                type="hidden"
+                                                name="department"
+                                                value="{{ student.department }}"
+                                            >
+
+
+                                            <input
+                                                type="hidden"
+                                                name="year"
+                                                value="{{ student.year }}"
+                                            >
+
+
+                                            <button
+                                                class="account-edit-button"
+                                                type="submit"
+                                            >
+                                                Edit
+                                            </button>
+
+
+                                        </form>
+
+
+                                    </td>
+
+
+                                </tr>
+
+
+                                {% else %}
+
+
+                                <tr>
+
+                                    <td
+                                        colspan="5"
+                                        class="account-empty"
+                                    >
+                                        No students found.
+                                    </td>
+
+                                </tr>
+
+
+                                {% endfor %}
+
+
+                            </tbody>
+
+
+                        </table>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =========================================
+                 CASHIERS
+            ========================================= -->
+
+            <section class="account-section">
+
+
+                <h2 class="account-section-title">
+                    Cashiers
+                </h2>
+
+
+                <div class="admin-card account-table-card">
+
+
+                    <div class="account-table-wrapper">
+
+
+                        <table class="account-table cashier-table">
+
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Name
+                                    </th>
+
+                                    <th>
+                                        Username
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+
+                                {% for cashier in cashiers %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ cashier.name }}
+                                    </td>
+
+                                    <td>
+                                        {{ cashier.username }}
+                                    </td>
+
+                                </tr>
+
+
+                                {% else %}
+
+
+                                <tr>
+
+                                    <td
+                                        colspan="2"
+                                        class="account-empty"
+                                    >
+                                        No cashiers found.
+                                    </td>
+
+                                </tr>
+
+
+                                {% endfor %}
+
+
+                            </tbody>
+
+
+                        </table>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+<!-- =========================================
+     LOGOUT CONFIRMATION MODAL
+========================================= -->
+
+<div
+    id="logoutModal"
+    class="logout-modal"
+>
+
+
+    <div class="logout-modal-card">
+
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+
+        <h2>
+            Logout?
+        </h2>
+
+
+        <p>
+            Are you sure you want to logout?
+            <br>
+            You will need to login again to access your account.
+        </p>
+
+
+        <div class="logout-modal-actions">
+
+
+            <button
+                type="button"
+                class="logout-cancel"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout-confirm"
+            >
+                Logout
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   ADMIN MOBILE SIDEBAR
+========================================= */
+
+function openAdminSidebar() {
+
+    const sidebar =
+        document.getElementById("adminSidebar");
+
+    const overlay =
+        document.getElementById("mobileSidebarOverlay");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    sidebar.classList.add("mobile-open");
+
+    overlay.classList.add("show");
+
+    button.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+
+    button.innerHTML = "✕";
+
+}
+
+
+function closeAdminSidebar() {
+
+    const sidebar =
+        document.getElementById("adminSidebar");
+
+    const overlay =
+        document.getElementById("mobileSidebarOverlay");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    sidebar.classList.remove("mobile-open");
+
+    overlay.classList.remove("show");
+
+    button.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+    button.innerHTML = "☰";
+
+}
+
+
+function toggleAdminSidebar() {
+
+    const sidebar =
+        document.getElementById("adminSidebar");
+
+
+    if (
+        sidebar.classList.contains("mobile-open")
+    ) {
+
+        closeAdminSidebar();
+
+    } else {
+
+        openAdminSidebar();
+
+    }
+
+}
+
+
+/* =========================================
+   LOGOUT MODAL
+========================================= */
+
+function openLogoutModal() {
+
+    document
+        .getElementById("logoutModal")
+        .classList.add("show");
+
+}
+
+
+function closeLogoutModal() {
+
+    document
+        .getElementById("logoutModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================
+   CLOSE LOGOUT MODAL OUTSIDE
+========================================= */
+
+document
+    .getElementById("logoutModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (event.target === this) {
+
+                closeLogoutModal();
+
+            }
+
+        }
+    );
+
+
+/* =========================================
+   ESC KEY
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            closeAdminSidebar();
+
+            closeLogoutModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   CLOSE SIDEBAR WHEN RETURNING TO DESKTOP
+========================================= */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        if (window.innerWidth > 900) {
+
+            closeAdminSidebar();
+
+        }
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>

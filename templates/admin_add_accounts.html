@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Add Accounts</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<div class="admin-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+
+        <div class="sidebar-logo">
+
+            <img
+                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
+                alt="School Logo"
+            >
+
+            <span>Student Queue</span>
+
+        </div>
+
+
+        <div class="sidebar-menu">
+
+
+            <a
+                href="{{ url_for('admin_dashboard') }}"
+                class="sidebar-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}"
+            >
+
+                <span class="sidebar-icon">🏠</span>
+
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin_students') }}"
+                class="sidebar-item {% if request.endpoint == 'admin_students' %}active{% endif %}"
+            >
+
+                <span class="sidebar-icon">👨‍🎓</span>
+
+                <span>View Student</span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin_cashiers') }}"
+                class="sidebar-item {% if request.endpoint == 'admin_cashiers' %}active{% endif %}"
+            >
+
+                <span class="sidebar-icon">💰</span>
+
+                <span>View Finance</span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin_add_accounts') }}"
+                class="sidebar-item {% if request.endpoint == 'admin_add_accounts' %}active{% endif %}"
+            >
+
+                <span class="sidebar-icon">➕</span>
+
+                <span>Add Account</span>
+
+            </a>
+
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+
+            <a
+                href="javascript:void(0)"
+                class="sidebar-item"
+                onclick="openLogoutModal()"
+            >
+
+                <span class="sidebar-icon">🚪</span>
+
+                <span>Logout</span>
+
+            </a>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- MAIN CONTENT -->
+
+    <div class="admin-content">
+
+
+        <!-- TOP BAR -->
+
+        <div class="admin-topbar">
+
+
+            <div>
+
+                <h2>Add Accounts</h2>
+
+                <p>
+                    Create student or cashier accounts.
+                </p>
+
+            </div>
+
+
+            <div class="admin-profile">
+
+
+                <div class="profile-icon">
+
+                    {{ user.name[0] }}
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        {{ user.name }}
+                    </strong>
+
+                    <small>
+                        Administrator
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <main>
+
+
+            <!-- FLASH MESSAGES -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    <div class="flash-container">
+
+                        {% for category, message in messages %}
+
+                            <div class="flash-message {{ category }}">
+
+                                {{ message }}
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            {% endwith %}
+
+
+
+            <!-- CREATE ACCOUNT -->
+
+            <section class="admin-section">
+
+
+                <div class="section-title">
+
+
+                    <div>
+
+                        <h2>
+                            Create Account
+                        </h2>
+
+                        <p>
+                            Add a new student or finance/cashier account.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="admin-card">
+
+
+                    <form method="POST">
+
+
+                        <!-- FULL NAME -->
+
+                        <div class="form-group">
+
+
+                            <label>
+                                Full Name
+                            </label>
+
+
+                            <input
+                                type="text"
+                                name="full_name"
+                                placeholder="Enter full name"
+                                required
+                            >
+
+
+                        </div>
+
+
+
+                        <!-- USERNAME -->
+
+                        <div class="form-group">
+
+
+                            <label>
+                                Username
+                            </label>
+
+
+                            <input
+                                type="text"
+                                name="username"
+                                placeholder="Enter username"
+                                required
+                            >
+
+
+                        </div>
+
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="form-group">
+
+
+                            <label>
+                                Password
+                            </label>
+
+
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Enter password"
+                                required
+                            >
+
+
+                        </div>
+
+
+
+                        <!-- ACCOUNT TYPE -->
+
+                        <div class="form-group">
+
+
+                            <label>
+                                Account Type
+                            </label>
+
+
+                            <select
+                                name="role"
+                                required
+                            >
+
+
+                                <option value="">
+                                    Select account type
+                                </option>
+
+
+                                <option value="Student">
+                                    Student
+                                </option>
+
+
+                                <option value="Finance/Cashier">
+                                    Finance/Cashier
+                                </option>
+
+
+                            </select>
+
+
+                        </div>
+
+
+
+                        <!-- CREATE BUTTON -->
+
+                        <button
+                            type="submit"
+                            class="button"
+                        >
+
+                            Create Account
+
+                        </button>
+
+
+                    </form>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- LOGOUT MODAL -->
+
+<div
+    id="logoutModal"
+    class="logout-modal"
+>
+
+
+    <div class="logout-modal-card">
+
+
+        <div class="logout-modal-icon">
+
+            🚪
+
+        </div>
+
+
+        <h2>
+            Logout?
+        </h2>
+
+
+        <p>
+
+            Are you sure you want to logout?
+
+            <br>
+
+            You will need to login again to access your account.
+
+        </p>
+
+
+        <div class="logout-modal-actions">
+
+
+            <button
+                type="button"
+                class="logout-cancel"
+                onclick="closeLogoutModal()"
+            >
+
+                Cancel
+
+            </button>
+
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout-confirm"
+            >
+
+                Logout
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+
+function openLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.add("show");
+
+}
+
+
+function closeLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.remove("show");
+
+}
+
+
+document
+    .getElementById("logoutModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeLogoutModal();
+
+        }
+
+    });
+
+
+</script>
+
+
+</body>
+
+</html>

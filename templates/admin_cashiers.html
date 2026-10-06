@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Finance Cashiers</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* =========================================
+           FINANCE CASHIER PAGE
+        ========================================= */
+
+        .cashier-page-content {
+            padding: 30px;
+        }
+
+
+        /* =========================================
+           CASHIER CARD
+        ========================================= */
+
+        .cashier-card {
+            width: 100%;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* =========================================
+           SECTION HEADER
+        ========================================= */
+
+        .cashier-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 22px;
+        }
+
+
+        .cashier-section-header h2 {
+            margin: 0 0 6px;
+            font-size: 25px;
+            font-weight: 700;
+            color: #222222;
+        }
+
+
+        .cashier-section-header p {
+            margin: 0;
+            font-size: 15px;
+            color: #666666;
+        }
+
+
+        /* =========================================
+           CASHIER COUNT
+        ========================================= */
+
+        .cashier-count {
+            min-width: 150px;
+            padding: 15px 20px;
+            border-radius: 14px;
+            background: #fff3e8;
+            border: 2px solid #ff4b00;
+            box-sizing: border-box;
+            text-align: center;
+            color: #ff4b00;
+            font-size: 17px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+
+        .cashier-count::before {
+            content: "👥";
+            margin-right: 8px;
+        }
+
+
+        /* =========================================
+           TABLE
+        ========================================= */
+
+        .cashier-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+
+        .cashier-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+
+        .cashier-table th,
+        .cashier-table td {
+            padding: 15px 18px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+
+        .cashier-table th {
+            background: #f8f8f8;
+            color: #333333;
+            font-size: 14px;
+            font-weight: 700;
+            border-bottom: 2px solid #eeeeee;
+        }
+
+
+        .cashier-table td {
+            color: #444444;
+            font-size: 14px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+
+        .cashier-table tbody tr:hover {
+            background: #fffaf6;
+        }
+
+
+        .cashier-table th:nth-child(1),
+        .cashier-table td:nth-child(1) {
+            width: 8%;
+        }
+
+
+        .cashier-table th:nth-child(2),
+        .cashier-table td:nth-child(2) {
+            width: 27%;
+        }
+
+
+        .cashier-table th:nth-child(3),
+        .cashier-table td:nth-child(3) {
+            width: 25%;
+        }
+
+
+        .cashier-table th:nth-child(4),
+        .cashier-table td:nth-child(4) {
+            width: 15%;
+        }
+
+
+        .cashier-table th:nth-child(5),
+        .cashier-table td:nth-child(5) {
+            width: 25%;
+        }
+
+
+        .cashier-name {
+            font-weight: 600;
+            color: #222222;
+        }
+
+
+        /* =========================================
+           ROLE
+        ========================================= */
+
+        .cashier-role {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #fff3e8;
+            color: #ff4b00;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           ACTION BUTTONS
+        ========================================= */
+
+        .cashier-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+
+        .cashier-edit-btn,
+        .cashier-delete-btn {
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+
+        .cashier-edit-btn {
+            background: #ff4b00;
+            color: #ffffff;
+        }
+
+
+        .cashier-edit-btn:hover {
+            background: #e64100;
+            transform: translateY(-1px);
+        }
+
+
+        .cashier-delete-btn {
+            background: #dc3545;
+            color: #ffffff;
+        }
+
+
+        .cashier-delete-btn:hover {
+            background: #b52a37;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================
+           EMPTY STATE
+        ========================================= */
+
+        .cashier-empty {
+            text-align: center !important;
+            padding: 35px !important;
+            color: #777777 !important;
+        }
+
+
+        /* =========================================
+           EDIT MODAL
+        ========================================= */
+
+        .edit-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+
+        .edit-modal.show {
+            display: flex;
+        }
+
+
+        .edit-modal-card {
+            width: 420px;
+            max-width: 90%;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            animation: modalShow 0.25s ease;
+        }
+
+
+        .edit-modal-card h2 {
+            margin: 0 0 8px;
+            color: #222222;
+            font-size: 24px;
+        }
+
+
+        .edit-modal-card p {
+            margin: 0 0 25px;
+            color: #666666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        .edit-form-group {
+            margin-bottom: 18px;
+        }
+
+
+        .edit-form-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #333333;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        .edit-form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #dddddd;
+            border-radius: 9px;
+            outline: none;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: 0.2s ease;
+        }
+
+
+        .edit-form-group input:focus {
+            border-color: #ff4b00;
+            box-shadow: 0 0 0 3px rgba(255, 75, 0, 0.10);
+        }
+
+
+        .edit-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+
+        .edit-cancel,
+        .edit-save {
+            border: none;
+            padding: 11px 20px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+
+        .edit-cancel {
+            background: #eeeeee;
+            color: #333333;
+        }
+
+
+        .edit-cancel:hover {
+            background: #dddddd;
+        }
+
+
+        .edit-save {
+            background: #ff4b00;
+            color: #ffffff;
+        }
+
+
+        .edit-save:hover {
+            background: #e64100;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================
+           DELETE MODAL
+        ========================================= */
+
+        .delete-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+
+        .delete-modal.show {
+            display: flex;
+        }
+
+
+        .delete-modal-card {
+            width: 420px;
+            max-width: 90%;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 30px;
+            text-align: center;
+            box-sizing: border-box;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            animation: modalShow 0.25s ease;
+        }
+
+
+        .delete-modal-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #fdecec;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+
+        .delete-modal-card h2 {
+            margin: 0 0 10px;
+            color: #222222;
+            font-size: 24px;
+        }
+
+
+        .delete-modal-card p {
+            margin: 0 auto 25px;
+            color: #666666;
+            font-size: 15px;
+            line-height: 1.6;
+            max-width: 340px;
+        }
+
+
+        .delete-modal-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        .delete-cancel,
+        .delete-confirm {
+            border: none;
+            padding: 12px 22px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+
+        .delete-cancel {
+            background: #eeeeee;
+            color: #333333;
+        }
+
+
+        .delete-cancel:hover {
+            background: #dddddd;
+        }
+
+
+        .delete-confirm {
+            background: #dc3545;
+            color: #ffffff;
+        }
+
+
+        .delete-confirm:hover {
+            background: #b52a37;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================
+           LOGOUT MODAL
+        ========================================= */
+
+        .logout-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+
+        .logout-modal.show {
+            display: flex;
+        }
+
+
+        .logout-modal-card {
+            width: 420px;
+            max-width: 90%;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 30px;
+            text-align: center;
+            box-sizing: border-box;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            animation: modalShow 0.25s ease;
+        }
+
+
+        .logout-modal-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #fff3e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+
+        .logout-modal-card h2 {
+            margin: 0 0 10px;
+            color: #222222;
+            font-size: 24px;
+        }
+
+
+        .logout-modal-card p {
+            margin: 0 auto 25px;
+            color: #666666;
+            font-size: 15px;
+            line-height: 1.6;
+            max-width: 340px;
+        }
+
+
+        .logout-modal-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        .logout-cancel,
+        .logout-confirm {
+            border: none;
+            padding: 12px 22px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+
+        .logout-cancel {
+            background: #eeeeee;
+            color: #333333;
+        }
+
+
+        .logout-cancel:hover {
+            background: #dddddd;
+        }
+
+
+        .logout-confirm {
+            background: #ff4b00;
+            color: #ffffff;
+        }
+
+
+        .logout-confirm:hover {
+            background: #e64100;
+            transform: translateY(-1px);
+        }
+
+
+        @keyframes modalShow {
+
+            from {
+                opacity: 0;
+                transform: scale(0.92) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 768px) {
+
+            .cashier-page-content {
+                padding: 20px;
+            }
+
+
+            .cashier-card {
+                padding: 18px;
+            }
+
+
+            .cashier-section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+
+            .cashier-count {
+                width: 100%;
+            }
+
+
+            .cashier-table {
+                min-width: 700px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="admin-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <img
+                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
+                alt="School Logo"
+            >
+
+            <span>
+                Student Queue
+            </span>
+
+        </div>
+
+
+        <div class="sidebar-menu">
+
+            <a
+                href="{{ url_for('admin_dashboard') }}"
+                class="sidebar-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}"
+            >
+                <span class="sidebar-icon">🏠</span>
+                <span>Dashboard</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin_students') }}"
+                class="sidebar-item {% if request.endpoint == 'admin_students' %}active{% endif %}"
+            >
+                <span class="sidebar-icon">👨‍🎓</span>
+                <span>View Student</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin_cashiers') }}"
+                class="sidebar-item {% if request.endpoint == 'admin_cashiers' %}active{% endif %}"
+            >
+                <span class="sidebar-icon">💰</span>
+                <span>View Finance</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('admin_add_accounts') }}"
+                class="sidebar-item {% if request.endpoint == 'admin_add_accounts' %}active{% endif %}"
+            >
+                <span class="sidebar-icon">➕</span>
+                <span>Add Account</span>
+            </a>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="javascript:void(0)"
+                class="sidebar-item"
+                onclick="openLogoutModal()"
+            >
+                <span class="sidebar-icon">🚪</span>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="admin-content">
+
+
+        <!-- TOP BAR -->
+
+        <header class="admin-topbar">
+
+            <div>
+
+                <h2>
+                    Finance / Cashier
+                </h2>
+
+                <p>
+                    Manage all cashier accounts.
+                </p>
+
+            </div>
+
+
+            <div class="admin-profile">
+
+                <div>
+
+                    <strong>
+                        {{ user["name"] }}
+                    </strong>
+
+                    <small>
+                        Administrator
+                    </small>
+
+                </div>
+
+
+                <div class="profile-icon">
+                    {{ user["name"][0] }}
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+
+        <div class="cashier-page-content">
+
+
+            <!-- CASHIER CARD -->
+
+            <section class="cashier-card">
+
+
+                <!-- SECTION HEADER -->
+
+                <div class="cashier-section-header">
+
+                    <div>
+
+                        <h2>
+                            All Cashiers
+                        </h2>
+
+                        <p>
+                            Registered finance cashier accounts
+                        </p>
+
+                    </div>
+
+
+                    <div class="cashier-count">
+
+                        {% if cashiers|length == 1 %}
+
+                            1 Cashier
+
+                        {% else %}
+
+                            {{ cashiers|length }} Cashiers
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- TABLE -->
+
+                <div class="cashier-table-wrapper">
+
+                    <table class="cashier-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    No.
+                                </th>
+
+                                <th>
+                                    Name
+                                </th>
+
+                                <th>
+                                    Username
+                                </th>
+
+                                <th>
+                                    Role
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for cashier in cashiers %}
+
+                            <tr>
+
+                                <td>
+                                    {{ loop.index }}
+                                </td>
+
+
+                                <td>
+
+                                    <strong class="cashier-name">
+                                        {{ cashier["name"] }}
+                                    </strong>
+
+                                </td>
+
+
+                                <td>
+                                    {{ cashier["username"] }}
+                                </td>
+
+
+                                <td>
+
+                                    <span class="cashier-role">
+                                        Cashier
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="cashier-actions">
+
+                                        <button
+                                            type="button"
+                                            class="cashier-edit-btn"
+                                            onclick='openEditModal(
+                                                {{ cashier["id"] }},
+                                                {{ cashier["name"]|tojson }},
+                                                {{ cashier["username"]|tojson }}
+                                            )'
+                                        >
+                                            Edit
+                                        </button>
+
+
+                                        <button
+                                            type="button"
+                                            class="cashier-delete-btn"
+                                            onclick='openDeleteModal(
+                                                {{ cashier["id"] }},
+                                                {{ cashier["name"]|tojson }}
+                                            )'
+                                        >
+                                            Delete
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                            {% else %}
+
+                            <tr>
+
+                                <td
+                                    colspan="5"
+                                    class="cashier-empty"
+                                >
+                                    No cashier accounts found.
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================
+     EDIT CASHIER MODAL
+========================================= -->
+
+<div
+    id="editModal"
+    class="edit-modal"
+>
+
+    <div class="edit-modal-card">
+
+        <h2>
+            Edit Cashier
+        </h2>
+
+        <p>
+            Update the cashier account information.
+        </p>
+
+
+        <form
+            id="editCashierForm"
+            method="POST"
+        >
+
+            <div class="edit-form-group">
+
+                <label for="editName">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="editName"
+                    name="name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="edit-form-group">
+
+                <label for="editUsername">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="editUsername"
+                    name="username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="edit-modal-actions">
+
+                <button
+                    type="button"
+                    class="edit-cancel"
+                    onclick="closeEditModal()"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="edit-save"
+                >
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     DELETE CASHIER MODAL
+========================================= -->
+
+<div
+    id="deleteModal"
+    class="delete-modal"
+>
+
+    <div class="delete-modal-card">
+
+        <div class="delete-modal-icon">
+            🗑️
+        </div>
+
+
+        <h2>
+            Delete Cashier?
+        </h2>
+
+
+        <p>
+
+            Are you sure you want to delete
+
+            <strong id="deleteCashierName"></strong>?
+
+            <br>
+
+            This action cannot be undone.
+
+        </p>
+
+
+        <div class="delete-modal-actions">
+
+            <button
+                type="button"
+                class="delete-cancel"
+                onclick="closeDeleteModal()"
+            >
+                Cancel
+            </button>
+
+
+            <form
+                id="deleteCashierForm"
+                method="POST"
+            >
+
+                <button
+                    type="submit"
+                    class="delete-confirm"
+                >
+                    Delete
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     LOGOUT MODAL
+========================================= -->
+
+<div
+    id="logoutModal"
+    class="logout-modal"
+>
+
+    <div class="logout-modal-card">
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+
+        <h2>
+            Logout?
+        </h2>
+
+
+        <p>
+
+            Are you sure you want to logout?
+
+            <br>
+
+            You will need to login again to access your account.
+
+        </p>
+
+
+        <div class="logout-modal-actions">
+
+            <button
+                type="button"
+                class="logout-cancel"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout-confirm"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   EDIT CASHIER
+========================================= */
+
+function openEditModal(id, name, username) {
+
+    const modal =
+        document.getElementById("editModal");
+
+    const form =
+        document.getElementById("editCashierForm");
+
+    const nameInput =
+        document.getElementById("editName");
+
+    const usernameInput =
+        document.getElementById("editUsername");
+
+
+    const editUrl =
+        "{{ url_for('admin_edit_user', user_id=999999) }}";
+
+
+    form.action =
+        editUrl.replace("999999", id);
+
+
+    nameInput.value =
+        name;
+
+    usernameInput.value =
+        username;
+
+
+    modal.classList.add("show");
+
+}
+
+
+function closeEditModal() {
+
+    document
+        .getElementById("editModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================
+   DELETE CASHIER
+========================================= */
+
+function openDeleteModal(id, name) {
+
+    const modal =
+        document.getElementById("deleteModal");
+
+    const form =
+        document.getElementById("deleteCashierForm");
+
+
+    const deleteUrl =
+        "{{ url_for('admin_delete_cashier', user_id=999999) }}";
+
+
+    form.action =
+        deleteUrl.replace("999999", id);
+
+
+    document.getElementById("deleteCashierName")
+        .textContent = name;
+
+
+    modal.classList.add("show");
+
+}
+
+
+function closeDeleteModal() {
+
+    document
+        .getElementById("deleteModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+function openLogoutModal() {
+
+    document
+        .getElementById("logoutModal")
+        .classList.add("show");
+
+}
+
+
+function closeLogoutModal() {
+
+    document
+        .getElementById("logoutModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================
+   CLOSE MODALS WHEN CLICKING OUTSIDE
+========================================= */
+
+document
+    .getElementById("editModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (event.target === this) {
+                closeEditModal();
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("deleteModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (event.target === this) {
+                closeDeleteModal();
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("logoutModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (event.target === this) {
+                closeLogoutModal();
+            }
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>

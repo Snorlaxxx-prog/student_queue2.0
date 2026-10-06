@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Register - Student Queue</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* =========================================
+           REGISTER BUTTON
+        ========================================= */
+
+        .register-button {
+            width: 100%;
+            padding: 14px 20px;
+            margin-top: 8px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: linear-gradient(
+                135deg,
+                #ff4b00,
+                #ff6a00
+            );
+
+            color: #ffffff;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 6px 16px
+                rgba(255, 75, 0, 0.25);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .register-button:hover {
+
+            background: linear-gradient(
+                135deg,
+                #e64100,
+                #ff5a00
+            );
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 9px 22px
+                rgba(255, 75, 0, 0.35);
+        }
+
+
+        .register-button:active {
+
+            transform: translateY(0);
+
+            box-shadow:
+                0 4px 10px
+                rgba(255, 75, 0, 0.20);
+        }
+
+
+        .register-button:focus-visible {
+
+            outline: 3px solid
+                rgba(255, 75, 0, 0.25);
+
+            outline-offset: 3px;
+        }
+
+
+        /* =========================================
+           REGISTER LINK
+        ========================================= */
+
+        .register-link {
+
+            margin-top: 20px;
+
+            text-align: center;
+
+            color: #666;
+
+            font-size: 14px;
+        }
+
+
+        .register-link a {
+
+            color: #ff4b00;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition: 0.2s ease;
+        }
+
+
+        .register-link a:hover {
+
+            color: #e64100;
+
+            text-decoration: underline;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-page">
+
+
+    <div class="login-card register-card">
+
+
+        <!-- HEADER -->
+
+        <div class="login-info">
+
+            <img
+                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
+                alt="School Logo"
+                class="login-logo"
+            >
+
+
+            <h1>
+                Student Queue
+            </h1>
+
+
+            <p>
+                Queue Management System
+            </p>
+
+        </div>
+
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="alert {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- REGISTER FORM -->
+
+        <form method="POST">
+
+
+            <!-- FULL NAME -->
+
+            <label>
+                Full Name
+            </label>
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Enter your full name"
+                required
+            >
+
+
+            <!-- USERNAME -->
+
+            <label>
+                Username
+            </label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Create a username"
+                required
+            >
+
+
+            <!-- PASSWORD -->
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Create a password"
+                required
+            >
+
+
+            <!-- CONFIRM PASSWORD -->
+
+            <label>
+                Confirm Password
+            </label>
+
+            <input
+                type="password"
+                name="confirm_password"
+                placeholder="Confirm your password"
+                required
+            >
+
+
+            <!-- DEPARTMENT -->
+
+            <label>
+                Department
+            </label>
+
+            <select
+                name="department"
+                required
+            >
+
+                <option value="">
+                    Select Department
+                </option>
+
+                {% for department in departments %}
+
+                    <option value="{{ department }}">
+                        {{ department }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <!-- YEAR -->
+
+            <label>
+                Year Level
+            </label>
+
+            <select
+                name="year"
+                required
+            >
+
+                <option value="">
+                    Select Year
+                </option>
+
+                {% for year in years %}
+
+                    <option value="{{ year }}">
+                        {{ year }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <!-- REGISTER BUTTON -->
+
+            <button
+                type="submit"
+                class="register-button"
+            >
+                Register
+            </button>
+
+
+        </form>
+
+
+        <!-- LOGIN LINK -->
+
+        <div class="register-link">
+
+            Already have an account?
+
+            <a href="{{ url_for('index') }}">
+                Login
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

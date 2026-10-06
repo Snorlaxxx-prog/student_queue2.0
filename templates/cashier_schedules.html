@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Schedule</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     MOBILE MENU BUTTON
+========================================== -->
+
+<button
+    type="button"
+    class="mobile-menu-button"
+    id="mobileMenuButton"
+    onclick="toggleCashierSidebar()"
+    aria-label="Open menu"
+    aria-expanded="false"
+>
+    ☰
+</button>
+
+
+<!-- =========================================
+     MOBILE SIDEBAR OVERLAY
+========================================== -->
+
+<div
+    class="mobile-sidebar-overlay"
+    id="mobileSidebarOverlay"
+    onclick="closeCashierSidebar()"
+></div>
+
+
+<div class="admin-layout">
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside
+        class="sidebar"
+        id="cashierSidebar"
+    >
+
+
+        <!-- LOGO -->
+
+        <div class="sidebar-logo">
+
+            <img
+                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
+                alt="School Logo"
+            >
+
+            <span>
+                Student Queue
+            </span>
+
+        </div>
+
+
+        <!-- =====================================
+             SIDEBAR MENU
+        ====================================== -->
+
+        <div class="sidebar-menu">
+
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="{{ url_for('cashier_dashboard') }}"
+                class="sidebar-item {% if request.endpoint == 'cashier_dashboard' %}active{% endif %}"
+                onclick="closeCashierSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    🏠
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- CREATE SCHEDULE -->
+
+            <a
+                href="{{ url_for('cashier_schedules') }}"
+                class="sidebar-item {% if request.endpoint == 'cashier_schedules' %}active{% endif %}"
+                onclick="closeCashierSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    📅
+                </span>
+
+                <span>
+                    Create Schedule
+                </span>
+
+            </a>
+
+
+            <!-- ALL QUEUE -->
+
+            <a
+                href="{{ url_for('cashier_all_queue') }}"
+                class="sidebar-item {% if request.endpoint == 'cashier_all_queue' %}active{% endif %}"
+                onclick="closeCashierSidebar()"
+            >
+
+                <span class="sidebar-icon">
+                    📋
+                </span>
+
+                <span>
+                    All Queue
+                </span>
+
+            </a>
+
+
+        </div>
+
+
+        <!-- =====================================
+             LOGOUT
+        ====================================== -->
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="javascript:void(0)"
+                class="sidebar-item"
+                onclick="closeCashierSidebar(); openLogoutModal();"
+            >
+
+                <span class="sidebar-icon">
+                    🚪
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="admin-content">
+
+
+        <!-- =====================================
+             TOPBAR
+        ====================================== -->
+
+        <header class="admin-topbar">
+
+
+            <div>
+
+                <h2>
+                    Create Schedule
+                </h2>
+
+                <p>
+                    Create and manage your cashier schedules.
+                </p>
+
+            </div>
+
+
+            <!-- PROFILE -->
+
+            <div class="admin-profile">
+
+                <div>
+
+                    <strong>
+                        {{ user.name }}
+                    </strong>
+
+                    <small>
+                        Cashier
+                    </small>
+
+                </div>
+
+
+                <div class="profile-icon">
+
+                    {{ user.name[0] }}
+
+                </div>
+
+            </div>
+
+
+        </header>
+
+
+        <!-- =====================================
+             PAGE CONTENT
+        ====================================== -->
+
+        <div class="page-content">
+
+
+            <!-- =================================
+                 CREATE NEW SCHEDULE
+            ================================== -->
+
+            <section class="admin-section">
+
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h2>
+                            New Schedule
+                        </h2>
+
+                        <p>
+                            Create a new cashier schedule.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-card">
+
+
+                    <form
+                        method="POST"
+                        action="{{ url_for('add_schedule') }}"
+                    >
+
+
+                        <label for="schedule-date">
+                            Date
+                        </label>
+
+
+                        <input
+                            id="schedule-date"
+                            type="date"
+                            name="date"
+                            min="{{ current_date }}"
+                            required
+                            onchange="checkWeekday(this)"
+                        >
+
+
+                        <label for="start-time">
+                            Start Time
+                        </label>
+
+
+                        <select
+                            id="start-time"
+                            name="start_time"
+                            required
+                        >
+
+                            <option value="">
+                                Select Start Time
+                            </option>
+
+                            <option value="08:00">
+                                8:00 AM
+                            </option>
+
+                            <option value="09:00">
+                                9:00 AM
+                            </option>
+
+                            <option value="10:00">
+                                10:00 AM
+                            </option>
+
+                            <option value="11:00">
+                                11:00 AM
+                            </option>
+
+                            <option value="12:00">
+                                12:00 PM
+                            </option>
+
+                            <option value="13:00">
+                                1:00 PM
+                            </option>
+
+                            <option value="14:00">
+                                2:00 PM
+                            </option>
+
+                            <option value="15:00">
+                                3:00 PM
+                            </option>
+
+                            <option value="16:00">
+                                4:00 PM
+                            </option>
+
+                        </select>
+
+
+                        <label for="end-time">
+                            End Time
+                        </label>
+
+
+                        <select
+                            id="end-time"
+                            name="end_time"
+                            required
+                        >
+
+                            <option value="">
+                                Select End Time
+                            </option>
+
+                            <option value="09:00">
+                                9:00 AM
+                            </option>
+
+                            <option value="10:00">
+                                10:00 AM
+                            </option>
+
+                            <option value="11:00">
+                                11:00 AM
+                            </option>
+
+                            <option value="12:00">
+                                12:00 PM
+                            </option>
+
+                            <option value="13:00">
+                                1:00 PM
+                            </option>
+
+                            <option value="14:00">
+                                2:00 PM
+                            </option>
+
+                            <option value="15:00">
+                                3:00 PM
+                            </option>
+
+                            <option value="16:00">
+                                4:00 PM
+                            </option>
+
+                            <option value="17:00">
+                                5:00 PM
+                            </option>
+
+                        </select>
+
+
+                        <button
+                            class="btn primary"
+                            type="submit"
+                        >
+                            CREATE SCHEDULE
+                        </button>
+
+
+                    </form>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================
+                 MY SCHEDULES
+            ================================== -->
+
+            <section class="admin-section">
+
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h2>
+                            My Schedules
+                        </h2>
+
+                        <p>
+                            View and manage your created schedules.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {% for s in schedules %}
+
+
+                    <div class="admin-card">
+
+
+                        <h2>
+                            {{ s.day }}
+                        </h2>
+
+
+                        <p>
+
+                            <strong>
+                                Date:
+                            </strong>
+
+                            {{ s.date }}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Time:
+                            </strong>
+
+                            {{ s.start_time }}
+                            -
+                            {{ s.end_time }}
+
+                        </p>
+
+
+                        <hr>
+
+
+                        <div class="schedule-actions">
+
+
+                            <button
+                                type="button"
+                                class="btn primary"
+                                onclick="showEditForm('{{ s.id }}')"
+                            >
+                                EDIT
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="btn danger"
+                                onclick="openDeleteModal('{{ s.id }}')"
+                            >
+                                DELETE
+                            </button>
+
+
+                        </div>
+
+
+                        <!-- =================================
+                             EDIT FORM
+                        ================================== -->
+
+                        <div
+                            id="edit-form-{{ s.id }}"
+                            class="schedule-edit-form"
+                        >
+
+
+                            <h3>
+                                Edit Schedule
+                            </h3>
+
+
+                            <form
+                                method="POST"
+                                action="{{ url_for('edit_schedule', schedule_id=s.id) }}"
+                            >
+
+
+                                <label>
+                                    Date
+                                </label>
+
+
+                                <input
+                                    type="date"
+                                    name="date"
+                                    value="{{ s.date }}"
+                                    min="{{ current_date }}"
+                                    required
+                                    onchange="checkWeekday(this)"
+                                >
+
+
+                                <label>
+                                    Start Time
+                                </label>
+
+
+                                <select
+                                    name="start_time"
+                                    required
+                                >
+
+                                    <option
+                                        value="08:00"
+                                        {% if s.start_time == '08:00' %}selected{% endif %}
+                                    >
+                                        8:00 AM
+                                    </option>
+
+                                    <option
+                                        value="09:00"
+                                        {% if s.start_time == '09:00' %}selected{% endif %}
+                                    >
+                                        9:00 AM
+                                    </option>
+
+                                    <option
+                                        value="10:00"
+                                        {% if s.start_time == '10:00' %}selected{% endif %}
+                                    >
+                                        10:00 AM
+                                    </option>
+
+                                    <option
+                                        value="11:00"
+                                        {% if s.start_time == '11:00' %}selected{% endif %}
+                                    >
+                                        11:00 AM
+                                    </option>
+
+                                    <option
+                                        value="12:00"
+                                        {% if s.start_time == '12:00' %}selected{% endif %}
+                                    >
+                                        12:00 PM
+                                    </option>
+
+                                    <option
+                                        value="13:00"
+                                        {% if s.start_time == '13:00' %}selected{% endif %}
+                                    >
+                                        1:00 PM
+                                    </option>
+
+                                    <option
+                                        value="14:00"
+                                        {% if s.start_time == '14:00' %}selected{% endif %}
+                                    >
+                                        2:00 PM
+                                    </option>
+
+                                    <option
+                                        value="15:00"
+                                        {% if s.start_time == '15:00' %}selected{% endif %}
+                                    >
+                                        3:00 PM
+                                    </option>
+
+                                    <option
+                                        value="16:00"
+                                        {% if s.start_time == '16:00' %}selected{% endif %}
+                                    >
+                                        4:00 PM
+                                    </option>
+
+                                </select>
+
+
+                                <label>
+                                    End Time
+                                </label>
+
+
+                                <select
+                                    name="end_time"
+                                    required
+                                >
+
+                                    <option
+                                        value="09:00"
+                                        {% if s.end_time == '09:00' %}selected{% endif %}
+                                    >
+                                        9:00 AM
+                                    </option>
+
+                                    <option
+                                        value="10:00"
+                                        {% if s.end_time == '10:00' %}selected{% endif %}
+                                    >
+                                        10:00 AM
+                                    </option>
+
+                                    <option
+                                        value="11:00"
+                                        {% if s.end_time == '11:00' %}selected{% endif %}
+                                    >
+                                        11:00 AM
+                                    </option>
+
+                                    <option
+                                        value="12:00"
+                                        {% if s.end_time == '12:00' %}selected{% endif %}
+                                    >
+                                        12:00 PM
+                                    </option>
+
+                                    <option
+                                        value="13:00"
+                                        {% if s.end_time == '13:00' %}selected{% endif %}
+                                    >
+                                        1:00 PM
+                                    </option>
+
+                                    <option
+                                        value="14:00"
+                                        {% if s.end_time == '14:00' %}selected{% endif %}
+                                    >
+                                        2:00 PM
+                                    </option>
+
+                                    <option
+                                        value="15:00"
+                                        {% if s.end_time == '15:00' %}selected{% endif %}
+                                    >
+                                        3:00 PM
+                                    </option>
+
+                                    <option
+                                        value="16:00"
+                                        {% if s.end_time == '16:00' %}selected{% endif %}
+                                    >
+                                        4:00 PM
+                                    </option>
+
+                                    <option
+                                        value="17:00"
+                                        {% if s.end_time == '17:00' %}selected{% endif %}
+                                    >
+                                        5:00 PM
+                                    </option>
+
+                                </select>
+
+
+                                <div class="schedule-edit-actions">
+
+
+                                    <button
+                                        type="submit"
+                                        class="btn primary"
+                                    >
+                                        SAVE CHANGES
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="btn"
+                                        onclick="hideEditForm('{{ s.id }}')"
+                                    >
+                                        CANCEL
+                                    </button>
+
+
+                                </div>
+
+
+                            </form>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <div class="empty-state admin-card">
+
+                        <div>
+                            📅
+                        </div>
+
+                        <h3>
+                            No schedules
+                        </h3>
+
+                        <p>
+                            Create a schedule to start managing your queue.
+                        </p>
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </section>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+<!-- =========================================
+     DELETE CONFIRMATION MODAL
+========================================== -->
+
+<div
+    id="deleteModal"
+    class="delete-modal"
+>
+
+
+    <div class="delete-modal-card">
+
+
+        <div class="delete-modal-icon">
+            🗑️
+        </div>
+
+
+        <h2>
+            Delete Schedule?
+        </h2>
+
+
+        <p>
+
+            Are you sure you want to delete this schedule?
+
+            <br>
+
+            This action cannot be undone.
+
+        </p>
+
+
+        <div class="delete-modal-actions">
+
+
+            <button
+                type="button"
+                class="delete-cancel"
+                onclick="closeDeleteModal()"
+            >
+                Cancel
+            </button>
+
+
+            <form
+                id="deleteScheduleForm"
+                method="POST"
+            >
+
+                <button
+                    type="submit"
+                    class="delete-confirm"
+                >
+                    Delete Schedule
+                </button>
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================
+     LOGOUT CONFIRMATION MODAL
+========================================== -->
+
+<div
+    id="logoutModal"
+    class="logout-modal"
+>
+
+
+    <div class="logout-modal-card">
+
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+
+        <h2>
+            Logout?
+        </h2>
+
+
+        <p>
+
+            Are you sure you want to logout?
+
+            <br>
+
+            You will need to login again to access your account.
+
+        </p>
+
+
+        <div class="logout-modal-actions">
+
+
+            <button
+                type="button"
+                class="logout-cancel"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout-confirm"
+            >
+                Logout
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
+
+<script>
+
+
+/* =========================================
+   EDIT SCHEDULE
+========================================= */
+
+function showEditForm(id) {
+
+    document.getElementById(
+        "edit-form-" + id
+    ).style.display = "block";
+
+}
+
+
+function hideEditForm(id) {
+
+    document.getElementById(
+        "edit-form-" + id
+    ).style.display = "none";
+
+}
+
+
+/* =========================================
+   DELETE MODAL
+========================================= */
+
+function openDeleteModal(scheduleId) {
+
+    const modal =
+        document.getElementById("deleteModal");
+
+    const form =
+        document.getElementById("deleteScheduleForm");
+
+    const deleteUrl =
+        "{{ url_for('delete_schedule', schedule_id=999999) }}";
+
+    form.action =
+        deleteUrl.replace(
+            "999999",
+            scheduleId
+        );
+
+    modal.classList.add("show");
+
+}
+
+
+function closeDeleteModal() {
+
+    const modal =
+        document.getElementById("deleteModal");
+
+    modal.classList.remove("show");
+
+}
+
+
+/* =========================================
+   LOGOUT MODAL
+========================================= */
+
+function openLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.add("show");
+
+}
+
+
+function closeLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.remove("show");
+
+}
+
+
+/* =========================================
+   CLOSE MODALS WHEN CLICKING OUTSIDE
+========================================= */
+
+document
+    .getElementById("deleteModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeDeleteModal();
+
+        }
+
+    });
+
+
+document
+    .getElementById("logoutModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeLogoutModal();
+
+        }
+
+    });
+
+
+/* =========================================
+   CHECK WEEKDAY
+========================================= */
+
+function checkWeekday(input) {
+
+    if (!input.value) {
+        return;
+    }
+
+
+    const date =
+        new Date(input.value + "T00:00:00");
+
+
+    const day =
+        date.getDay();
+
+
+    if (day === 0 || day === 6) {
+
+        alert(
+            "Schedules are only available from Monday to Friday."
+        );
+
+        input.value = "";
+
+    }
+
+}
+
+
+/* =========================================
+   MOBILE CASHIER SIDEBAR
+========================================= */
+
+function openCashierSidebar() {
+
+    const sidebar =
+        document.getElementById("cashierSidebar");
+
+    const overlay =
+        document.getElementById("mobileSidebarOverlay");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    sidebar.classList.add("mobile-open");
+
+    overlay.classList.add("show");
+
+    button.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+
+    button.innerHTML = "✕";
+
+}
+
+
+function closeCashierSidebar() {
+
+    const sidebar =
+        document.getElementById("cashierSidebar");
+
+    const overlay =
+        document.getElementById("mobileSidebarOverlay");
+
+    const button =
+        document.getElementById("mobileMenuButton");
+
+
+    sidebar.classList.remove("mobile-open");
+
+    overlay.classList.remove("show");
+
+    button.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+    button.innerHTML = "☰";
+
+}
+
+
+function toggleCashierSidebar() {
+
+    const sidebar =
+        document.getElementById("cashierSidebar");
+
+
+    if (
+        sidebar.classList.contains("mobile-open")
+    ) {
+
+        closeCashierSidebar();
+
+    } else {
+
+        openCashierSidebar();
+
+    }
+
+}
+
+
+/* =========================================
+   ESCAPE KEY
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            closeCashierSidebar();
+
+            closeDeleteModal();
+
+            closeLogoutModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   CLOSE SIDEBAR ON DESKTOP
+========================================= */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        if (window.innerWidth > 900) {
+
+            closeCashierSidebar();
+
+        }
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>

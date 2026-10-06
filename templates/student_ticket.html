@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Ticket</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<div class="admin-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+
+        <div class="sidebar-logo">
+
+            <img
+                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
+                alt="School Logo"
+            >
+
+            <span>
+                Student Queue
+            </span>
+
+        </div>
+
+
+
+        <!-- SIDEBAR MENU -->
+
+        <div class="sidebar-menu">
+
+
+            <a
+                href="{{ url_for('student_dashboard') }}"
+                class="sidebar-item {% if request.endpoint == 'student_dashboard' %}active{% endif %}"
+            >
+
+                <span class="sidebar-icon">
+                    🏠
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+
+            <a
+                href="{{ url_for('student_my_queue') }}"
+                class="sidebar-item {% if request.endpoint == 'student_my_queue' %}active{% endif %}"
+            >
+
+                <span class="sidebar-icon">
+                    🎫
+                </span>
+
+                <span>
+                    My Queue
+                </span>
+
+            </a>
+
+
+
+            <a
+                href="{{ url_for('student_schedules') }}"
+                class="sidebar-item {% if request.endpoint == 'student_schedules' %}active{% endif %}"
+            >
+
+                <span class="sidebar-icon">
+                    📅
+                </span>
+
+                <span>
+                    View Schedule
+                </span>
+
+            </a>
+
+
+
+            <a
+                href="{{ url_for('student_view_queue') }}"
+                class="sidebar-item {% if request.endpoint == 'student_view_queue' %}active{% endif %}"
+            >
+
+                <span class="sidebar-icon">
+                    👥
+                </span>
+
+                <span>
+                    View Queue
+                </span>
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- LOGOUT -->
+
+        <div class="sidebar-bottom">
+
+
+            <a
+                href="javascript:void(0)"
+                class="sidebar-item"
+                onclick="openLogoutModal()"
+            >
+
+                <span class="sidebar-icon">
+                    🚪
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="admin-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="admin-topbar">
+
+
+            <div>
+
+                <h2>
+                    My Ticket
+                </h2>
+
+                <p>
+                    Your queue ticket and QR code
+                </p>
+
+            </div>
+
+
+
+            <div class="admin-profile">
+
+
+                <div>
+
+                    <strong>
+                        {{ user.name }}
+                    </strong>
+
+                    <small>
+                        Student
+                    </small>
+
+                </div>
+
+
+
+                <div class="profile-icon">
+
+                    {{ user.name[0] }}
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- PAGE CONTENT -->
+
+        <div class="page-content">
+
+
+            <div class="ticket">
+
+
+                <p>
+                    YOUR QUEUE NUMBER
+                </p>
+
+
+                <h1>
+                    CKCM - {{ queue.queue_number }}
+                </h1>
+
+
+
+                <!-- QR CODE -->
+
+                <img
+                    class="qr-code"
+                    src="{{ url_for('student_qr', queue_id=queue.id) }}"
+                    alt="Queue QR Code"
+                >
+
+
+
+                <h3>
+                    {{ user.name }}
+                </h3>
+
+
+
+                <p>
+
+                    Cashier:
+
+                    <strong>
+                        {{ cashier.name }}
+                    </strong>
+
+                </p>
+
+
+
+                <p>
+
+                    {{ schedule.day }},
+                    {{ schedule.date }}
+
+                </p>
+
+
+
+                <p>
+
+                    {{ schedule.start_time }}
+                    -
+                    {{ schedule.end_time }}
+
+                </p>
+
+
+
+                <span class="status {{ queue.status|lower }}">
+
+                    {{ queue.status }}
+
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- LOGOUT CONFIRMATION MODAL -->
+
+<div
+    id="logoutModal"
+    class="logout-modal"
+>
+
+
+    <div class="logout-modal-card">
+
+
+        <div class="logout-modal-icon">
+
+            🚪
+
+        </div>
+
+
+        <h2>
+            Logout?
+        </h2>
+
+
+        <p>
+
+            Are you sure you want to logout?
+
+            <br>
+
+            You will need to login again to access your account.
+
+        </p>
+
+
+        <div class="logout-modal-actions">
+
+
+            <button
+                type="button"
+                class="logout-cancel"
+                onclick="closeLogoutModal()"
+            >
+
+                Cancel
+
+            </button>
+
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout-confirm"
+            >
+
+                Logout
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- LOGOUT MODAL JAVASCRIPT -->
+
+<script>
+
+function openLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.add("show");
+
+}
+
+
+function closeLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.remove("show");
+
+}
+
+
+document
+    .getElementById("logoutModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeLogoutModal();
+
+        }
+
+    });
+
+</script>
+
+
+</body>
+
+</html>
