@@ -17,6 +17,34 @@
         href="{{ url_for('static', filename='style.css') }}"
     >
 
+<style>
+.blocked-delete-modal { position: fixed; inset: 0; background: rgba(15,23,42,.65); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+.blocked-delete-modal.show { display: flex; }
+.blocked-delete-card { width: min(440px, 100%); background: #fff; border-radius: 18px; padding: 30px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,.25); animation: blockedPop .18s ease-out; }
+.blocked-delete-icon { width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #fee2e2; color: #dc2626; font-size: 30px; }
+.blocked-delete-card h2 { margin: 0 0 10px; color: #1e293b; }
+.blocked-delete-card p { margin: 0 0 24px; color: #64748b; line-height: 1.6; }
+.blocked-delete-ok { border: 0; border-radius: 9px; padding: 11px 28px; background: #2563eb; color: #fff; font-weight: 700; cursor: pointer; }
+@keyframes blockedPop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
+.schedule-updated-modal { position: fixed; inset: 0; background: rgba(15,23,42,.65); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+.schedule-updated-modal.show { display: flex; }
+.schedule-updated-card { width: min(440px, 100%); background: #fff; border-radius: 18px; padding: 30px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,.25); animation: scheduleUpdatedPop .18s ease-out; }
+.schedule-updated-icon { width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #dcfce7; color: #16a34a; font-size: 30px; }
+.schedule-updated-card h2 { margin: 0 0 10px; color: #1e293b; }
+.schedule-updated-card p { margin: 0 0 24px; color: #64748b; line-height: 1.6; }
+.schedule-updated-ok { border: 0; border-radius: 9px; padding: 11px 28px; background: #2563eb; color: #fff; font-weight: 700; cursor: pointer; }
+@keyframes scheduleUpdatedPop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
+
+.weekday-warning-modal { position: fixed; inset: 0; background: rgba(15,23,42,.65); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+.weekday-warning-modal.show { display: flex; }
+.weekday-warning-card { width: min(440px, 100%); background: #fff; border-radius: 18px; padding: 30px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,.25); animation: weekdayWarningPop .18s ease-out; }
+.weekday-warning-icon { width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #fef3c7; color: #d97706; font-size: 30px; }
+.weekday-warning-card h2 { margin: 0 0 10px; color: #1e293b; }
+.weekday-warning-card p { margin: 0 0 24px; color: #64748b; line-height: 1.6; }
+.weekday-warning-ok { border: 0; border-radius: 9px; padding: 11px 28px; background: #2563eb; color: #fff; font-weight: 700; cursor: pointer; }
+.weekday-warning-ok:hover { opacity: .9; }
+@keyframes weekdayWarningPop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
+</style>
 </head>
 
 
@@ -236,6 +264,18 @@
 
         <div class="page-content">
 
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-container">
+                        {% for category, message in messages %}
+                            <div class="flash-message {{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
 
             <!-- =================================
                  CREATE NEW SCHEDULE
@@ -393,6 +433,20 @@
                         </select>
 
 
+                        <label for="capacity">
+                            Students to Cater
+                        </label>
+
+                        <input
+                            id="capacity"
+                            type="number"
+                            name="capacity"
+                            min="1"
+                            placeholder="Number of students"
+                            required
+                        >
+
+
                         <button
                             class="btn primary"
                             type="submit"
@@ -469,6 +523,17 @@
                         </p>
 
 
+                        <p>
+
+                            <strong>
+                                Students to Cater:
+                            </strong>
+
+                            {{ s.capacity }}
+
+                        </p>
+
+
                         <hr>
 
 
@@ -487,7 +552,7 @@
                             <button
                                 type="button"
                                 class="btn danger"
-                                onclick="openDeleteModal('{{ s.id }}')"
+                                onclick="openDeleteModal('{{ url_for('delete_schedule', schedule_id=s.id) }}')"
                             >
                                 DELETE
                             </button>
@@ -502,7 +567,7 @@
 
                         <div
                             id="edit-form-{{ s.id }}"
-                            class="schedule-edit-form"
+                            class="schedule-edit-form" style="display: none;"
                         >
 
 
@@ -684,6 +749,19 @@
                                 </select>
 
 
+                                <label>
+                                    Students to Cater
+                                </label>
+
+                                <input
+                                    type="number"
+                                    name="capacity"
+                                    min="1"
+                                    value="{{ s.capacity }}"
+                                    required
+                                >
+
+
                                 <div class="schedule-edit-actions">
 
 
@@ -821,6 +899,44 @@
 </div>
 
 
+
+
+<div id="weekdayWarningModal" class="weekday-warning-modal">
+    <div class="weekday-warning-card">
+        <div class="weekday-warning-icon">⚠️</div>
+        <h2>Invalid Schedule Date</h2>
+        <p>Schedules are only available from Monday to Friday.</p>
+        <button type="button" class="weekday-warning-ok" onclick="closeWeekdayWarningModal()">OK</button>
+    </div>
+</div>
+
+<div id="scheduleUpdatedModal" class="schedule-updated-modal">
+    <div class="schedule-updated-card">
+        <div class="schedule-updated-icon">✓</div>
+        <h2>Schedule Updated</h2>
+        <p>Schedule updated successfully.</p>
+        <button type="button" class="schedule-updated-ok" onclick="closeScheduleUpdatedModal()">OK</button>
+    </div>
+</div>
+
+<div id="scheduleDeletedModal" class="schedule-updated-modal">
+    <div class="schedule-updated-card">
+        <div class="schedule-updated-icon">✓</div>
+        <h2>Schedule Deleted</h2>
+        <p>Schedule deleted successfully.</p>
+        <button type="button" class="schedule-updated-ok" onclick="closeScheduleDeletedModal()">OK</button>
+    </div>
+</div>
+
+<div id="blockedDeleteModal" class="blocked-delete-modal">
+    <div class="blocked-delete-card">
+        <div class="blocked-delete-icon">⚠️</div>
+        <h2>Cannot Delete Schedule</h2>
+        <p>You cannot delete a schedule with active queues.</p>
+        <button type="button" class="blocked-delete-ok" onclick="closeBlockedDeleteModal()">OK</button>
+    </div>
+</div>
+
 <!-- =========================================
      LOGOUT CONFIRMATION MODAL
 ========================================== -->
@@ -917,7 +1033,7 @@ function hideEditForm(id) {
    DELETE MODAL
 ========================================= */
 
-function openDeleteModal(scheduleId) {
+function openDeleteModal(deleteUrl) {
 
     const modal =
         document.getElementById("deleteModal");
@@ -925,14 +1041,7 @@ function openDeleteModal(scheduleId) {
     const form =
         document.getElementById("deleteScheduleForm");
 
-    const deleteUrl =
-        "{{ url_for('delete_schedule', schedule_id=999999) }}";
-
-    form.action =
-        deleteUrl.replace(
-            "999999",
-            scheduleId
-        );
+    form.action = deleteUrl;
 
     modal.classList.add("show");
 
@@ -948,6 +1057,48 @@ function closeDeleteModal() {
 
 }
 
+
+
+
+function openWeekdayWarningModal() {
+    const modal = document.getElementById("weekdayWarningModal");
+    if (modal) modal.classList.add("show");
+}
+
+function closeWeekdayWarningModal() {
+    const modal = document.getElementById("weekdayWarningModal");
+    if (modal) modal.classList.remove("show");
+}
+
+function openBlockedDeleteModal() {
+    const modal = document.getElementById("blockedDeleteModal");
+    if (modal) modal.classList.add("show");
+}
+
+function closeBlockedDeleteModal() {
+    const modal = document.getElementById("blockedDeleteModal");
+    if (modal) modal.classList.remove("show");
+}
+
+function openScheduleUpdatedModal() {
+    const modal = document.getElementById("scheduleUpdatedModal");
+    if (modal) modal.classList.add("show");
+}
+
+function closeScheduleUpdatedModal() {
+    const modal = document.getElementById("scheduleUpdatedModal");
+    if (modal) modal.classList.remove("show");
+}
+
+function openScheduleDeletedModal() {
+    const modal = document.getElementById("scheduleDeletedModal");
+    if (modal) modal.classList.add("show");
+}
+
+function closeScheduleDeletedModal() {
+    const modal = document.getElementById("scheduleDeletedModal");
+    if (modal) modal.classList.remove("show");
+}
 
 /* =========================================
    LOGOUT MODAL
@@ -1024,10 +1175,7 @@ function checkWeekday(input) {
 
     if (day === 0 || day === 6) {
 
-        alert(
-            "Schedules are only available from Monday to Friday."
-        );
-
+        openWeekdayWarningModal();
         input.value = "";
 
     }
@@ -1126,6 +1274,8 @@ document.addEventListener(
 
             closeDeleteModal();
 
+            closeBlockedDeleteModal();
+
             closeLogoutModal();
 
         }
@@ -1153,6 +1303,32 @@ window.addEventListener(
 
 
 </script>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+{% if message == "Schedule updated." %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    openScheduleUpdatedModal();
+});
+</script>
+{% elif message == "Schedule deleted." %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    openScheduleDeletedModal();
+});
+</script>
+{% elif message == "You cannot delete a schedule with active queues." %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    openBlockedDeleteModal();
+});
+</script>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endwith %}
 
 
 </body>

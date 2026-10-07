@@ -37,11 +37,11 @@ schedules = []
 queue_records = []
 
 departments = [
-    "Computer Science",
-    "Education",
-    "Criminology",
-    "Business Administration",
-    "Arts of English Literature"
+    "Department of Computer Science",
+    "Department of Education",
+    "Department of Criminology",
+    "Department of Business Administration",
+    "Department of Arts of English Literature"
 ]
 
 years = [
@@ -200,6 +200,15 @@ def get_queue_number(schedule_id):
         return 1
 
     return max(existing_numbers) + 1
+
+
+def get_active_queue_count(schedule_id):
+    return sum(
+        1
+        for queue in queue_records
+        if queue["schedule_id"] == schedule_id
+        and queue["status"] in ["Waiting", "Serving"]
+    )
 
 
 def get_schedule_queues(schedule_id):
@@ -473,6 +482,11 @@ def student_dashboard():
             latest_queue["schedule_id"]
         )
 
+        if schedule:
+            schedule["cashier"] = get_user(
+                schedule["cashier_id"]
+            )
+
     people_ahead = 0
 
     if latest_queue and latest_queue["status"] == "Waiting":
@@ -522,6 +536,11 @@ def student_my_queue():
             queue["schedule_id"]
         )
 
+        if queue_copy["schedule"]:
+            queue_copy["schedule"]["cashier"] = get_user(
+                queue_copy["schedule"]["cashier_id"]
+            )
+
         data.append(queue_copy)
 
     return render_template(
@@ -555,13 +574,19 @@ def student_schedules():
             schedule["cashier_id"]
         )
 
-        waiting = get_waiting(
+        schedule["waiting_count"] = get_active_queue_count(
             schedule["id"]
         )
 
-        schedule["waiting_count"] = len(
-            waiting
-        )
+        schedule["capacity"] = schedule.get("capacity", 0)
+
+        if schedule["capacity"] > 0:
+            schedule["available_slots"] = max(
+                schedule["capacity"] - schedule["waiting_count"],
+                0
+            )
+        else:
+            schedule["available_slots"] = None
 
     return render_template(
         "student_schedules.html",
@@ -612,6 +637,18 @@ def get_ticket(schedule_id):
                 "student_ticket",
                 queue_id=existing[0]["id"]
             )
+        )
+
+    capacity = schedule.get("capacity", 0)
+    active_count = get_active_queue_count(schedule_id)
+
+    if capacity > 0 and active_count >= capacity:
+        flash(
+            "This schedule is already full.",
+            "error"
+        )
+        return redirect(
+            url_for("student_schedules")
         )
 
     token = secrets.token_urlsafe(
@@ -782,6 +819,23 @@ def change_queue(queue_id):
         return redirect(
             url_for("student_my_queue")
         )
+
+    if new_schedule_id == queue["schedule_id"]:
+        flash(
+            "You are already in this schedule.",
+            "error"
+        )
+        return redirect(url_for("student_my_queue"))
+
+    capacity = new_schedule.get("capacity", 0)
+    active_count = get_active_queue_count(new_schedule_id)
+
+    if capacity > 0 and active_count >= capacity:
+        flash(
+            "The selected schedule is already full.",
+            "error"
+        )
+        return redirect(url_for("student_my_queue"))
 
     queue["schedule_id"] = new_schedule_id
 
@@ -1102,7 +1156,9 @@ def add_schedule():
         "end_time"
     )
 
-    if not schedule_date or not start_time or not end_time:
+    capacity = request.form.get("capacity", type=int)
+
+    if not schedule_date or not start_time or not end_time or capacity is None:
         flash(
             "All schedule fields are required.",
             "error"
@@ -1131,6 +1187,13 @@ def add_schedule():
         return redirect(
             url_for("cashier_schedules")
         )
+
+    if capacity < 1:
+        flash(
+            "Students to Cater must be at least 1.",
+            "error"
+        )
+        return redirect(url_for("cashier_schedules"))
 
     duplicate = next(
         (
@@ -1165,7 +1228,8 @@ def add_schedule():
         "date": schedule_date,
         "day": schedule_day,
         "start_time": start_time,
-        "end_time": end_time
+        "end_time": end_time,
+        "capacity": capacity
     })
 
     flash(
@@ -1216,7 +1280,9 @@ def edit_schedule(schedule_id):
         "end_time"
     )
 
-    if not schedule_date or not start_time or not end_time:
+    capacity = request.form.get("capacity", type=int)
+
+    if not schedule_date or not start_time or not end_time or capacity is None:
         flash(
             "All fields are required.",
             "error"
@@ -1246,6 +1312,22 @@ def edit_schedule(schedule_id):
             url_for("cashier_schedules")
         )
 
+    if capacity < 1:
+        flash(
+            "Students to Cater must be at least 1.",
+            "error"
+        )
+        return redirect(url_for("cashier_schedules"))
+
+    active_count = get_active_queue_count(schedule_id)
+
+    if capacity < active_count:
+        flash(
+            f"Capacity cannot be lower than the {active_count} active student(s) already in this schedule.",
+            "error"
+        )
+        return redirect(url_for("cashier_schedules"))
+
     schedule["date"] = schedule_date
 
     schedule["day"] = datetime.strptime(
@@ -1255,6 +1337,7 @@ def edit_schedule(schedule_id):
 
     schedule["start_time"] = start_time
     schedule["end_time"] = end_time
+    schedule["capacity"] = capacity
 
     flash(
         "Schedule updated.",

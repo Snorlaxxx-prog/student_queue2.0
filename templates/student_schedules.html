@@ -358,6 +358,32 @@
                                 </p>
 
 
+                                <p>
+
+                                    <strong>
+                                        Capacity:
+                                    </strong>
+
+                                    {{ schedule.waiting_count }} / {{ schedule.capacity }}
+
+                                </p>
+
+
+                                <p>
+
+                                    <strong>
+                                        Available Slots:
+                                    </strong>
+
+                                    {% if schedule.available_slots is not none %}
+                                        {{ schedule.available_slots }}
+                                    {% else %}
+                                        Unlimited
+                                    {% endif %}
+
+                                </p>
+
+
                             </div>
 
 
@@ -371,8 +397,13 @@
                                 <button
                                     type="submit"
                                     class="btn primary full-width"
+                                    {% if schedule.capacity > 0 and schedule.waiting_count >= schedule.capacity %}disabled{% endif %}
                                 >
-                                    🎫 GET TICKET
+                                    {% if schedule.capacity > 0 and schedule.waiting_count >= schedule.capacity %}
+                                        FULL
+                                    {% else %}
+                                        🎫 GET TICKET
+                                    {% endif %}
                                 </button>
 
                             </form>
