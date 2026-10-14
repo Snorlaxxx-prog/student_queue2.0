@@ -5,17 +5,141 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>View Students</title>
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+    <style>
+        .active-queue-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            padding: 20px;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, .58);
+            backdrop-filter: blur(5px);
+        }
+
+        .active-queue-modal.show {
+            display: flex;
+        }
+
+        .active-queue-modal-card {
+            width: 440px;
+            max-width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-sizing: border-box;
+            border-radius: 18px;
+            background: #fff;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+            animation: activeQueueModalShow .25s ease;
+        }
+
+        .active-queue-modal-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff3df;
+            font-size: 30px;
+        }
+
+        .active-queue-modal-card h2 {
+            margin: 0 0 10px;
+            color: #222;
+            font-size: 24px;
+        }
+
+        .active-queue-modal-card p {
+            margin: 0 auto 25px;
+            max-width: 350px;
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .active-queue-modal-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .active-queue-modal-actions form {
+            margin: 0;
+        }
+
+        .active-queue-ok,
+        .active-queue-force {
+            min-width: 110px;
+            border: 0;
+            padding: 12px 20px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .active-queue-ok {
+            background: #eee;
+            color: #333;
+        }
+
+        .active-queue-ok:hover {
+            background: #ddd;
+        }
+
+        .active-queue-force {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .active-queue-force:hover {
+            background: #b52a37;
+            transform: translateY(-1px);
+        }
+
+        @keyframes activeQueueModalShow {
+            from {
+                opacity: 0;
+                transform: scale(.92) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .active-queue-modal-card {
+                padding: 24px 20px;
+            }
+
+            .active-queue-modal-actions {
+                flex-direction: column-reverse;
+            }
+
+            .active-queue-modal-actions form,
+            .active-queue-ok,
+            .active-queue-force {
+                width: 100%;
+            }
+        }
+    </style>
 
 </head>
 
@@ -23,770 +147,615 @@
 <body>
 
 
-<!-- =========================================
+    <!-- =========================================
      MOBILE MENU BUTTON
 ========================================== -->
 
-<button
-    type="button"
-    class="mobile-menu-button"
-    id="mobileMenuButton"
-    onclick="toggleAdminSidebar()"
-    aria-label="Open menu"
-    aria-expanded="false"
->
-    ☰
-</button>
+    <button type="button" class="mobile-menu-button" id="mobileMenuButton" onclick="toggleAdminSidebar()"
+        aria-label="Open menu" aria-expanded="false">
+        ☰
+    </button>
 
 
-<!-- =========================================
+    <!-- =========================================
      MOBILE SIDEBAR OVERLAY
 ========================================== -->
 
-<div
-    class="mobile-sidebar-overlay"
-    id="mobileSidebarOverlay"
-    onclick="closeAdminSidebar()"
-></div>
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="closeAdminSidebar()"></div>
 
 
-<div class="admin-layout">
+    <div class="admin-layout">
 
 
-    <!-- =========================================
+        <!-- =========================================
          SIDEBAR
     ========================================== -->
 
-    <aside
-        class="sidebar"
-        id="adminSidebar"
-    >
+        <aside class="sidebar" id="adminSidebar">
 
 
-        <!-- LOGO -->
+            <!-- LOGO -->
 
-        <div class="sidebar-logo">
+            <div class="sidebar-logo">
 
-            <img
-                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
-                alt="School Logo"
-            >
+                <img src="{{ url_for('static', filename='images/school_logo.jpeg') }}" alt="School Logo">
 
-            <span>
-                Student Queue
-            </span>
+                <span>
+                    Student Queue
+                </span>
 
-        </div>
+            </div>
 
 
-        <!-- =====================================
+            <!-- =====================================
              SIDEBAR MENU
         ====================================== -->
 
-        <div class="sidebar-menu">
+            <div class="sidebar-menu">
 
 
-            <!-- DASHBOARD -->
+                <!-- DASHBOARD -->
 
-            <a
-                href="{{ url_for('admin_dashboard') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
+                <a href="{{ url_for('admin_dashboard') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
 
-                <span class="sidebar-icon">
-                    🏠
-                </span>
+                    <span class="sidebar-icon">
+                        🏠
+                    </span>
 
-                <span>
-                    Dashboard
-                </span>
+                    <span>
+                        Dashboard
+                    </span>
 
-            </a>
+                </a>
 
 
-            <!-- VIEW STUDENT -->
+                <!-- VIEW STUDENT -->
 
-            <a
-                href="{{ url_for('admin_students') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_students' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
+                <a href="{{ url_for('admin_students') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_students' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
 
-                <span class="sidebar-icon">
-                    👨‍🎓
-                </span>
+                    <span class="sidebar-icon">
+                        👨‍🎓
+                    </span>
 
-                <span>
-                    View Student
-                </span>
+                    <span>
+                        View Student
+                    </span>
 
-            </a>
+                </a>
 
 
-            <!-- VIEW FINANCE -->
+                <!-- VIEW FINANCE -->
 
-            <a
-                href="{{ url_for('admin_cashiers') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_cashiers' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
+                <a href="{{ url_for('admin_cashiers') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_cashiers' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
 
-                <span class="sidebar-icon">
-                    💰
-                </span>
+                    <span class="sidebar-icon">
+                        💰
+                    </span>
 
-                <span>
-                    View Finance
-                </span>
+                    <span>
+                        View Finance
+                    </span>
 
-            </a>
+                </a>
 
 
-            <!-- ADD ACCOUNT -->
+                <!-- ADD ACCOUNT -->
 
-            <a
-                href="{{ url_for('admin_add_accounts') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_add_accounts' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
+                <a href="{{ url_for('admin_add_accounts') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_add_accounts' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
 
-                <span class="sidebar-icon">
-                    ➕
-                </span>
+                    <span class="sidebar-icon">
+                        ➕
+                    </span>
 
-                <span>
-                    Add Account
-                </span>
+                    <span>
+                        Add Account
+                    </span>
 
-            </a>
+                </a>
 
 
-        </div>
+            </div>
 
 
-        <!-- =====================================
+            <!-- =====================================
              LOGOUT
         ====================================== -->
 
-        <div class="sidebar-bottom">
+            <div class="sidebar-bottom">
 
-            <a
-                href="javascript:void(0)"
-                class="sidebar-item"
-                onclick="closeAdminSidebar(); openLogoutModal();"
-            >
+                <a href="javascript:void(0)" class="sidebar-item" onclick="closeAdminSidebar(); openLogoutModal();">
 
-                <span class="sidebar-icon">
-                    🚪
-                </span>
+                    <span class="sidebar-icon">
+                        🚪
+                    </span>
 
-                <span>
-                    Logout
-                </span>
+                    <span>
+                        Logout
+                    </span>
 
-            </a>
+                </a>
 
-        </div>
+            </div>
 
 
-    </aside>
+        </aside>
 
 
-    <!-- =========================================
+        <!-- =========================================
          MAIN CONTENT
     ========================================== -->
 
-    <main class="admin-content">
+        <main class="admin-content">
 
 
-        <!-- =====================================
+            <!-- =====================================
              TOP BAR
         ====================================== -->
 
-        <header class="admin-topbar">
+            <header class="admin-topbar">
 
-
-            <div>
-
-                <h2>
-                    View Students
-                </h2>
-
-                <p>
-                    Manage and filter registered student accounts.
-                </p>
-
-            </div>
-
-
-            <!-- PROFILE -->
-
-            <div class="admin-profile">
 
                 <div>
 
-                    <strong>
-                        {{ user.name }}
-                    </strong>
+                    <h2>
+                        View Students
+                    </h2>
 
-                    <small>
-                        Administrator
-                    </small>
+                    <p>
+                        Manage and filter registered student accounts.
+                    </p>
+
+                </div>
+
+
+                <!-- PROFILE -->
+
+                <div class="admin-profile">
+
+                    <div>
+
+                        <strong>
+                            {{ user.name }}
+                        </strong>
+
+                        <small>
+                            Administrator
+                        </small>
+
+                    </div>
+
+
+                    <div class="profile-icon">
+
+                        {{ user.name[0] }}
+
+                    </div>
 
                 </div>
 
 
-                <div class="profile-icon">
-
-                    {{ user.name[0] }}
-
-                </div>
-
-            </div>
+            </header>
 
 
-        </header>
-
-
-        <!-- =====================================
+            <!-- =====================================
              PAGE CONTENT
         ====================================== -->
 
-        <div class="page-content">
+            <div class="page-content">
 
 
-            <!-- =================================
+                <!-- =================================
                  FILTER
             ================================== -->
 
-            <div class="admin-card student-filter-card">
+                <div class="admin-card student-filter-card">
 
 
-                <form
-                    method="GET"
-                    class="student-filter-form"
-                >
+                    <form method="GET" class="student-filter-form">
 
 
-                    <div class="filter-field">
+                        <div class="filter-field">
 
-                        <label>
-                            Department
-                        </label>
+                            <label>
+                                Department
+                            </label>
 
-                        <select name="department">
+                            <select name="department">
 
-                            <option value="">
-                                All Departments
-                            </option>
+                                <option value="">
+                                    All Departments
+                                </option>
 
-                            {% for d in departments %}
+                                {% for d in departments %}
 
-                            <option
-                                value="{{ d }}"
-                                {% if selected_department == d %}
-                                selected
-                                {% endif %}
-                            >
+                                <option value="{{ d }}" {% if selected_department==d %} selected {% endif %}>
 
-                                {{ d }}
+                                    {{ d }}
 
-                            </option>
+                                </option>
 
-                            {% endfor %}
+                                {% endfor %}
 
-                        </select>
+                            </select>
 
-                    </div>
+                        </div>
 
 
-                    <div class="filter-field">
+                        <div class="filter-field">
 
-                        <label>
-                            Year
-                        </label>
+                            <label>
+                                Year
+                            </label>
 
-                        <select name="year">
+                            <select name="year">
 
-                            <option value="">
-                                All Years
-                            </option>
+                                <option value="">
+                                    All Years
+                                </option>
 
-                            {% for y in years %}
+                                {% for y in years %}
 
-                            <option
-                                value="{{ y }}"
-                                {% if selected_year == y %}
-                                selected
-                                {% endif %}
-                            >
+                                <option value="{{ y }}" {% if selected_year==y %} selected {% endif %}>
 
-                                {{ y }}
+                                    {{ y }}
 
-                            </option>
+                                </option>
 
-                            {% endfor %}
+                                {% endfor %}
 
-                        </select>
+                            </select>
 
-                    </div>
+                        </div>
 
 
-                    <div class="filter-button-wrapper">
+                        <div class="filter-button-wrapper">
 
-                        <button
-                            type="submit"
-                            class="btn primary"
-                        >
-                            FILTER STUDENTS
-                        </button>
+                            <button type="submit" class="btn primary">
+                                FILTER STUDENTS
+                            </button>
 
-                    </div>
+                        </div>
 
 
-                </form>
+                    </form>
 
 
-            </div>
+                </div>
 
 
-            <!-- =================================
+                <!-- =================================
                  STUDENT TABLE
             ================================== -->
 
-            <section class="admin-section">
+                <section class="admin-section">
 
 
-                <div class="admin-card table-card">
+                    <div class="admin-card table-card">
 
 
-                    <!-- SECTION HEADER -->
+                        <!-- SECTION HEADER -->
 
-                    <div class="section-header">
-
-
-                        <div>
-
-                            <h2>
-                                Registered Students
-                            </h2>
-
-                            <p>
-                                Student accounts
-                            </p>
-
-                        </div>
+                        <div class="section-header">
 
 
-                        <div class="section-count">
+                            <div>
 
-                            {% if students|length == 1 %}
+                                <h2>
+                                    Registered Students
+                                </h2>
+
+                                <p>
+                                    Student accounts
+                                </p>
+
+                            </div>
+
+
+                            <div class="section-count">
+
+                                {% if students|length == 1 %}
 
                                 1 Student
 
-                            {% else %}
+                                {% else %}
 
                                 {{ students|length }} Students
 
-                            {% endif %}
+                                {% endif %}
+
+                            </div>
+
 
                         </div>
 
 
-                    </div>
+                        <!-- TABLE -->
+
+                        <div class="table-wrapper">
 
 
-                    <!-- TABLE -->
-
-                    <div class="table-wrapper">
+                            <table>
 
 
-                        <table>
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            No.
+                                        </th>
+
+                                        <th>
+                                            Name
+                                        </th>
+
+                                        <th>
+                                            Department
+                                        </th>
+
+                                        <th>
+                                            Year
+                                        </th>
+
+                                        <th>
+                                            Username
+                                        </th>
+
+                                        <th>
+                                            Action
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
 
 
-                            <thead>
-
-                                <tr>
-
-                                    <th>
-                                        No.
-                                    </th>
-
-                                    <th>
-                                        Name
-                                    </th>
-
-                                    <th>
-                                        Department
-                                    </th>
-
-                                    <th>
-                                        Year
-                                    </th>
-
-                                    <th>
-                                        Username
-                                    </th>
-
-                                    <th>
-                                        Action
-                                    </th>
-
-                                </tr>
-
-                            </thead>
+                                <tbody>
 
 
-                            <tbody>
+                                    {% for student in students %}
 
 
-                                {% for student in students %}
+                                    <tr>
 
 
-                                <tr>
+                                        <!-- NUMBER -->
+
+                                        <td>
+
+                                            {{ loop.index }}
+
+                                        </td>
 
 
-                                    <!-- NUMBER -->
+                                        <!-- NAME -->
 
-                                    <td>
+                                        <td>
 
-                                        {{ loop.index }}
+                                            {{ student.name }}
 
-                                    </td>
-
-
-                                    <!-- NAME -->
-
-                                    <td>
-
-                                        {{ student.name }}
-
-                                    </td>
+                                        </td>
 
 
-                                    <!-- DEPARTMENT -->
+                                        <!-- DEPARTMENT -->
 
-                                    <td>
+                                        <td>
 
-                                        {{ student.department }}
+                                            {{ student.department }}
 
-                                    </td>
-
-
-                                    <!-- YEAR -->
-
-                                    <td>
-
-                                        {{ student.year }}
-
-                                    </td>
+                                        </td>
 
 
-                                    <!-- USERNAME -->
+                                        <!-- YEAR -->
 
-                                    <td>
+                                        <td>
 
-                                        {{ student.username }}
+                                            {{ student.year }}
 
-                                    </td>
-
-
-                                    <!-- ACTIONS -->
-
-                                    <td>
+                                        </td>
 
 
-                                        <div class="action-buttons">
+                                        <!-- USERNAME -->
+
+                                        <td>
+
+                                            {{ student.username }}
+
+                                        </td>
 
 
-                                            <!-- EDIT -->
+                                        <!-- ACTIONS -->
 
-                                            <button
-                                                type="button"
-                                                class="btn-edit"
-                                                onclick='openEditModal(
+                                        <td>
+
+
+                                            <div class="action-buttons">
+
+
+                                                <!-- EDIT -->
+
+                                                <button type="button" class="btn-edit" onclick='openEditModal(
                                                     {{ student["id"] }},
                                                     {{ student["name"]|tojson }},
                                                     {{ student["username"]|tojson }},
                                                     {{ student["department"]|tojson }},
                                                     {{ student["year"]|tojson }}
-                                                )'
-                                            >
-                                                Edit
-                                            </button>
+                                                )'>
+                                                    Edit
+                                                </button>
 
 
-                                            <!-- DELETE -->
+                                                <!-- DELETE -->
 
-                                            <button
-                                                type="button"
-                                                class="btn-delete"
-                                                onclick='openDeleteModal(
+                                                <button type="button" class="btn-delete" onclick='openDeleteModal(
                                                     {{ student["id"] }},
                                                     {{ student["name"]|tojson }}
-                                                )'
-                                            >
-                                                Delete
-                                            </button>
+                                                )'>
+                                                    Delete
+                                                </button>
 
 
-                                        </div>
+                                            </div>
 
 
-                                    </td>
+                                        </td>
 
 
-                                </tr>
+                                    </tr>
 
 
-                                {% else %}
+                                    {% else %}
 
 
-                                <!-- EMPTY STATE -->
+                                    <!-- EMPTY STATE -->
 
-                                <tr>
+                                    <tr>
 
-                                    <td
-                                        colspan="6"
-                                        class="empty-state"
-                                    >
+                                        <td colspan="6" class="empty-state">
 
-                                        <div>
-                                            👨‍🎓
-                                        </div>
+                                            <div>
+                                                👨‍🎓
+                                            </div>
 
-                                        <h3>
-                                            No Students Found
-                                        </h3>
+                                            <h3>
+                                                No Students Found
+                                            </h3>
 
-                                        <p>
-                                            No student accounts match the selected filters.
-                                        </p>
+                                            <p>
+                                                No student accounts match the selected filters.
+                                            </p>
 
-                                    </td>
+                                        </td>
 
-                                </tr>
+                                    </tr>
 
 
-                                {% endfor %}
+                                    {% endfor %}
 
 
-                            </tbody>
+                                </tbody>
 
 
-                        </table>
+                            </table>
+
+
+                        </div>
 
 
                     </div>
 
 
-                </div>
-
-
-            </section>
-
-
-        </div>
-
-
-    </main>
-
-
-</div>
-
-
-<!-- =========================================
-     EDIT STUDENT MODAL
-========================================== -->
-
-<div
-    id="editModal"
-    class="edit-modal"
->
-
-
-    <div class="edit-modal-card">
-
-
-        <div class="edit-modal-icon">
-            ✏️
-        </div>
-
-
-        <h2>
-            Edit Student
-        </h2>
-
-
-        <p>
-            Update the student's account information.
-        </p>
-
-
-        <form
-            id="editStudentForm"
-            method="POST"
-        >
-
-
-            <label>
-                Full Name
-            </label>
-
-            <input
-                type="text"
-                name="name"
-                id="editName"
-                required
-            >
-
-
-            <label>
-                Username
-            </label>
-
-            <input
-                type="text"
-                name="username"
-                id="editUsername"
-                required
-            >
-
-
-            <label>
-                Department
-            </label>
-
-            <select
-                name="department"
-                id="editDepartment"
-                required
-            >
-
-                {% for d in departments %}
-
-                <option value="{{ d }}">
-                    {{ d }}
-                </option>
-
-                {% endfor %}
-
-            </select>
-
-
-            <label>
-                Year
-            </label>
-
-            <select
-                name="year"
-                id="editYear"
-                required
-            >
-
-                {% for y in years %}
-
-                <option value="{{ y }}">
-                    {{ y }}
-                </option>
-
-                {% endfor %}
-
-            </select>
-
-
-            <div class="edit-modal-actions">
-
-
-                <button
-                    type="button"
-                    class="logout-cancel"
-                    onclick="closeEditModal()"
-                >
-                    Cancel
-                </button>
-
-
-                <button
-                    type="submit"
-                    class="logout-confirm"
-                >
-                    Save Changes
-                </button>
+                </section>
 
 
             </div>
 
 
-        </form>
+        </main>
 
 
     </div>
 
 
-</div>
-
-
-<!-- =========================================
-     DELETE STUDENT MODAL
+    <!-- =========================================
+     EDIT STUDENT MODAL
 ========================================== -->
 
-<div
-    id="deleteModal"
-    class="delete-modal"
->
+    <div id="editModal" class="edit-modal">
 
 
-    <div class="delete-modal-card">
+        <div class="edit-modal-card">
 
 
-        <div class="delete-modal-icon">
-            🗑️
-        </div>
+            <div class="edit-modal-icon">
+                ✏️
+            </div>
 
 
-        <h2>
-            Delete Student?
-        </h2>
+            <h2>
+                Edit Student
+            </h2>
 
 
-        <p>
-
-            Are you sure you want to delete
-
-            <strong id="deleteStudentName"></strong>?
-
-            <br>
-
-            This action cannot be undone.
-
-        </p>
+            <p>
+                Update the student's account information.
+            </p>
 
 
-        <div class="delete-modal-actions">
+            <form id="editStudentForm" method="POST">
 
 
-            <button
-                type="button"
-                class="delete-cancel"
-                onclick="closeDeleteModal()"
-            >
-                Cancel
-            </button>
+                <label>
+                    Full Name
+                </label>
+
+                <input type="text" name="name" id="editName" required>
 
 
-            <form
-                id="deleteStudentForm"
-                method="POST"
-            >
+                <label>
+                    Username
+                </label>
 
-                <button
-                    type="submit"
-                    class="delete-confirm"
-                >
-                    Delete Student
-                </button>
+                <input type="text" name="username" id="editUsername" required>
+
+
+                <label>
+                    Department
+                </label>
+
+                <select name="department" id="editDepartment" required>
+
+                    {% for d in departments %}
+
+                    <option value="{{ d }}">
+                        {{ d }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <label>
+                    Year
+                </label>
+
+                <select name="year" id="editYear" required>
+
+                    {% for y in years %}
+
+                    <option value="{{ y }}">
+                        {{ y }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <div class="edit-modal-actions">
+
+
+                    <button type="button" class="logout-cancel" onclick="closeEditModal()">
+                        Cancel
+                    </button>
+
+
+                    <button type="submit" class="logout-confirm">
+                        Save Changes
+                    </button>
+
+
+                </div>
+
 
             </form>
 
@@ -797,61 +766,57 @@
     </div>
 
 
-</div>
-
-
-<!-- =========================================
-     LOGOUT MODAL
+    <!-- =========================================
+     DELETE STUDENT MODAL
 ========================================== -->
 
-<div
-    id="logoutModal"
-    class="logout-modal"
->
+    <div id="deleteModal" class="delete-modal">
 
 
-    <div class="logout-modal-card">
+        <div class="delete-modal-card">
 
 
-        <div class="logout-modal-icon">
-            🚪
-        </div>
+            <div class="delete-modal-icon">
+                🗑️
+            </div>
 
 
-        <h2>
-            Logout?
-        </h2>
+            <h2>
+                Delete Student?
+            </h2>
 
 
-        <p>
+            <p>
 
-            Are you sure you want to logout?
+                Are you sure you want to delete
 
-            <br>
+                <strong id="deleteStudentName"></strong>?
 
-            You will need to login again to access your account.
+                <br>
 
-        </p>
+                This action cannot be undone.
 
-
-        <div class="logout-modal-actions">
-
-
-            <button
-                type="button"
-                class="logout-cancel"
-                onclick="closeLogoutModal()"
-            >
-                Cancel
-            </button>
+            </p>
 
 
-            <a
-                href="{{ url_for('logout') }}"
-                class="logout-confirm"
-            >
-                Logout
-            </a>
+            <div class="delete-modal-actions">
+
+
+                <button type="button" class="delete-cancel" onclick="closeDeleteModal()">
+                    Cancel
+                </button>
+
+
+                <form id="deleteStudentForm" method="POST">
+
+                    <button type="submit" class="delete-confirm">
+                        Delete Student
+                    </button>
+
+                </form>
+
+
+            </div>
 
 
         </div>
@@ -860,317 +825,412 @@
     </div>
 
 
-</div>
+
+    <!-- ACTIVE QUEUE WARNING MODAL -->
+    <div id="activeQueueModal" class="active-queue-modal" role="dialog" aria-modal="true"
+        aria-labelledby="activeQueueTitle">
+        <div class="active-queue-modal-card">
+            <div class="active-queue-modal-icon">⚠️</div>
+            <h2 id="activeQueueTitle">Cannot Delete Account</h2>
+            <p>This account cannot be deleted because it has an active queue. Please complete or cancel the active queue
+                first.</p>
+            <div class="active-queue-modal-actions">
+                <button type="button" class="active-queue-ok" onclick="closeActiveQueueModal()">OK</button>
+                <form id="deleteStudentAnywayForm" method="POST">
+                    <input type="hidden" name="force_delete" value="1">
+                    <button type="submit" class="active-queue-force"
+                        onclick="return confirm('Delete this student account anyway?')">
+                        Delete Anyway
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================
+     LOGOUT MODAL
+========================================== -->
+
+    <div id="logoutModal" class="logout-modal">
 
 
-<!-- =========================================
+        <div class="logout-modal-card">
+
+
+            <div class="logout-modal-icon">
+                🚪
+            </div>
+
+
+            <h2>
+                Logout?
+            </h2>
+
+
+            <p>
+
+                Are you sure you want to logout?
+
+                <br>
+
+                You will need to login again to access your account.
+
+            </p>
+
+
+            <div class="logout-modal-actions">
+
+
+                <button type="button" class="logout-cancel" onclick="closeLogoutModal()">
+                    Cancel
+                </button>
+
+
+                <a href="{{ url_for('logout') }}" class="logout-confirm">
+                    Logout
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================================
      JAVASCRIPT
 ========================================== -->
 
-<script>
+    <script>
 
-/* =========================================
-   EDIT STUDENT MODAL
-========================================= */
+        /* =========================================
+           EDIT STUDENT MODAL
+        ========================================= */
 
-function openEditModal(
-    id,
-    name,
-    username,
-    department,
-    year
-) {
+        function openEditModal(
+            id,
+            name,
+            username,
+            department,
+            year
+        ) {
 
-    document.getElementById("editName").value =
-        name;
+            document.getElementById("editName").value =
+                name;
 
-    document.getElementById("editUsername").value =
-        username;
+            document.getElementById("editUsername").value =
+                username;
 
-    document.getElementById("editDepartment").value =
-        department;
+            document.getElementById("editDepartment").value =
+                department;
 
-    document.getElementById("editYear").value =
-        year;
-
-
-    const form =
-        document.getElementById("editStudentForm");
+            document.getElementById("editYear").value =
+                year;
 
 
-    const editUrl =
-        "{{ url_for('admin_edit_user', user_id=999999) }}";
+            const form =
+                document.getElementById("editStudentForm");
 
 
-    form.action =
-        editUrl.replace(
-            "999999",
-            id
+            const editUrl =
+                "{{ url_for('admin_edit_user', user_id=999999) }}";
+
+
+            form.action =
+                editUrl.replace(
+                    "999999",
+                    id
+                );
+
+
+            document
+                .getElementById("editModal")
+                .classList.add("show");
+
+        }
+
+
+        /* =========================================
+           CLOSE EDIT MODAL
+        ========================================= */
+
+        function closeEditModal() {
+
+            document
+                .getElementById("editModal")
+                .classList.remove("show");
+
+        }
+
+
+        /* =========================================
+           DELETE STUDENT MODAL
+        ========================================= */
+
+        function openDeleteModal(
+            id,
+            name
+        ) {
+
+            document.getElementById(
+                "deleteStudentName"
+            ).textContent = name;
+
+
+            const form =
+                document.getElementById("deleteStudentForm");
+
+
+            const deleteUrl =
+                "{{ url_for('admin_delete_student', user_id=999999) }}";
+
+
+            form.action =
+                deleteUrl.replace(
+                    "999999",
+                    id
+                );
+
+
+            document
+                .getElementById("deleteModal")
+                .classList.add("show");
+
+        }
+
+
+        /* =========================================
+           CLOSE DELETE MODAL
+        ========================================= */
+
+        function closeDeleteModal() {
+
+            document
+                .getElementById("deleteModal")
+                .classList.remove("show");
+
+        }
+
+
+        /* =========================================
+           LOGOUT MODAL
+        ========================================= */
+
+        function openLogoutModal() {
+
+            document
+                .getElementById("logoutModal")
+                .classList.add("show");
+
+        }
+
+
+        function closeLogoutModal() {
+
+            document
+                .getElementById("logoutModal")
+                .classList.remove("show");
+
+        }
+
+
+        /* =========================================
+           CLOSE MODALS WHEN CLICKING OUTSIDE
+        ========================================= */
+
+        document
+            .getElementById("editModal")
+            .addEventListener(
+                "click",
+                function (event) {
+
+                    if (event.target === this) {
+
+                        closeEditModal();
+
+                    }
+
+                }
+            );
+
+
+        document
+            .getElementById("deleteModal")
+            .addEventListener(
+                "click",
+                function (event) {
+
+                    if (event.target === this) {
+
+                        closeDeleteModal();
+
+                    }
+
+                }
+            );
+
+
+        document
+            .getElementById("logoutModal")
+            .addEventListener(
+                "click",
+                function (event) {
+
+                    if (event.target === this) {
+
+                        closeLogoutModal();
+
+                    }
+
+                }
+            );
+
+
+        /* =========================================
+           MOBILE ADMIN SIDEBAR
+        ========================================= */
+
+        function openAdminSidebar() {
+
+            const sidebar =
+                document.getElementById("adminSidebar");
+
+            const overlay =
+                document.getElementById("mobileSidebarOverlay");
+
+            const button =
+                document.getElementById("mobileMenuButton");
+
+
+            sidebar.classList.add("mobile-open");
+
+            overlay.classList.add("show");
+
+            button.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+            button.innerHTML = "✕";
+
+        }
+
+
+        function closeAdminSidebar() {
+
+            const sidebar =
+                document.getElementById("adminSidebar");
+
+            const overlay =
+                document.getElementById("mobileSidebarOverlay");
+
+            const button =
+                document.getElementById("mobileMenuButton");
+
+
+            sidebar.classList.remove("mobile-open");
+
+            overlay.classList.remove("show");
+
+            button.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            button.innerHTML = "☰";
+
+        }
+
+
+        function toggleAdminSidebar() {
+
+            const sidebar =
+                document.getElementById("adminSidebar");
+
+
+            if (
+                sidebar.classList.contains("mobile-open")
+            ) {
+
+                closeAdminSidebar();
+
+            } else {
+
+                openAdminSidebar();
+
+            }
+
+        }
+
+
+
+        /* ACTIVE QUEUE DELETE WARNING */
+        function closeActiveQueueModal() {
+            document.getElementById("activeQueueModal").classList.remove("show");
+        }
+
+        function openActiveQueueModal(id) {
+            const modal = document.getElementById("activeQueueModal");
+            const form = document.getElementById("deleteStudentAnywayForm");
+            const deleteUrl = "{{ url_for('admin_delete_student', user_id=999999) }}";
+            form.action = deleteUrl.replace("999999", encodeURIComponent(id));
+            modal.classList.add("show");
+        }
+
+        document.getElementById("activeQueueModal").addEventListener("click", function (event) {
+            if (event.target === this) closeActiveQueueModal();
+        });
+
+        const activeQueueDeleteIds = {{ get_flashed_messages(category_filter = ["active_queue_delete"]) | tojson }};
+        if (activeQueueDeleteIds.length > 0) {
+            openActiveQueueModal(activeQueueDeleteIds[activeQueueDeleteIds.length - 1]);
+        }
+
+        /* =========================================
+           ESCAPE KEY
+        ========================================= */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+
+                    closeAdminSidebar();
+
+                    closeEditModal();
+
+                    closeDeleteModal();
+
+                    closeLogoutModal();
+
+                }
+
+            }
         );
 
 
-    document
-        .getElementById("editModal")
-        .classList.add("show");
+        /* =========================================
+           CLOSE SIDEBAR ON DESKTOP
+        ========================================= */
 
-}
+        window.addEventListener(
+            "resize",
+            function () {
 
+                if (window.innerWidth > 900) {
 
-/* =========================================
-   CLOSE EDIT MODAL
-========================================= */
+                    closeAdminSidebar();
 
-function closeEditModal() {
+                }
 
-    document
-        .getElementById("editModal")
-        .classList.remove("show");
-
-}
-
-
-/* =========================================
-   DELETE STUDENT MODAL
-========================================= */
-
-function openDeleteModal(
-    id,
-    name
-) {
-
-    document.getElementById(
-        "deleteStudentName"
-    ).textContent = name;
-
-
-    const form =
-        document.getElementById("deleteStudentForm");
-
-
-    const deleteUrl =
-        "{{ url_for('admin_delete_student', user_id=999999) }}";
-
-
-    form.action =
-        deleteUrl.replace(
-            "999999",
-            id
+            }
         );
 
-
-    document
-        .getElementById("deleteModal")
-        .classList.add("show");
-
-}
-
-
-/* =========================================
-   CLOSE DELETE MODAL
-========================================= */
-
-function closeDeleteModal() {
-
-    document
-        .getElementById("deleteModal")
-        .classList.remove("show");
-
-}
-
-
-/* =========================================
-   LOGOUT MODAL
-========================================= */
-
-function openLogoutModal() {
-
-    document
-        .getElementById("logoutModal")
-        .classList.add("show");
-
-}
-
-
-function closeLogoutModal() {
-
-    document
-        .getElementById("logoutModal")
-        .classList.remove("show");
-
-}
-
-
-/* =========================================
-   CLOSE MODALS WHEN CLICKING OUTSIDE
-========================================= */
-
-document
-    .getElementById("editModal")
-    .addEventListener(
-        "click",
-        function(event) {
-
-            if (event.target === this) {
-
-                closeEditModal();
-
-            }
-
-        }
-    );
-
-
-document
-    .getElementById("deleteModal")
-    .addEventListener(
-        "click",
-        function(event) {
-
-            if (event.target === this) {
-
-                closeDeleteModal();
-
-            }
-
-        }
-    );
-
-
-document
-    .getElementById("logoutModal")
-    .addEventListener(
-        "click",
-        function(event) {
-
-            if (event.target === this) {
-
-                closeLogoutModal();
-
-            }
-
-        }
-    );
-
-
-/* =========================================
-   MOBILE ADMIN SIDEBAR
-========================================= */
-
-function openAdminSidebar() {
-
-    const sidebar =
-        document.getElementById("adminSidebar");
-
-    const overlay =
-        document.getElementById("mobileSidebarOverlay");
-
-    const button =
-        document.getElementById("mobileMenuButton");
-
-
-    sidebar.classList.add("mobile-open");
-
-    overlay.classList.add("show");
-
-    button.setAttribute(
-        "aria-expanded",
-        "true"
-    );
-
-    button.innerHTML = "✕";
-
-}
-
-
-function closeAdminSidebar() {
-
-    const sidebar =
-        document.getElementById("adminSidebar");
-
-    const overlay =
-        document.getElementById("mobileSidebarOverlay");
-
-    const button =
-        document.getElementById("mobileMenuButton");
-
-
-    sidebar.classList.remove("mobile-open");
-
-    overlay.classList.remove("show");
-
-    button.setAttribute(
-        "aria-expanded",
-        "false"
-    );
-
-    button.innerHTML = "☰";
-
-}
-
-
-function toggleAdminSidebar() {
-
-    const sidebar =
-        document.getElementById("adminSidebar");
-
-
-    if (
-        sidebar.classList.contains("mobile-open")
-    ) {
-
-        closeAdminSidebar();
-
-    } else {
-
-        openAdminSidebar();
-
-    }
-
-}
-
-
-/* =========================================
-   ESCAPE KEY
-========================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (event.key === "Escape") {
-
-            closeAdminSidebar();
-
-            closeEditModal();
-
-            closeDeleteModal();
-
-            closeLogoutModal();
-
-        }
-
-    }
-);
-
-
-/* =========================================
-   CLOSE SIDEBAR ON DESKTOP
-========================================= */
-
-window.addEventListener(
-    "resize",
-    function() {
-
-        if (window.innerWidth > 900) {
-
-            closeAdminSidebar();
-
-        }
-
-    }
-);
-
-</script>
+    </script>
 
 
 </body>

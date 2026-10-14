@@ -5,16 +5,13 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Add Accounts</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <style>
-
         /* =========================================
            ADD ACCOUNT PAGE
         ========================================= */
@@ -315,7 +312,6 @@
             }
 
         }
-
     </style>
 
 </head>
@@ -324,747 +320,627 @@
 <body>
 
 
-<!-- =========================================
+    <!-- =========================================
      MOBILE MENU BUTTON
 ========================================= -->
 
-<button
-    type="button"
-    class="mobile-menu-button"
-    id="mobileMenuButton"
-    onclick="toggleAdminSidebar()"
-    aria-label="Open menu"
-    aria-expanded="false"
->
-    ☰
-</button>
+    <button type="button" class="mobile-menu-button" id="mobileMenuButton" onclick="toggleAdminSidebar()"
+        aria-label="Open menu" aria-expanded="false">
+        ☰
+    </button>
 
 
-<!-- =========================================
+    <!-- =========================================
      MOBILE SIDEBAR OVERLAY
 ========================================= -->
 
-<div
-    class="mobile-sidebar-overlay"
-    id="mobileSidebarOverlay"
-    onclick="closeAdminSidebar()"
-></div>
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="closeAdminSidebar()"></div>
 
 
-<div class="admin-layout">
-
-
-    <!-- =========================================
-         SIDEBAR
-    ========================================= -->
-
-    <aside
-        class="sidebar"
-        id="adminSidebar"
-    >
-
-
-        <div class="sidebar-logo">
-
-            <img
-                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
-                alt="School Logo"
-            >
-
-            <span>
-                Student Queue
-            </span>
-
-        </div>
-
-
-        <div class="sidebar-menu">
-
-
-            <a
-                href="{{ url_for('admin_dashboard') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
-
-                <span class="sidebar-icon">
-                    🏠
-                </span>
-
-                <span>
-                    Dashboard
-                </span>
-
-            </a>
-
-
-            <a
-                href="{{ url_for('admin_students') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_students' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
-
-                <span class="sidebar-icon">
-                    👨‍🎓
-                </span>
-
-                <span>
-                    View Student
-                </span>
-
-            </a>
-
-
-            <a
-                href="{{ url_for('admin_cashiers') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_cashiers' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
-
-                <span class="sidebar-icon">
-                    💰
-                </span>
-
-                <span>
-                    View Finance
-                </span>
-
-            </a>
-
-
-            <a
-                href="{{ url_for('admin_add_accounts') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_add_accounts' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
-
-                <span class="sidebar-icon">
-                    ➕
-                </span>
-
-                <span>
-                    Add Account
-                </span>
-
-            </a>
-
-
-        </div>
-
-
-        <div class="sidebar-bottom">
-
-
-            <a
-                href="javascript:void(0)"
-                class="sidebar-item"
-                onclick="closeAdminSidebar(); openLogoutModal()"
-            >
-
-                <span class="sidebar-icon">
-                    🚪
-                </span>
-
-                <span>
-                    Logout
-                </span>
-
-            </a>
-
-
-        </div>
-
-
-    </aside>
-
-
-    <!-- =========================================
-         MAIN CONTENT
-    ========================================= -->
-
-    <main class="admin-content">
+    <div class="admin-layout">
 
 
         <!-- =========================================
-             TOP BAR
-        ========================================= -->
+         SIDEBAR
+    ========================================= -->
 
-        <header class="admin-topbar">
+        <aside class="sidebar" id="adminSidebar">
 
 
-            <div>
+            <div class="sidebar-logo">
 
-                <h2>
-                    Add Student or Cashier
-                </h2>
+                <img src="{{ url_for('static', filename='images/school_logo.jpeg') }}" alt="School Logo">
 
-                <p>
-                    Create and edit accounts.
-                </p>
+                <span>
+                    Student Queue
+                </span>
 
             </div>
 
 
-            <div class="admin-profile">
+            <div class="sidebar-menu">
+
+
+                <a href="{{ url_for('admin_dashboard') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
+
+                    <span class="sidebar-icon">
+                        🏠
+                    </span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('admin_students') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_students' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
+
+                    <span class="sidebar-icon">
+                        👨‍🎓
+                    </span>
+
+                    <span>
+                        View Student
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('admin_cashiers') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_cashiers' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
+
+                    <span class="sidebar-icon">
+                        💰
+                    </span>
+
+                    <span>
+                        View Finance
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('admin_add_accounts') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_add_accounts' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
+
+                    <span class="sidebar-icon">
+                        ➕
+                    </span>
+
+                    <span>
+                        Add Account
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+            <div class="sidebar-bottom">
+
+
+                <a href="javascript:void(0)" class="sidebar-item" onclick="closeAdminSidebar(); openLogoutModal()">
+
+                    <span class="sidebar-icon">
+                        🚪
+                    </span>
+
+                    <span>
+                        Logout
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+        </aside>
+
+
+        <!-- =========================================
+         MAIN CONTENT
+    ========================================= -->
+
+        <main class="admin-content">
+
+
+            <!-- =========================================
+             TOP BAR
+        ========================================= -->
+
+            <header class="admin-topbar">
 
 
                 <div>
 
-                    <strong>
-                        {{ user.name }}
-                    </strong>
+                    <h2>
+                        Add Student or Cashier
+                    </h2>
 
-                    <small>
-                        Administrator
-                    </small>
-
-                </div>
-
-
-                <div class="profile-icon">
-
-                    {{ user.name[0] }}
+                    <p>
+                        Create and edit accounts.
+                    </p>
 
                 </div>
 
 
-            </div>
+                <div class="admin-profile">
 
 
-        </header>
+                    <div>
+
+                        <strong>
+                            {{ user.name }}
+                        </strong>
+
+                        <small>
+                            Administrator
+                        </small>
+
+                    </div>
 
 
-        <!-- =========================================
+                    <div class="profile-icon">
+
+                        {{ user.name[0] }}
+
+                    </div>
+
+
+                </div>
+
+
+            </header>
+
+
+            <!-- =========================================
              PAGE CONTENT
         ========================================= -->
 
-        <div class="add-account-page">
+            <div class="add-account-page">
 
 
-            <!-- =========================================
+                <!-- =========================================
                  ADD ACCOUNT FORMS
             ========================================= -->
 
-            <div class="admin-form-grid">
+                <div class="admin-form-grid">
 
 
-                <!-- =====================================
+                    <!-- =====================================
                      ADD STUDENT
                 ====================================== -->
 
-                <div class="admin-card account-card">
+                    <div class="admin-card account-card">
 
 
-                    <h2>
-                        ➕ Add Student
-                    </h2>
+                        <h2>
+                            ➕ Add Student
+                        </h2>
 
 
-                    <form
-                        method="POST"
-                        action="{{ url_for('admin_add_student') }}"
-                        class="account-form"
-                    >
+                        <form method="POST" action="{{ url_for('admin_add_student') }}" class="account-form">
 
 
-                        <label for="studentName">
-                            Student Name
-                        </label>
+                            <label for="studentName">
+                                Student Name
+                            </label>
 
-                        <input
-                            type="text"
-                            id="studentName"
-                            name="name"
-                            placeholder="Enter student name"
-                            autocomplete="name"
-                            required
-                        >
+                            <input type="text" id="studentName" name="name" placeholder="Enter student name"
+                                autocomplete="name" required>
 
 
-                        <label for="studentDepartment">
-                            Department
-                        </label>
+                            <label for="studentDepartment">
+                                Department
+                            </label>
 
-                        <select
-                            id="studentDepartment"
-                            name="department"
-                            required
-                        >
+                            <select id="studentDepartment" name="department" required>
 
-                            <option value="">
-                                Select Department
-                            </option>
+                                <option value="">
+                                    Select Department
+                                </option>
 
 
-                            {% for d in departments %}
+                                {% for d in departments %}
 
-                            <option value="{{ d }}">
-                                {{ d }}
-                            </option>
+                                <option value="{{ d }}">
+                                    {{ d }}
+                                </option>
 
-                            {% endfor %}
+                                {% endfor %}
 
-                        </select>
-
-
-                        <label for="studentYear">
-                            Year
-                        </label>
-
-                        <select
-                            id="studentYear"
-                            name="year"
-                            required
-                        >
-
-                            <option value="">
-                                Select Year
-                            </option>
+                            </select>
 
 
-                            {% for y in years %}
+                            <label for="studentYear">
+                                Year
+                            </label>
 
-                            <option value="{{ y }}">
-                                {{ y }}
-                            </option>
+                            <select id="studentYear" name="year" required>
 
-                            {% endfor %}
-
-                        </select>
-
-
-                        <label for="studentUsername">
-                            Username
-                        </label>
-
-                        <input
-                            type="text"
-                            id="studentUsername"
-                            name="username"
-                            placeholder="Enter username"
-                            autocomplete="username"
-                            required
-                        >
+                                <option value="">
+                                    Select Year
+                                </option>
 
 
-                        <label for="studentPassword">
-                            Password
-                        </label>
+                                {% for y in years %}
 
-                        <input
-                            type="password"
-                            id="studentPassword"
-                            name="password"
-                            placeholder="Enter password"
-                            autocomplete="new-password"
-                            required
-                        >
+                                <option value="{{ y }}">
+                                    {{ y }}
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
 
 
-                        <button
-                            class="account-submit"
-                            type="submit"
-                        >
-                            ADD STUDENT
-                        </button>
+                            <label for="studentUsername">
+                                Username
+                            </label>
+
+                            <input type="text" id="studentUsername" name="username" placeholder="Enter username"
+                                autocomplete="username" required>
 
 
-                    </form>
+                            <label for="studentPassword">
+                                Password
+                            </label>
+
+                            <input type="password" id="studentPassword" name="password" placeholder="Enter password"
+                                autocomplete="new-password" required>
 
 
-                </div>
+                            <button class="account-submit" type="submit">
+                                ADD STUDENT
+                            </button>
 
 
-                <!-- =====================================
+                        </form>
+
+
+                    </div>
+
+
+                    <!-- =====================================
                      ADD CASHIER
                 ====================================== -->
 
-                <div class="admin-card account-card">
+                    <div class="admin-card account-card">
 
 
-                    <h2>
-                        ➕ Add Cashier
-                    </h2>
+                        <h2>
+                            ➕ Add Cashier
+                        </h2>
 
 
-                    <form
-                        method="POST"
-                        action="{{ url_for('admin_add_cashier') }}"
-                        class="account-form"
-                    >
+                        <form method="POST" action="{{ url_for('admin_add_cashier') }}" class="account-form">
 
 
-                        <label for="cashierName">
-                            Cashier Name
-                        </label>
+                            <label for="cashierName">
+                                Cashier Name
+                            </label>
 
-                        <input
-                            type="text"
-                            id="cashierName"
-                            name="name"
-                            placeholder="Enter cashier name"
-                            autocomplete="name"
-                            required
-                        >
+                            <input type="text" id="cashierName" name="name" placeholder="Enter cashier name"
+                                autocomplete="name" required>
 
 
-                        <label for="cashierUsername">
-                            Username
-                        </label>
+                            <label for="cashierUsername">
+                                Username
+                            </label>
 
-                        <input
-                            type="text"
-                            id="cashierUsername"
-                            name="username"
-                            placeholder="Enter username"
-                            autocomplete="username"
-                            required
-                        >
+                            <input type="text" id="cashierUsername" name="username" placeholder="Enter username"
+                                autocomplete="username" required>
 
 
-                        <label for="cashierPassword">
-                            Password
-                        </label>
+                            <label for="cashierPassword">
+                                Password
+                            </label>
 
-                        <input
-                            type="password"
-                            id="cashierPassword"
-                            name="password"
-                            placeholder="Enter password"
-                            autocomplete="new-password"
-                            required
-                        >
+                            <input type="password" id="cashierPassword" name="password" placeholder="Enter password"
+                                autocomplete="new-password" required>
 
 
-                        <button
-                            class="account-submit"
-                            type="submit"
-                        >
-                            ADD CASHIER
-                        </button>
+                            <button class="account-submit" type="submit">
+                                ADD CASHIER
+                            </button>
 
 
-                    </form>
+                        </form>
+
+
+                    </div>
 
 
                 </div>
+
+
+                <!-- =========================================
+                 STUDENTS
+            ========================================= -->
+
+                <section class="account-section">
+
+
+                    <h2 class="account-section-title">
+                        Students
+                    </h2>
+
+
+                    <div class="admin-card account-table-card">
+
+
+                        <div class="account-table-wrapper">
+
+
+                            <table class="account-table">
+
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Name
+                                        </th>
+
+                                        <th>
+                                            Department
+                                        </th>
+
+                                        <th>
+                                            Year
+                                        </th>
+
+                                        <th>
+                                            Username
+                                        </th>
+
+                                        <th>
+                                            Edit
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+
+                                    {% for student in students %}
+
+                                    <tr>
+
+
+                                        <td>
+                                            {{ student.name }}
+                                        </td>
+
+
+                                        <td>
+                                            {{ student.department }}
+                                        </td>
+
+
+                                        <td>
+                                            {{ student.year }}
+                                        </td>
+
+
+                                        <td>
+                                            {{ student.username }}
+                                        </td>
+
+
+                                        <td>
+
+
+                                            <form method="POST"
+                                                action="{{ url_for('admin_edit_user', user_id=student.id) }}"
+                                                class="account-edit-form">
+
+
+                                                <input type="hidden" name="name" value="{{ student.name }}">
+
+
+                                                <input type="hidden" name="username" value="{{ student.username }}">
+
+
+                                                <input type="hidden" name="department" value="{{ student.department }}">
+
+
+                                                <input type="hidden" name="year" value="{{ student.year }}">
+
+
+                                                <button class="account-edit-button" type="submit">
+                                                    Edit
+                                                </button>
+
+
+                                            </form>
+
+
+                                        </td>
+
+
+                                    </tr>
+
+
+                                    {% else %}
+
+
+                                    <tr>
+
+                                        <td colspan="5" class="account-empty">
+                                            No students found.
+                                        </td>
+
+                                    </tr>
+
+
+                                    {% endfor %}
+
+
+                                </tbody>
+
+
+                            </table>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- =========================================
+                 CASHIERS
+            ========================================= -->
+
+                <section class="account-section">
+
+
+                    <h2 class="account-section-title">
+                        Cashiers
+                    </h2>
+
+
+                    <div class="admin-card account-table-card">
+
+
+                        <div class="account-table-wrapper">
+
+
+                            <table class="account-table cashier-table">
+
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Name
+                                        </th>
+
+                                        <th>
+                                            Username
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+
+                                    {% for cashier in cashiers %}
+
+                                    <tr>
+
+                                        <td>
+                                            {{ cashier.name }}
+                                        </td>
+
+                                        <td>
+                                            {{ cashier.username }}
+                                        </td>
+
+                                    </tr>
+
+
+                                    {% else %}
+
+
+                                    <tr>
+
+                                        <td colspan="2" class="account-empty">
+                                            No cashiers found.
+                                        </td>
+
+                                    </tr>
+
+
+                                    {% endfor %}
+
+
+                                </tbody>
+
+
+                            </table>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
 
 
             </div>
 
 
-            <!-- =========================================
-                 STUDENTS
-            ========================================= -->
+        </main>
 
-            <section class="account-section">
 
+    </div>
 
-                <h2 class="account-section-title">
-                    Students
-                </h2>
 
-
-                <div class="admin-card account-table-card">
-
-
-                    <div class="account-table-wrapper">
-
-
-                        <table class="account-table">
-
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>
-                                        Name
-                                    </th>
-
-                                    <th>
-                                        Department
-                                    </th>
-
-                                    <th>
-                                        Year
-                                    </th>
-
-                                    <th>
-                                        Username
-                                    </th>
-
-                                    <th>
-                                        Edit
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody>
-
-
-                                {% for student in students %}
-
-                                <tr>
-
-
-                                    <td>
-                                        {{ student.name }}
-                                    </td>
-
-
-                                    <td>
-                                        {{ student.department }}
-                                    </td>
-
-
-                                    <td>
-                                        {{ student.year }}
-                                    </td>
-
-
-                                    <td>
-                                        {{ student.username }}
-                                    </td>
-
-
-                                    <td>
-
-
-                                        <form
-                                            method="POST"
-                                            action="{{ url_for('admin_edit_user', user_id=student.id) }}"
-                                            class="account-edit-form"
-                                        >
-
-
-                                            <input
-                                                type="hidden"
-                                                name="name"
-                                                value="{{ student.name }}"
-                                            >
-
-
-                                            <input
-                                                type="hidden"
-                                                name="username"
-                                                value="{{ student.username }}"
-                                            >
-
-
-                                            <input
-                                                type="hidden"
-                                                name="department"
-                                                value="{{ student.department }}"
-                                            >
-
-
-                                            <input
-                                                type="hidden"
-                                                name="year"
-                                                value="{{ student.year }}"
-                                            >
-
-
-                                            <button
-                                                class="account-edit-button"
-                                                type="submit"
-                                            >
-                                                Edit
-                                            </button>
-
-
-                                        </form>
-
-
-                                    </td>
-
-
-                                </tr>
-
-
-                                {% else %}
-
-
-                                <tr>
-
-                                    <td
-                                        colspan="5"
-                                        class="account-empty"
-                                    >
-                                        No students found.
-                                    </td>
-
-                                </tr>
-
-
-                                {% endfor %}
-
-
-                            </tbody>
-
-
-                        </table>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </section>
-
-
-            <!-- =========================================
-                 CASHIERS
-            ========================================= -->
-
-            <section class="account-section">
-
-
-                <h2 class="account-section-title">
-                    Cashiers
-                </h2>
-
-
-                <div class="admin-card account-table-card">
-
-
-                    <div class="account-table-wrapper">
-
-
-                        <table class="account-table cashier-table">
-
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>
-                                        Name
-                                    </th>
-
-                                    <th>
-                                        Username
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody>
-
-
-                                {% for cashier in cashiers %}
-
-                                <tr>
-
-                                    <td>
-                                        {{ cashier.name }}
-                                    </td>
-
-                                    <td>
-                                        {{ cashier.username }}
-                                    </td>
-
-                                </tr>
-
-
-                                {% else %}
-
-
-                                <tr>
-
-                                    <td
-                                        colspan="2"
-                                        class="account-empty"
-                                    >
-                                        No cashiers found.
-                                    </td>
-
-                                </tr>
-
-
-                                {% endfor %}
-
-
-                            </tbody>
-
-
-                        </table>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </section>
-
-
-        </div>
-
-
-    </main>
-
-
-</div>
-
-
-<!-- =========================================
+    <!-- =========================================
      LOGOUT CONFIRMATION MODAL
 ========================================= -->
 
-<div
-    id="logoutModal"
-    class="logout-modal"
->
+    <div id="logoutModal" class="logout-modal">
 
 
-    <div class="logout-modal-card">
+        <div class="logout-modal-card">
 
 
-        <div class="logout-modal-icon">
-            🚪
-        </div>
+            <div class="logout-modal-icon">
+                🚪
+            </div>
 
 
-        <h2>
-            Logout?
-        </h2>
+            <h2>
+                Logout?
+            </h2>
 
 
-        <p>
-            Are you sure you want to logout?
-            <br>
-            You will need to login again to access your account.
-        </p>
+            <p>
+                Are you sure you want to logout?
+                <br>
+                You will need to login again to access your account.
+            </p>
 
 
-        <div class="logout-modal-actions">
+            <div class="logout-modal-actions">
 
 
-            <button
-                type="button"
-                class="logout-cancel"
-                onclick="closeLogoutModal()"
-            >
-                Cancel
-            </button>
+                <button type="button" class="logout-cancel" onclick="closeLogoutModal()">
+                    Cancel
+                </button>
 
 
-            <a
-                href="{{ url_for('logout') }}"
-                class="logout-confirm"
-            >
-                Logout
-            </a>
+                <a href="{{ url_for('logout') }}" class="logout-confirm">
+                    Logout
+                </a>
+
+
+            </div>
 
 
         </div>
@@ -1073,170 +949,167 @@
     </div>
 
 
-</div>
+    <script>
 
 
-<script>
+        /* =========================================
+           ADMIN MOBILE SIDEBAR
+        ========================================= */
+
+        function openAdminSidebar() {
+
+            const sidebar =
+                document.getElementById("adminSidebar");
+
+            const overlay =
+                document.getElementById("mobileSidebarOverlay");
+
+            const button =
+                document.getElementById("mobileMenuButton");
 
 
-/* =========================================
-   ADMIN MOBILE SIDEBAR
-========================================= */
+            sidebar.classList.add("mobile-open");
 
-function openAdminSidebar() {
+            overlay.classList.add("show");
 
-    const sidebar =
-        document.getElementById("adminSidebar");
+            button.setAttribute(
+                "aria-expanded",
+                "true"
+            );
 
-    const overlay =
-        document.getElementById("mobileSidebarOverlay");
+            button.innerHTML = "✕";
 
-    const button =
-        document.getElementById("mobileMenuButton");
+        }
 
 
-    sidebar.classList.add("mobile-open");
+        function closeAdminSidebar() {
 
-    overlay.classList.add("show");
+            const sidebar =
+                document.getElementById("adminSidebar");
 
-    button.setAttribute(
-        "aria-expanded",
-        "true"
-    );
+            const overlay =
+                document.getElementById("mobileSidebarOverlay");
 
-    button.innerHTML = "✕";
-
-}
+            const button =
+                document.getElementById("mobileMenuButton");
 
 
-function closeAdminSidebar() {
+            sidebar.classList.remove("mobile-open");
 
-    const sidebar =
-        document.getElementById("adminSidebar");
+            overlay.classList.remove("show");
 
-    const overlay =
-        document.getElementById("mobileSidebarOverlay");
+            button.setAttribute(
+                "aria-expanded",
+                "false"
+            );
 
-    const button =
-        document.getElementById("mobileMenuButton");
+            button.innerHTML = "☰";
 
-
-    sidebar.classList.remove("mobile-open");
-
-    overlay.classList.remove("show");
-
-    button.setAttribute(
-        "aria-expanded",
-        "false"
-    );
-
-    button.innerHTML = "☰";
-
-}
+        }
 
 
-function toggleAdminSidebar() {
+        function toggleAdminSidebar() {
 
-    const sidebar =
-        document.getElementById("adminSidebar");
-
-
-    if (
-        sidebar.classList.contains("mobile-open")
-    ) {
-
-        closeAdminSidebar();
-
-    } else {
-
-        openAdminSidebar();
-
-    }
-
-}
+            const sidebar =
+                document.getElementById("adminSidebar");
 
 
-/* =========================================
-   LOGOUT MODAL
-========================================= */
+            if (
+                sidebar.classList.contains("mobile-open")
+            ) {
 
-function openLogoutModal() {
+                closeAdminSidebar();
 
-    document
-        .getElementById("logoutModal")
-        .classList.add("show");
+            } else {
 
-}
-
-
-function closeLogoutModal() {
-
-    document
-        .getElementById("logoutModal")
-        .classList.remove("show");
-
-}
-
-
-/* =========================================
-   CLOSE LOGOUT MODAL OUTSIDE
-========================================= */
-
-document
-    .getElementById("logoutModal")
-    .addEventListener(
-        "click",
-        function(event) {
-
-            if (event.target === this) {
-
-                closeLogoutModal();
+                openAdminSidebar();
 
             }
 
         }
-    );
 
 
-/* =========================================
-   ESC KEY
-========================================= */
+        /* =========================================
+           LOGOUT MODAL
+        ========================================= */
 
-document.addEventListener(
-    "keydown",
-    function(event) {
+        function openLogoutModal() {
 
-        if (event.key === "Escape") {
-
-            closeAdminSidebar();
-
-            closeLogoutModal();
+            document
+                .getElementById("logoutModal")
+                .classList.add("show");
 
         }
 
-    }
-);
 
+        function closeLogoutModal() {
 
-/* =========================================
-   CLOSE SIDEBAR WHEN RETURNING TO DESKTOP
-========================================= */
-
-window.addEventListener(
-    "resize",
-    function() {
-
-        if (window.innerWidth > 900) {
-
-            closeAdminSidebar();
+            document
+                .getElementById("logoutModal")
+                .classList.remove("show");
 
         }
 
-    }
-);
+
+        /* =========================================
+           CLOSE LOGOUT MODAL OUTSIDE
+        ========================================= */
+
+        document
+            .getElementById("logoutModal")
+            .addEventListener(
+                "click",
+                function (event) {
+
+                    if (event.target === this) {
+
+                        closeLogoutModal();
+
+                    }
+
+                }
+            );
 
 
-</script>
+        /* =========================================
+           ESC KEY
+        ========================================= */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+
+                    closeAdminSidebar();
+
+                    closeLogoutModal();
+
+                }
+
+            }
+        );
+
+
+        /* =========================================
+           CLOSE SIDEBAR WHEN RETURNING TO DESKTOP
+        ========================================= */
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (window.innerWidth > 900) {
+
+                    closeAdminSidebar();
+
+                }
+
+            }
+        );
+
+
+    </script>
 
 
 </body>

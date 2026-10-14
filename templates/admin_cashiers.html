@@ -5,16 +5,13 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Finance Cashiers</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <style>
-
         .cashier-page-content {
             padding: 30px;
         }
@@ -607,6 +604,121 @@
 
         }
 
+
+        .active-queue-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            padding: 20px;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.58);
+            backdrop-filter: blur(5px);
+        }
+
+        .active-queue-modal.show {
+            display: flex;
+        }
+
+        .active-queue-modal-card {
+            width: 440px;
+            max-width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-sizing: border-box;
+            border-radius: 18px;
+            background: #fff;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+            animation: modalShow .25s ease;
+        }
+
+        .active-queue-modal-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff3df;
+            font-size: 30px;
+        }
+
+        .active-queue-modal-card h2 {
+            margin: 0 0 10px;
+            color: #222;
+            font-size: 24px;
+        }
+
+        .active-queue-modal-card p {
+            margin: 0 auto 25px;
+            max-width: 350px;
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .active-queue-modal-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .active-queue-modal-actions form {
+            margin: 0;
+        }
+
+        .active-queue-ok,
+        .active-queue-force {
+            min-width: 110px;
+            border: 0;
+            padding: 12px 20px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .active-queue-ok {
+            background: #eee;
+            color: #333;
+        }
+
+        .active-queue-ok:hover {
+            background: #ddd;
+        }
+
+        .active-queue-force {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .active-queue-force:hover {
+            background: #b52a37;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 600px) {
+            .active-queue-modal-card {
+                padding: 24px 20px;
+            }
+
+            .active-queue-modal-actions {
+                flex-direction: column-reverse;
+            }
+
+            .active-queue-modal-actions form,
+            .active-queue-ok,
+            .active-queue-force {
+                width: 100%;
+            }
+        }
     </style>
 
 </head>
@@ -615,473 +727,349 @@
 <body>
 
 
-<!-- MOBILE MENU BUTTON -->
+    <!-- MOBILE MENU BUTTON -->
 
-<button
-    type="button"
-    class="mobile-menu-button"
-    id="mobileMenuButton"
-    onclick="toggleAdminSidebar()"
-    aria-label="Open menu"
-    aria-expanded="false"
->
-    ☰
-</button>
+    <button type="button" class="mobile-menu-button" id="mobileMenuButton" onclick="toggleAdminSidebar()"
+        aria-label="Open menu" aria-expanded="false">
+        ☰
+    </button>
 
 
-<!-- MOBILE SIDEBAR OVERLAY -->
+    <!-- MOBILE SIDEBAR OVERLAY -->
 
-<div
-    class="mobile-sidebar-overlay"
-    id="mobileSidebarOverlay"
-    onclick="closeAdminSidebar()"
-></div>
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="closeAdminSidebar()"></div>
 
 
-<div class="admin-layout">
+    <div class="admin-layout">
 
 
-    <!-- SIDEBAR -->
+        <!-- SIDEBAR -->
 
-    <aside
-        class="sidebar"
-        id="adminSidebar"
-    >
+        <aside class="sidebar" id="adminSidebar">
 
-        <div class="sidebar-logo">
+            <div class="sidebar-logo">
 
-            <img
-                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
-                alt="School Logo"
-            >
+                <img src="{{ url_for('static', filename='images/school_logo.jpeg') }}" alt="School Logo">
 
-            <span>
-                Student Queue
-            </span>
-
-        </div>
-
-
-        <div class="sidebar-menu">
-
-            <a
-                href="{{ url_for('admin_dashboard') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
-                <span class="sidebar-icon">🏠</span>
-                <span>Dashboard</span>
-            </a>
-
-
-            <a
-                href="{{ url_for('admin_students') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_students' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
-                <span class="sidebar-icon">👨‍🎓</span>
-                <span>View Student</span>
-            </a>
-
-
-            <a
-                href="{{ url_for('admin_cashiers') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_cashiers' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
-                <span class="sidebar-icon">💰</span>
-                <span>View Finance</span>
-            </a>
-
-
-            <a
-                href="{{ url_for('admin_add_accounts') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_add_accounts' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
-                <span class="sidebar-icon">➕</span>
-                <span>Add Account</span>
-            </a>
-
-        </div>
-
-
-        <div class="sidebar-bottom">
-
-            <a
-                href="javascript:void(0)"
-                class="sidebar-item"
-                onclick="closeAdminSidebar(); openLogoutModal()"
-            >
-                <span class="sidebar-icon">🚪</span>
-                <span>Logout</span>
-            </a>
-
-        </div>
-
-    </aside>
-
-
-    <!-- MAIN CONTENT -->
-
-    <main class="admin-content">
-
-
-        <!-- TOP BAR -->
-
-        <header class="admin-topbar">
-
-            <div>
-
-                <h2>
-                    Finance / Cashier
-                </h2>
-
-                <p>
-                    Manage all cashier accounts.
-                </p>
+                <span>
+                    Student Queue
+                </span>
 
             </div>
 
 
-            <div class="admin-profile">
+            <div class="sidebar-menu">
+
+                <a href="{{ url_for('admin_dashboard') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
+                    <span class="sidebar-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+
+
+                <a href="{{ url_for('admin_students') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_students' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
+                    <span class="sidebar-icon">👨‍🎓</span>
+                    <span>View Student</span>
+                </a>
+
+
+                <a href="{{ url_for('admin_cashiers') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_cashiers' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
+                    <span class="sidebar-icon">💰</span>
+                    <span>View Finance</span>
+                </a>
+
+
+                <a href="{{ url_for('admin_add_accounts') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_add_accounts' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
+                    <span class="sidebar-icon">➕</span>
+                    <span>Add Account</span>
+                </a>
+
+            </div>
+
+
+            <div class="sidebar-bottom">
+
+                <a href="javascript:void(0)" class="sidebar-item" onclick="closeAdminSidebar(); openLogoutModal()">
+                    <span class="sidebar-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+
+        <main class="admin-content">
+
+
+            <!-- TOP BAR -->
+
+            <header class="admin-topbar">
 
                 <div>
 
-                    <strong>
-                        {{ user["name"] }}
-                    </strong>
+                    <h2>
+                        Finance / Cashier
+                    </h2>
 
-                    <small>
-                        Administrator
-                    </small>
+                    <p>
+                        Manage all cashier accounts.
+                    </p>
 
                 </div>
 
 
-                <div class="profile-icon">
-                    {{ user["name"][0] }}
-                </div>
-
-            </div>
-
-        </header>
-
-
-        <!-- PAGE CONTENT -->
-
-        <div class="cashier-page-content">
-
-
-            <!-- CASHIER CARD -->
-
-            <section class="cashier-card">
-
-
-                <!-- SECTION HEADER -->
-
-                <div class="cashier-section-header">
+                <div class="admin-profile">
 
                     <div>
 
-                        <h2>
-                            All Cashiers
-                        </h2>
+                        <strong>
+                            {{ user["name"] }}
+                        </strong>
 
-                        <p>
-                            Registered finance cashier accounts
-                        </p>
+                        <small>
+                            Administrator
+                        </small>
 
                     </div>
 
 
-                    <div class="cashier-count">
+                    <div class="profile-icon">
+                        {{ user["name"][0] }}
+                    </div>
 
-                        {% if cashiers|length == 1 %}
+                </div>
+
+            </header>
+
+
+            <!-- PAGE CONTENT -->
+
+            <div class="cashier-page-content">
+
+
+                <!-- CASHIER CARD -->
+
+                <section class="cashier-card">
+
+
+                    <!-- SECTION HEADER -->
+
+                    <div class="cashier-section-header">
+
+                        <div>
+
+                            <h2>
+                                All Cashiers
+                            </h2>
+
+                            <p>
+                                Registered finance cashier accounts
+                            </p>
+
+                        </div>
+
+
+                        <div class="cashier-count">
+
+                            {% if cashiers|length == 1 %}
 
                             1 Cashier
 
-                        {% else %}
+                            {% else %}
 
                             {{ cashiers|length }} Cashiers
 
-                        {% endif %}
+                            {% endif %}
+
+                        </div>
 
                     </div>
 
-                </div>
+
+                    <!-- TABLE -->
+
+                    <div class="cashier-table-wrapper">
+
+                        <table class="cashier-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        No.
+                                    </th>
+
+                                    <th>
+                                        Name
+                                    </th>
+
+                                    <th>
+                                        Username
+                                    </th>
+
+                                    <th>
+                                        Role
+                                    </th>
+
+                                    <th>
+                                        Action
+                                    </th>
+
+                                </tr>
+
+                            </thead>
 
 
-                <!-- TABLE -->
+                            <tbody>
 
-                <div class="cashier-table-wrapper">
+                                {% for cashier in cashiers %}
 
-                    <table class="cashier-table">
+                                <tr>
 
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    No.
-                                </th>
-
-                                <th>
-                                    Name
-                                </th>
-
-                                <th>
-                                    Username
-                                </th>
-
-                                <th>
-                                    Role
-                                </th>
-
-                                <th>
-                                    Action
-                                </th>
-
-                            </tr>
-
-                        </thead>
+                                    <td>
+                                        {{ loop.index }}
+                                    </td>
 
 
-                        <tbody>
+                                    <td>
 
-                            {% for cashier in cashiers %}
+                                        <strong class="cashier-name">
+                                            {{ cashier["name"] }}
+                                        </strong>
 
-                            <tr>
-
-                                <td>
-                                    {{ loop.index }}
-                                </td>
+                                    </td>
 
 
-                                <td>
-
-                                    <strong class="cashier-name">
-                                        {{ cashier["name"] }}
-                                    </strong>
-
-                                </td>
+                                    <td>
+                                        {{ cashier["username"] }}
+                                    </td>
 
 
-                                <td>
-                                    {{ cashier["username"] }}
-                                </td>
+                                    <td>
+
+                                        <span class="cashier-role">
+                                            Cashier
+                                        </span>
+
+                                    </td>
 
 
-                                <td>
+                                    <td>
 
-                                    <span class="cashier-role">
-                                        Cashier
-                                    </span>
+                                        <div class="cashier-actions">
 
-                                </td>
-
-
-                                <td>
-
-                                    <div class="cashier-actions">
-
-                                        <button
-                                            type="button"
-                                            class="cashier-edit-btn"
-                                            onclick='openEditModal(
+                                            <button type="button" class="cashier-edit-btn" onclick='openEditModal(
                                                 {{ cashier["id"] }},
                                                 {{ cashier["name"]|tojson }},
                                                 {{ cashier["username"]|tojson }}
-                                            )'
-                                        >
-                                            Edit
-                                        </button>
+                                            )'>
+                                                Edit
+                                            </button>
 
 
-                                        <button
-                                            type="button"
-                                            class="cashier-delete-btn"
-                                            onclick='openDeleteModal(
+                                            <button type="button" class="cashier-delete-btn" onclick='openDeleteModal(
                                                 {{ cashier["id"] }},
                                                 {{ cashier["name"]|tojson }}
-                                            )'
-                                        >
-                                            Delete
-                                        </button>
+                                            )'>
+                                                Delete
+                                            </button>
 
-                                    </div>
+                                        </div>
 
-                                </td>
+                                    </td>
 
-                            </tr>
-
-
-                            {% else %}
-
-                            <tr>
-
-                                <td
-                                    colspan="5"
-                                    class="cashier-empty"
-                                >
-                                    No cashier accounts found.
-                                </td>
-
-                            </tr>
-
-                            {% endfor %}
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </section>
-
-        </div>
-
-    </main>
-
-</div>
+                                </tr>
 
 
-<!-- EDIT CASHIER MODAL -->
+                                {% else %}
 
-<div
-    id="editModal"
-    class="edit-modal"
->
+                                <tr>
 
-    <div class="edit-modal-card">
+                                    <td colspan="5" class="cashier-empty">
+                                        No cashier accounts found.
+                                    </td>
 
-        <h2>
-            Edit Cashier
-        </h2>
+                                </tr>
 
-        <p>
-            Update the cashier account information.
-        </p>
+                                {% endfor %}
 
+                            </tbody>
 
-        <form
-            id="editCashierForm"
-            method="POST"
-        >
+                        </table>
 
-            <div class="edit-form-group">
+                    </div>
 
-                <label for="editName">
-                    Full Name
-                </label>
-
-                <input
-                    type="text"
-                    id="editName"
-                    name="name"
-                    required
-                >
+                </section>
 
             </div>
 
-
-            <div class="edit-form-group">
-
-                <label for="editUsername">
-                    Username
-                </label>
-
-                <input
-                    type="text"
-                    id="editUsername"
-                    name="username"
-                    required
-                >
-
-            </div>
-
-
-            <div class="edit-modal-actions">
-
-                <button
-                    type="button"
-                    class="edit-cancel"
-                    onclick="closeEditModal()"
-                >
-                    Cancel
-                </button>
-
-
-                <button
-                    type="submit"
-                    class="edit-save"
-                >
-                    Save Changes
-                </button>
-
-            </div>
-
-        </form>
+        </main>
 
     </div>
 
-</div>
+
+    <!-- EDIT CASHIER MODAL -->
+
+    <div id="editModal" class="edit-modal">
+
+        <div class="edit-modal-card">
+
+            <h2>
+                Edit Cashier
+            </h2>
+
+            <p>
+                Update the cashier account information.
+            </p>
 
 
-<!-- DELETE CASHIER MODAL -->
+            <form id="editCashierForm" method="POST">
 
-<div
-    id="deleteModal"
-    class="delete-modal"
->
+                <div class="edit-form-group">
 
-    <div class="delete-modal-card">
+                    <label for="editName">
+                        Full Name
+                    </label>
 
-        <div class="delete-modal-icon">
-            🗑️
-        </div>
+                    <input type="text" id="editName" name="name" required>
 
-
-        <h2>
-            Delete Cashier?
-        </h2>
+                </div>
 
 
-        <p>
+                <div class="edit-form-group">
 
-            Are you sure you want to delete
+                    <label for="editUsername">
+                        Username
+                    </label>
 
-            <strong id="deleteCashierName"></strong>?
+                    <input type="text" id="editUsername" name="username" required>
 
-            <br>
-
-            This action cannot be undone.
-
-        </p>
+                </div>
 
 
-        <div class="delete-modal-actions">
+                <div class="edit-modal-actions">
 
-            <button
-                type="button"
-                class="delete-cancel"
-                onclick="closeDeleteModal()"
-            >
-                Cancel
-            </button>
+                    <button type="button" class="edit-cancel" onclick="closeEditModal()">
+                        Cancel
+                    </button>
 
 
-            <form
-                id="deleteCashierForm"
-                method="POST"
-            >
+                    <button type="submit" class="edit-save">
+                        Save Changes
+                    </button>
 
-                <button
-                    type="submit"
-                    class="delete-confirm"
-                >
-                    Delete
-                </button>
+                </div>
 
             </form>
 
@@ -1089,359 +1077,444 @@
 
     </div>
 
-</div>
+
+    <!-- DELETE CASHIER MODAL -->
+
+    <div id="deleteModal" class="delete-modal">
+
+        <div class="delete-modal-card">
+
+            <div class="delete-modal-icon">
+                🗑️
+            </div>
 
 
-<!-- LOGOUT MODAL -->
-
-<div
-    id="logoutModal"
-    class="logout-modal"
->
-
-    <div class="logout-modal-card">
-
-        <div class="logout-modal-icon">
-            🚪
-        </div>
+            <h2>
+                Delete Cashier?
+            </h2>
 
 
-        <h2>
-            Logout?
-        </h2>
+            <p>
+
+                Are you sure you want to delete
+
+                <strong id="deleteCashierName"></strong>?
+
+                <br>
+
+                This action cannot be undone.
+
+            </p>
 
 
-        <p>
+            <div class="delete-modal-actions">
 
-            Are you sure you want to logout?
-
-            <br>
-
-            You will need to login again to access your account.
-
-        </p>
+                <button type="button" class="delete-cancel" onclick="closeDeleteModal()">
+                    Cancel
+                </button>
 
 
-        <div class="logout-modal-actions">
+                <form id="deleteCashierForm" method="POST">
 
-            <button
-                type="button"
-                class="logout-cancel"
-                onclick="closeLogoutModal()"
-            >
-                Cancel
-            </button>
+                    <button type="submit" class="delete-confirm">
+                        Delete
+                    </button>
 
+                </form>
 
-            <a
-                href="{{ url_for('logout') }}"
-                class="logout-confirm"
-            >
-                Logout
-            </a>
+            </div>
 
         </div>
 
     </div>
 
-</div>
 
 
-<script>
+    <!-- ACTIVE QUEUE WARNING MODAL -->
+    <div id="activeQueueModal" class="active-queue-modal" role="dialog" aria-modal="true"
+        aria-labelledby="activeQueueTitle">
+        <div class="active-queue-modal-card">
+            <div class="active-queue-modal-icon">⚠️</div>
+            <h2 id="activeQueueTitle">Cannot Delete Account</h2>
+            <p>This account cannot be deleted because it has an active queue. Please complete or cancel the active queue
+                first.</p>
+            <div class="active-queue-modal-actions">
+                <button type="button" class="active-queue-ok" onclick="closeActiveQueueModal()">OK</button>
+                <form id="deleteCashierAnywayForm" method="POST">
+                    <input type="hidden" name="force_delete" value="1">
+                    <button type="submit" class="active-queue-force"
+                        onclick="return confirm('Delete this cashier account anyway? This may leave related queue records behind.')">
+                        Delete Anyway
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGOUT MODAL -->
+
+    <div id="logoutModal" class="logout-modal">
+
+        <div class="logout-modal-card">
+
+            <div class="logout-modal-icon">
+                🚪
+            </div>
 
 
-/* =========================================
-   ADMIN MOBILE SIDEBAR
-========================================= */
-
-function openAdminSidebar() {
-
-    const sidebar =
-        document.getElementById("adminSidebar");
-
-    const overlay =
-        document.getElementById("mobileSidebarOverlay");
-
-    const button =
-        document.getElementById("mobileMenuButton");
+            <h2>
+                Logout?
+            </h2>
 
 
-    sidebar.classList.add("mobile-open");
+            <p>
 
-    overlay.classList.add("show");
+                Are you sure you want to logout?
 
-    button.setAttribute(
-        "aria-expanded",
-        "true"
-    );
+                <br>
 
-    button.innerHTML = "✕";
+                You will need to login again to access your account.
 
-}
+            </p>
 
 
-function closeAdminSidebar() {
+            <div class="logout-modal-actions">
 
-    const sidebar =
-        document.getElementById("adminSidebar");
-
-    const overlay =
-        document.getElementById("mobileSidebarOverlay");
-
-    const button =
-        document.getElementById("mobileMenuButton");
+                <button type="button" class="logout-cancel" onclick="closeLogoutModal()">
+                    Cancel
+                </button>
 
 
-    sidebar.classList.remove("mobile-open");
+                <a href="{{ url_for('logout') }}" class="logout-confirm">
+                    Logout
+                </a>
 
-    overlay.classList.remove("show");
+            </div>
 
-    button.setAttribute(
-        "aria-expanded",
-        "false"
-    );
+        </div>
 
-    button.innerHTML = "☰";
-
-}
+    </div>
 
 
-function toggleAdminSidebar() {
-
-    const sidebar =
-        document.getElementById("adminSidebar");
+    <script>
 
 
-    if (
-        sidebar.classList.contains("mobile-open")
-    ) {
+        /* =========================================
+           ADMIN MOBILE SIDEBAR
+        ========================================= */
 
-        closeAdminSidebar();
+        function openAdminSidebar() {
 
-    } else {
+            const sidebar =
+                document.getElementById("adminSidebar");
 
-        openAdminSidebar();
+            const overlay =
+                document.getElementById("mobileSidebarOverlay");
 
-    }
-
-}
-
-
-/* =========================================
-   EDIT CASHIER
-========================================= */
-
-function openEditModal(
-    id,
-    name,
-    username
-) {
-
-    const modal =
-        document.getElementById("editModal");
-
-    const form =
-        document.getElementById("editCashierForm");
-
-    const nameInput =
-        document.getElementById("editName");
-
-    const usernameInput =
-        document.getElementById("editUsername");
+            const button =
+                document.getElementById("mobileMenuButton");
 
 
-    const editUrl =
-        "{{ url_for('admin_edit_user', user_id=999999) }}";
+            sidebar.classList.add("mobile-open");
+
+            overlay.classList.add("show");
+
+            button.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+            button.innerHTML = "✕";
+
+        }
 
 
-    form.action =
-        editUrl.replace(
-            "999999",
-            id
+        function closeAdminSidebar() {
+
+            const sidebar =
+                document.getElementById("adminSidebar");
+
+            const overlay =
+                document.getElementById("mobileSidebarOverlay");
+
+            const button =
+                document.getElementById("mobileMenuButton");
+
+
+            sidebar.classList.remove("mobile-open");
+
+            overlay.classList.remove("show");
+
+            button.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            button.innerHTML = "☰";
+
+        }
+
+
+        function toggleAdminSidebar() {
+
+            const sidebar =
+                document.getElementById("adminSidebar");
+
+
+            if (
+                sidebar.classList.contains("mobile-open")
+            ) {
+
+                closeAdminSidebar();
+
+            } else {
+
+                openAdminSidebar();
+
+            }
+
+        }
+
+
+        /* =========================================
+           EDIT CASHIER
+        ========================================= */
+
+        function openEditModal(
+            id,
+            name,
+            username
+        ) {
+
+            const modal =
+                document.getElementById("editModal");
+
+            const form =
+                document.getElementById("editCashierForm");
+
+            const nameInput =
+                document.getElementById("editName");
+
+            const usernameInput =
+                document.getElementById("editUsername");
+
+
+            const editUrl =
+                "{{ url_for('admin_edit_user', user_id=999999) }}";
+
+
+            form.action =
+                editUrl.replace(
+                    "999999",
+                    id
+                );
+
+
+            nameInput.value =
+                name;
+
+            usernameInput.value =
+                username;
+
+
+            modal.classList.add("show");
+
+        }
+
+
+        function closeEditModal() {
+
+            document
+                .getElementById("editModal")
+                .classList.remove("show");
+
+        }
+
+
+        /* =========================================
+           DELETE CASHIER
+        ========================================= */
+
+        function openDeleteModal(
+            id,
+            name
+        ) {
+
+            const modal =
+                document.getElementById("deleteModal");
+
+            const form =
+                document.getElementById("deleteCashierForm");
+
+
+            const deleteUrl =
+                "{{ url_for('admin_delete_cashier', user_id=999999) }}";
+
+
+            form.action =
+                deleteUrl.replace(
+                    "999999",
+                    id
+                );
+
+
+            document.getElementById(
+                "deleteCashierName"
+            ).textContent = name;
+
+
+            modal.classList.add("show");
+
+        }
+
+
+        function closeDeleteModal() {
+
+            document
+                .getElementById("deleteModal")
+                .classList.remove("show");
+
+        }
+
+
+        /* =========================================
+           LOGOUT
+        ========================================= */
+
+        function openLogoutModal() {
+
+            document
+                .getElementById("logoutModal")
+                .classList.add("show");
+
+        }
+
+
+        function closeLogoutModal() {
+
+            document
+                .getElementById("logoutModal")
+                .classList.remove("show");
+
+        }
+
+
+        /* =========================================
+           CLOSE MODALS WHEN CLICKING OUTSIDE
+        ========================================= */
+
+        document
+            .getElementById("editModal")
+            .addEventListener(
+                "click",
+                function (event) {
+
+                    if (event.target === this) {
+
+                        closeEditModal();
+
+                    }
+
+                }
+            );
+
+
+        document
+            .getElementById("deleteModal")
+            .addEventListener(
+                "click",
+                function (event) {
+
+                    if (event.target === this) {
+
+                        closeDeleteModal();
+
+                    }
+
+                }
+            );
+
+
+        document
+            .getElementById("logoutModal")
+            .addEventListener(
+                "click",
+                function (event) {
+
+                    if (event.target === this) {
+
+                        closeLogoutModal();
+
+                    }
+
+                }
+            );
+
+
+
+        /* ACTIVE QUEUE DELETE WARNING */
+        function closeActiveQueueModal() {
+            document.getElementById("activeQueueModal").classList.remove("show");
+        }
+
+        function openActiveQueueModal(id) {
+            const modal = document.getElementById("activeQueueModal");
+            const form = document.getElementById("deleteCashierAnywayForm");
+            const deleteUrl = "{{ url_for('admin_delete_cashier', user_id=999999) }}";
+            form.action = deleteUrl.replace("999999", encodeURIComponent(id));
+            modal.classList.add("show");
+        }
+
+        document.getElementById("activeQueueModal").addEventListener("click", function (event) {
+            if (event.target === this) closeActiveQueueModal();
+        });
+
+        const activeQueueDeleteIds = {{ get_flashed_messages(category_filter = ["active_queue_delete"]) | tojson }};
+        if (activeQueueDeleteIds.length > 0) {
+            openActiveQueueModal(activeQueueDeleteIds[activeQueueDeleteIds.length - 1]);
+        }
+
+        /* =========================================
+           ESC KEY
+        ========================================= */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+
+                    closeAdminSidebar();
+                    closeEditModal();
+                    closeDeleteModal();
+                    closeActiveQueueModal();
+                    closeLogoutModal();
+
+                }
+
+            }
         );
 
 
-    nameInput.value =
-        name;
+        /* =========================================
+           CLOSE SIDEBAR ON DESKTOP
+        ========================================= */
 
-    usernameInput.value =
-        username;
+        window.addEventListener(
+            "resize",
+            function () {
 
+                if (window.innerWidth > 900) {
 
-    modal.classList.add("show");
+                    closeAdminSidebar();
 
-}
+                }
 
-
-function closeEditModal() {
-
-    document
-        .getElementById("editModal")
-        .classList.remove("show");
-
-}
-
-
-/* =========================================
-   DELETE CASHIER
-========================================= */
-
-function openDeleteModal(
-    id,
-    name
-) {
-
-    const modal =
-        document.getElementById("deleteModal");
-
-    const form =
-        document.getElementById("deleteCashierForm");
-
-
-    const deleteUrl =
-        "{{ url_for('admin_delete_cashier', user_id=999999) }}";
-
-
-    form.action =
-        deleteUrl.replace(
-            "999999",
-            id
+            }
         );
 
 
-    document.getElementById(
-        "deleteCashierName"
-    ).textContent = name;
-
-
-    modal.classList.add("show");
-
-}
-
-
-function closeDeleteModal() {
-
-    document
-        .getElementById("deleteModal")
-        .classList.remove("show");
-
-}
-
-
-/* =========================================
-   LOGOUT
-========================================= */
-
-function openLogoutModal() {
-
-    document
-        .getElementById("logoutModal")
-        .classList.add("show");
-
-}
-
-
-function closeLogoutModal() {
-
-    document
-        .getElementById("logoutModal")
-        .classList.remove("show");
-
-}
-
-
-/* =========================================
-   CLOSE MODALS WHEN CLICKING OUTSIDE
-========================================= */
-
-document
-    .getElementById("editModal")
-    .addEventListener(
-        "click",
-        function(event) {
-
-            if (event.target === this) {
-
-                closeEditModal();
-
-            }
-
-        }
-    );
-
-
-document
-    .getElementById("deleteModal")
-    .addEventListener(
-        "click",
-        function(event) {
-
-            if (event.target === this) {
-
-                closeDeleteModal();
-
-            }
-
-        }
-    );
-
-
-document
-    .getElementById("logoutModal")
-    .addEventListener(
-        "click",
-        function(event) {
-
-            if (event.target === this) {
-
-                closeLogoutModal();
-
-            }
-
-        }
-    );
-
-
-/* =========================================
-   ESC KEY
-========================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (event.key === "Escape") {
-
-            closeAdminSidebar();
-            closeEditModal();
-            closeDeleteModal();
-            closeLogoutModal();
-
-        }
-
-    }
-);
-
-
-/* =========================================
-   CLOSE SIDEBAR ON DESKTOP
-========================================= */
-
-window.addEventListener(
-    "resize",
-    function() {
-
-        if (window.innerWidth > 900) {
-
-            closeAdminSidebar();
-
-        }
-
-    }
-);
-
-
-</script>
+    </script>
 
 
 </body>

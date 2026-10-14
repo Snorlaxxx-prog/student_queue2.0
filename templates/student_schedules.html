@@ -1,690 +1,1265 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
+
 
 <head>
 
+
+
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
 
     <title>View Schedule</title>
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
 
 </head>
+
+
+
 
 
 <body>
 
 
-<!-- =========================================
+
+
+
+    <!-- =========================================
+
      MOBILE MENU BUTTON
-========================================== -->
 
-<button
-    type="button"
-    class="mobile-menu-button"
-    id="mobileMenuButton"
-    onclick="toggleStudentSidebar()"
-    aria-label="Open menu"
-    aria-expanded="false"
->
-    ☰
-</button>
+\========================================== -->
 
 
-<!-- =========================================
+
+    <button type="button" class="mobile-menu-button" id="mobileMenuButton" onclick="toggleStudentSidebar()"
+        aria-label="Open menu" aria-expanded="false">
+
+        ☰
+
+    </button>
+
+
+
+
+
+    <!-- =========================================
+
      MOBILE SIDEBAR OVERLAY
-========================================== -->
 
-<div
-    class="mobile-sidebar-overlay"
-    id="mobileSidebarOverlay"
-    onclick="closeStudentSidebar()"
-></div>
+\========================================== -->
 
 
-<div class="admin-layout">
+
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="closeStudentSidebar()"></div>
 
 
-    <!-- =========================================
+
+
+
+    <div class="admin-layout">
+
+
+
+
+
+        <!-- =========================================
+
          SIDEBAR
+
     ========================================== -->
 
-    <aside
-        class="sidebar"
-        id="studentSidebar"
-    >
 
 
-        <!-- LOGO -->
-
-        <div class="sidebar-logo">
-
-            <img
-                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
-                alt="School Logo"
-            >
-
-            <span>
-                Student Queue
-            </span>
-
-        </div>
+        <aside class="sidebar" id="studentSidebar">
 
 
-        <!-- =====================================
-             SIDEBAR MENU
-        ====================================== -->
-
-        <div class="sidebar-menu">
 
 
-            <!-- DASHBOARD -->
 
-            <a
-                href="{{ url_for('student_dashboard') }}"
-                class="sidebar-item {% if request.endpoint == 'student_dashboard' %}active{% endif %}"
-                onclick="closeStudentSidebar()"
-            >
+            <!-- LOGO -->
 
-                <span class="sidebar-icon">
-                    🏠
-                </span>
+
+
+            <div class="sidebar-logo">
+
+
+
+                <img src="{{ url_for('static', filename='images/school_logo.jpeg') }}" alt="School Logo">
+
+
 
                 <span>
-                    Dashboard
+
+                    Student Queue
+
                 </span>
 
-            </a>
 
-
-            <!-- MY QUEUE -->
-
-            <a
-                href="{{ url_for('student_my_queue') }}"
-                class="sidebar-item {% if request.endpoint == 'student_my_queue' %}active{% endif %}"
-                onclick="closeStudentSidebar()"
-            >
-
-                <span class="sidebar-icon">
-                    🎫
-                </span>
-
-                <span>
-                    My Queue
-                </span>
-
-            </a>
-
-
-            <!-- VIEW SCHEDULE -->
-
-            <a
-                href="{{ url_for('student_schedules') }}"
-                class="sidebar-item {% if request.endpoint == 'student_schedules' %}active{% endif %}"
-                onclick="closeStudentSidebar()"
-            >
-
-                <span class="sidebar-icon">
-                    📅
-                </span>
-
-                <span>
-                    View Schedule
-                </span>
-
-            </a>
-
-
-            <!-- VIEW QUEUE -->
-
-            <a
-                href="{{ url_for('student_view_queue') }}"
-                class="sidebar-item {% if request.endpoint == 'student_view_queue' %}active{% endif %}"
-                onclick="closeStudentSidebar()"
-            >
-
-                <span class="sidebar-icon">
-                    👥
-                </span>
-
-                <span>
-                    View Queue
-                </span>
-
-            </a>
-
-
-        </div>
-
-
-        <!-- =====================================
-             LOGOUT
-        ====================================== -->
-
-        <div class="sidebar-bottom">
-
-            <a
-                href="javascript:void(0)"
-                class="sidebar-item"
-                onclick="closeStudentSidebar(); openLogoutModal();"
-            >
-
-                <span class="sidebar-icon">
-                    🚪
-                </span>
-
-                <span>
-                    Logout
-                </span>
-
-            </a>
-
-        </div>
-
-
-    </aside>
-
-
-    <!-- =========================================
-         MAIN CONTENT
-    ========================================== -->
-
-    <main class="admin-content">
-
-
-        <!-- =====================================
-             TOPBAR
-        ====================================== -->
-
-        <header class="admin-topbar">
-
-
-            <div>
-
-                <h2>
-                    View Schedule
-                </h2>
-
-                <p>
-                    Available cashier schedules
-                </p>
 
             </div>
 
 
-            <!-- PROFILE -->
 
-            <div class="admin-profile">
+
+
+            <!-- =====================================
+
+             SIDEBAR MENU
+
+        ====================================== -->
+
+
+
+            <div class="sidebar-menu">
+
+
+
+
+
+                <!-- DASHBOARD -->
+
+
+
+                <a href="{{ url_for('student_dashboard') }}"
+                    class="sidebar-item {% if request.endpoint == 'student_dashboard' %}active{% endif %}"
+                    onclick="closeStudentSidebar()">
+
+
+
+                    <span class="sidebar-icon">
+
+                        🏠
+
+                    </span>
+
+
+
+                    <span>
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+
+
+                <!-- MY QUEUE -->
+
+
+
+                <a href="{{ url_for('student_my_queue') }}"
+                    class="sidebar-item {% if request.endpoint == 'student_my_queue' %}active{% endif %}"
+                    onclick="closeStudentSidebar()">
+
+
+
+                    <span class="sidebar-icon">
+
+                        🎫
+
+                    </span>
+
+
+
+                    <span>
+
+                        My Queue
+
+                    </span>
+
+
+
+                </a>
+
+
+
+
+
+                <!-- VIEW SCHEDULE -->
+
+
+
+                <a href="{{ url_for('student_schedules') }}"
+                    class="sidebar-item {% if request.endpoint == 'student_schedules' %}active{% endif %}"
+                    onclick="closeStudentSidebar()">
+
+
+
+                    <span class="sidebar-icon">
+
+                        📅
+
+                    </span>
+
+
+
+                    <span>
+
+                        View Schedule
+
+                    </span>
+
+
+
+                </a>
+
+
+
+
+
+                <!-- VIEW QUEUE -->
+
+
+
+                <a href="{{ url_for('student_view_queue') }}"
+                    class="sidebar-item {% if request.endpoint == 'student_view_queue' %}active{% endif %}"
+                    onclick="closeStudentSidebar()">
+
+
+
+                    <span class="sidebar-icon">
+
+                        👥
+
+                    </span>
+
+
+
+                    <span>
+
+                        View Queue
+
+                    </span>
+
+
+
+                </a>
+
+
+
+
+
+            </div>
+
+
+
+
+
+            <!-- =====================================
+
+             LOGOUT
+
+        ====================================== -->
+
+
+
+            <div class="sidebar-bottom">
+
+
+
+                <a href="javascript:void(0)" class="sidebar-item" onclick="closeStudentSidebar(); openLogoutModal();">
+
+
+
+                    <span class="sidebar-icon">
+
+                        🚪
+
+                    </span>
+
+
+
+                    <span>
+
+                        Logout
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </div>
+
+
+
+
+
+        </aside>
+
+
+
+
+
+        <!-- =========================================
+
+         MAIN CONTENT
+
+    ========================================== -->
+
+
+
+        <main class="admin-content">
+
+
+
+
+
+            <!-- =====================================
+
+             TOPBAR
+
+        ====================================== -->
+
+
+
+            <header class="admin-topbar">
+
+
+
+
 
                 <div>
 
-                    <strong>
-                        {{ user.name }}
-                    </strong>
 
-                    <small>
-                        Student
-                    </small>
+
+                    <h2>
+
+                        View Schedule
+
+                    </h2>
+
+
+
+                    <p>
+
+                        Available cashier schedules
+
+                    </p>
+
+
 
                 </div>
 
 
-                <div class="profile-icon">
-
-                    {{ user.name[0] }}
-
-                </div>
-
-            </div>
 
 
-        </header>
+
+                <!-- PROFILE -->
 
 
-        <!-- =====================================
-             PAGE CONTENT
-        ====================================== -->
 
-        <div class="page-content">
+                <div class="admin-profile">
 
 
-            <section class="admin-section">
-
-
-                <!-- SECTION TITLE -->
-
-                <div class="section-title">
 
                     <div>
 
-                        <h2>
-                            Available Schedules
-                        </h2>
 
-                        <p>
-                            Select a schedule to get your queue ticket.
-                        </p>
+
+                        <strong>
+
+                            {{ user.name }}
+
+                        </strong>
+
+
+
+                        <small>
+
+                            Student
+
+                        </small>
+
+
 
                     </div>
+
+
+
+
+
+                    <div class="profile-icon">
+
+
+
+                        {{ user.name[0] }}
+
+
+
+                    </div>
+
+
 
                 </div>
 
 
-                <!-- =================================
+
+
+
+            </header>
+
+
+
+
+
+            <!-- =====================================
+
+             PAGE CONTENT
+
+        ====================================== -->
+
+
+
+            <div class="page-content">
+
+
+
+
+
+                <section class="admin-section">
+
+
+
+
+
+                    <!-- SECTION TITLE -->
+
+
+
+                    <div class="section-title">
+
+
+
+                        <div>
+
+
+
+                            <h2>
+
+                                Available Schedules
+
+                            </h2>
+
+
+
+                            <p>
+
+                                Select a schedule to get your queue ticket.
+
+                            </p>
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+
+                    <!-- =================================
+
                      SCHEDULE GRID
+
                 ================================== -->
 
-                <div class="schedule-grid">
 
 
-                    {% for schedule in schedules %}
+                    <div class="schedule-grid">
+
+
+
+
+
+                        {% for schedule in schedules %}
+
+
+
 
 
                         <div class="admin-card schedule-card">
 
 
+
+
+
                             <!-- SCHEDULE HEADER -->
+
+
 
                             <div class="queue-header">
 
+
+
                                 <h2>
+
                                     {{ schedule.day }}
+
                                 </h2>
+
+
 
                             </div>
 
 
+
+
+
                             <!-- SCHEDULE DETAILS -->
+
+
 
                             <div class="queue-details">
 
 
+
+
+
                                 <p>
 
+
+
                                     <strong>
+
                                         Date:
+
                                     </strong>
+
+
 
                                     {{ schedule.date }}
 
+
+
                                 </p>
+
+
+
 
 
                                 <p>
 
+
+
                                     <strong>
+
                                         Time:
+
                                     </strong>
+
+
 
                                     {{ schedule.start_time }}
 
+
+
                                     -
+
+
 
                                     {{ schedule.end_time }}
 
+
+
                                 </p>
+
+
+
 
 
                                 {% set cashier = schedule.cashier %}
 
 
+
+
+
                                 <p>
 
+
+
                                     <strong>
+
                                         Cashier:
+
                                     </strong>
+
+
 
                                     {{ cashier.name }}
 
+
+
                                 </p>
+
+
+
 
 
                                 <p>
 
+
+
                                     <strong>
+
                                         Waiting:
+
                                     </strong>
+
+
 
                                     {{ schedule.waiting_count }}
 
+
+
                                 </p>
+
+
+
 
 
                                 <p>
 
+
+
                                     <strong>
+
                                         Capacity:
+
                                     </strong>
+
+
 
                                     {{ schedule.waiting_count }} / {{ schedule.capacity }}
 
+
+
                                 </p>
+
+
+
 
 
                                 <p>
 
+
+
                                     <strong>
+
                                         Available Slots:
+
                                     </strong>
 
+
+
                                     {% if schedule.available_slots is not none %}
-                                        {{ schedule.available_slots }}
+
+                                    {{ schedule.available_slots }}
+
                                     {% else %}
-                                        Unlimited
+
+                                    Unlimited
+
                                     {% endif %}
+
+
 
                                 </p>
 
 
+
+
+
                             </div>
+
+
+
 
 
                             <!-- GET TICKET -->
 
-                            <form
-                                method="POST"
-                                action="{{ url_for('get_ticket', schedule_id=schedule.id) }}"
-                            >
 
-                                <button
-                                    type="submit"
-                                    class="btn primary full-width"
-                                    {% if schedule.capacity > 0 and schedule.waiting_count >= schedule.capacity %}disabled{% endif %}
-                                >
-                                    {% if schedule.capacity > 0 and schedule.waiting_count >= schedule.capacity %}
-                                        FULL
-                                    {% else %}
-                                        🎫 GET TICKET
-                                    {% endif %}
+
+                            {% if schedule.claimed_ticket %}
+                            <div class="queue-actions" style="display:flex;flex-direction:column;gap:8px;">
+                                <button type="button" class="btn secondary full-width" disabled>✓ TICKET ALREADY
+                                    CLAIMED</button>
+                                <a class="btn primary full-width"
+                                    href="{{ url_for('student_ticket', queue_id=schedule.claimed_ticket.id) }}">View My
+                                    Ticket</a>
+                            </div>
+                            {% else %}
+                            <form method="POST" action="{{ url_for('get_ticket', schedule_id=schedule.id) }}"
+                                onsubmit="const btn = this.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'PROCESSING TICKET...';">
+                                <button type="submit" class="btn primary full-width" {% if schedule.capacity> 0 and
+                                    schedule.waiting_count >= schedule.capacity %}disabled{% endif %}>
+                                    {% if schedule.capacity > 0 and schedule.waiting_count >= schedule.capacity %}FULL{%
+                                    else %}🎫 GET TICKET{% endif %}
                                 </button>
-
                             </form>
+                            {% endif %}
+
+
+
 
 
                         </div>
 
 
-                    {% else %}
+
+
+
+                        {% else %}
+
+
+
 
 
                         <!-- =================================
+
                              NO SCHEDULE
+
                         ================================== -->
+
+
 
                         <div class="empty-state admin-card">
 
 
+
+
+
                             <div>
+
                                 📅
+
                             </div>
 
 
+
+
+
                             <h3>
+
                                 No Available Schedule
+
                             </h3>
 
 
+
+
+
                             <p>
+
                                 Please check again later.
+
                             </p>
+
+
+
 
 
                         </div>
 
 
-                    {% endfor %}
 
 
-                </div>
+
+                        {% endfor %}
 
 
-            </section>
 
 
-        </div>
+
+                    </div>
 
 
-    </main>
 
 
-</div>
+
+                </section>
 
 
-<!-- =========================================
-     LOGOUT CONFIRMATION MODAL
-========================================== -->
-
-<div
-    id="logoutModal"
-    class="logout-modal"
->
 
 
-    <div class="logout-modal-card">
+
+            </div>
 
 
-        <div class="logout-modal-icon">
-            🚪
-        </div>
 
 
-        <h2>
-            Logout?
-        </h2>
+
+        </main>
 
 
-        <p>
 
-            Are you sure you want to logout?
-
-            <br>
-
-            You will need to login again to access your account.
-
-        </p>
-
-
-        <div class="logout-modal-actions">
-
-
-            <button
-                type="button"
-                class="logout-cancel"
-                onclick="closeLogoutModal()"
-            >
-                Cancel
-            </button>
-
-
-            <a
-                href="{{ url_for('logout') }}"
-                class="logout-confirm"
-            >
-                Logout
-            </a>
-
-
-        </div>
 
 
     </div>
 
 
-</div>
 
 
-<!-- =========================================
+
+    <!-- =========================================
+
+     LOGOUT CONFIRMATION MODAL
+
+\========================================== -->
+
+
+
+    <div id="logoutModal" class="logout-modal">
+
+
+
+
+
+        <div class="logout-modal-card">
+
+
+
+
+
+            <div class="logout-modal-icon">
+
+                🚪
+
+            </div>
+
+
+
+
+
+            <h2>
+
+                Logout?
+
+            </h2>
+
+
+
+
+
+            <p>
+
+
+
+                Are you sure you want to logout?
+
+
+
+                <br>
+
+
+
+                You will need to login again to access your account.
+
+
+
+            </p>
+
+
+
+
+
+            <div class="logout-modal-actions">
+
+
+
+
+
+                <button type="button" class="logout-cancel" onclick="closeLogoutModal()">
+
+                    Cancel
+
+                </button>
+
+
+
+
+
+                <a href="{{ url_for('logout') }}" class="logout-confirm">
+
+                    Logout
+
+                </a>
+
+
+
+
+
+            </div>
+
+
+
+
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+
+
+
+    <!-- =========================================
+
      JAVASCRIPT
-========================================== -->
 
-<script>
-
-
-/* =========================================
-   LOGOUT MODAL
-========================================= */
-
-function openLogoutModal() {
-
-    const modal =
-        document.getElementById("logoutModal");
-
-    modal.classList.add("show");
-
-}
+\========================================== -->
 
 
-function closeLogoutModal() {
 
-    const modal =
-        document.getElementById("logoutModal");
-
-    modal.classList.remove("show");
-
-}
+    <script>
 
 
-/* CLOSE LOGOUT WHEN CLICKING OUTSIDE */
 
-document
-    .getElementById("logoutModal")
-    .addEventListener("click", function(event) {
 
-        if (event.target === this) {
 
-            closeLogoutModal();
+        /* =========================================
+        
+           LOGOUT MODAL
+        
+        \========================================= */
+
+
+
+        function openLogoutModal() {
+
+
+
+            const modal =
+
+                document.getElementById("logoutModal");
+
+
+
+            modal.classList.add("show");
+
+
 
         }
 
-    });
 
 
-/* =========================================
-   MOBILE STUDENT SIDEBAR
-========================================= */
-
-function openStudentSidebar() {
-
-    const sidebar =
-        document.getElementById("studentSidebar");
-
-    const overlay =
-        document.getElementById("mobileSidebarOverlay");
-
-    const button =
-        document.getElementById("mobileMenuButton");
 
 
-    sidebar.classList.add("mobile-open");
-
-    overlay.classList.add("show");
-
-    button.setAttribute(
-        "aria-expanded",
-        "true"
-    );
-
-    button.innerHTML = "✕";
-
-}
+        function closeLogoutModal() {
 
 
-function closeStudentSidebar() {
 
-    const sidebar =
-        document.getElementById("studentSidebar");
+            const modal =
 
-    const overlay =
-        document.getElementById("mobileSidebarOverlay");
-
-    const button =
-        document.getElementById("mobileMenuButton");
+                document.getElementById("logoutModal");
 
 
-    sidebar.classList.remove("mobile-open");
 
-    overlay.classList.remove("show");
-
-    button.setAttribute(
-        "aria-expanded",
-        "false"
-    );
-
-    button.innerHTML = "☰";
-
-}
+            modal.classList.remove("show");
 
 
-function toggleStudentSidebar() {
-
-    const sidebar =
-        document.getElementById("studentSidebar");
-
-
-    if (
-        sidebar.classList.contains("mobile-open")
-    ) {
-
-        closeStudentSidebar();
-
-    } else {
-
-        openStudentSidebar();
-
-    }
-
-}
-
-
-/* =========================================
-   ESCAPE KEY
-========================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (event.key === "Escape") {
-
-            closeStudentSidebar();
-
-            closeLogoutModal();
 
         }
 
-    }
-);
 
 
-/* =========================================
-   CLOSE SIDEBAR WHEN RETURNING TO DESKTOP
-========================================= */
 
-window.addEventListener(
-    "resize",
-    function() {
 
-        if (window.innerWidth > 900) {
+        /* CLOSE LOGOUT WHEN CLICKING OUTSIDE */
 
-            closeStudentSidebar();
+
+
+        document
+
+            .getElementById("logoutModal")
+
+            .addEventListener("click", function (event) {
+
+
+
+                if (event.target === this) {
+
+
+
+                    closeLogoutModal();
+
+
+
+                }
+
+
+
+            });
+
+
+
+
+
+        /* =========================================
+        
+           MOBILE STUDENT SIDEBAR
+        
+        \========================================= */
+
+
+
+        function openStudentSidebar() {
+
+
+
+            const sidebar =
+
+                document.getElementById("studentSidebar");
+
+
+
+            const overlay =
+
+                document.getElementById("mobileSidebarOverlay");
+
+
+
+            const button =
+
+                document.getElementById("mobileMenuButton");
+
+
+
+
+
+            sidebar.classList.add("mobile-open");
+
+
+
+            overlay.classList.add("show");
+
+
+
+            button.setAttribute(
+
+                "aria-expanded",
+
+                "true"
+
+            );
+
+
+
+            button.innerHTML = "✕";
+
+
 
         }
 
-    }
-);
 
 
-</script>
+
+
+        function closeStudentSidebar() {
+
+
+
+            const sidebar =
+
+                document.getElementById("studentSidebar");
+
+
+
+            const overlay =
+
+                document.getElementById("mobileSidebarOverlay");
+
+
+
+            const button =
+
+                document.getElementById("mobileMenuButton");
+
+
+
+
+
+            sidebar.classList.remove("mobile-open");
+
+
+
+            overlay.classList.remove("show");
+
+
+
+            button.setAttribute(
+
+                "aria-expanded",
+
+                "false"
+
+            );
+
+
+
+            button.innerHTML = "☰";
+
+
+
+        }
+
+
+
+
+
+        function toggleStudentSidebar() {
+
+
+
+            const sidebar =
+
+                document.getElementById("studentSidebar");
+
+
+
+
+
+            if (
+
+                sidebar.classList.contains("mobile-open")
+
+            ) {
+
+
+
+                closeStudentSidebar();
+
+
+
+            } else {
+
+
+
+                openStudentSidebar();
+
+
+
+            }
+
+
+
+        }
+
+
+
+
+
+        /* =========================================
+        
+           ESCAPE KEY
+        
+        \========================================= */
+
+
+
+        document.addEventListener(
+
+            "keydown",
+
+            function (event) {
+
+
+
+                if (event.key === "Escape") {
+
+
+
+                    closeStudentSidebar();
+
+
+
+                    closeLogoutModal();
+
+
+
+                }
+
+
+
+            }
+
+        );
+
+
+
+
+
+        /* =========================================
+        
+           CLOSE SIDEBAR WHEN RETURNING TO DESKTOP
+        
+        \========================================= */
+
+
+
+        window.addEventListener(
+
+            "resize",
+
+            function () {
+
+
+
+                if (window.innerWidth > 900) {
+
+
+
+                    closeStudentSidebar();
+
+
+
+                }
+
+
+
+            }
+
+        );
+
+
+
+
+
+    </script>
+
+
+
 
 
 </body>
+
+
 
 </html>
