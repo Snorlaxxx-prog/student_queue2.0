@@ -5,17 +5,11 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Admin Dashboard</title>
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
@@ -23,289 +17,310 @@
 <body>
 
 
-<!-- =========================================
+    <!-- =========================================
      MOBILE MENU BUTTON
 ========================================== -->
 
-<button
-    type="button"
-    class="mobile-menu-button"
-    id="mobileMenuButton"
-    onclick="toggleAdminSidebar()"
-    aria-label="Open menu"
-    aria-expanded="false"
->
-    ☰
-</button>
+    <button type="button" class="mobile-menu-button" id="mobileMenuButton" onclick="toggleAdminSidebar()"
+        aria-label="Open menu" aria-expanded="false">
+        ☰
+    </button>
 
 
-<!-- =========================================
+    <!-- =========================================
      MOBILE SIDEBAR OVERLAY
 ========================================== -->
 
-<div
-    class="mobile-sidebar-overlay"
-    id="mobileSidebarOverlay"
-    onclick="closeAdminSidebar()"
-></div>
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="closeAdminSidebar()"></div>
 
 
-<div class="admin-layout">
+    <div class="admin-layout">
 
 
-    <!-- =========================================
+        <!-- =========================================
          SIDEBAR
     ========================================== -->
 
-    <aside
-        class="sidebar"
-        id="adminSidebar"
-    >
+        <aside class="sidebar" id="adminSidebar">
 
 
-        <!-- LOGO -->
+            <!-- LOGO -->
 
-        <div class="sidebar-logo">
+            <div class="sidebar-logo">
 
-            <img
-                src="{{ url_for('static', filename='images/school_logo.jpeg') }}"
-                alt="School Logo"
-            >
-
-            <span>
-                Student Queue
-            </span>
-
-        </div>
-
-
-        <!-- =====================================
-             SIDEBAR MENU
-        ====================================== -->
-
-        <div class="sidebar-menu">
-
-
-            <!-- DASHBOARD -->
-
-            <a
-                href="{{ url_for('admin_dashboard') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
-
-                <span class="sidebar-icon">
-                    🏠
-                </span>
+                <img src="{{ url_for('static', filename='images/school_logo.jpeg') }}" alt="School Logo">
 
                 <span>
-                    Dashboard
+                    Student Queue
                 </span>
-
-            </a>
-
-
-            <!-- VIEW STUDENT -->
-
-            <a
-                href="{{ url_for('admin_students') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_students' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
-
-                <span class="sidebar-icon">
-                    👨‍🎓
-                </span>
-
-                <span>
-                    View Student
-                </span>
-
-            </a>
-
-
-            <!-- VIEW FINANCE -->
-
-            <a
-                href="{{ url_for('admin_cashiers') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_cashiers' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
-
-                <span class="sidebar-icon">
-                    💰
-                </span>
-
-                <span>
-                    View Finance
-                </span>
-
-            </a>
-
-
-            <!-- ADD ACCOUNT -->
-
-            <a
-                href="{{ url_for('admin_add_accounts') }}"
-                class="sidebar-item {% if request.endpoint == 'admin_add_accounts' %}active{% endif %}"
-                onclick="closeAdminSidebar()"
-            >
-
-                <span class="sidebar-icon">
-                    ➕
-                </span>
-
-                <span>
-                    Add Account
-                </span>
-
-            </a>
-
-
-        </div>
-
-
-        <!-- =====================================
-             SIDEBAR LOGOUT
-        ====================================== -->
-
-        <div class="sidebar-bottom">
-
-
-            <a
-                href="javascript:void(0)"
-                class="sidebar-item"
-                onclick="closeAdminSidebar(); openLogoutModal();"
-            >
-
-                <span class="sidebar-icon">
-                    🚪
-                </span>
-
-                <span>
-                    Logout
-                </span>
-
-            </a>
-
-
-        </div>
-
-
-    </aside>
-
-
-    <!-- =========================================
-         MAIN CONTENT
-    ========================================== -->
-
-    <main class="admin-content">
-
-
-        <!-- =====================================
-             TOP BAR
-        ====================================== -->
-
-        <header class="admin-topbar">
-
-
-            <div>
-
-                <h2>
-                    Admin Dashboard
-                </h2>
-
-                <p>
-                    System overview
-                </p>
 
             </div>
 
 
-            <!-- ADMIN PROFILE -->
+            <!-- =====================================
+             SIDEBAR MENU
+        ====================================== -->
 
-            <div class="admin-profile">
+            <div class="sidebar-menu">
+
+
+                <!-- DASHBOARD -->
+
+                <a href="{{ url_for('admin_dashboard') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
+
+                    <span class="sidebar-icon">
+                        🏠
+                    </span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <!-- VIEW STUDENT -->
+
+                <a href="{{ url_for('admin_students') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_students' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
+
+                    <span class="sidebar-icon">
+                        👨‍🎓
+                    </span>
+
+                    <span>
+                        View Student
+                    </span>
+
+                </a>
+
+
+                <!-- VIEW FINANCE -->
+
+                <a href="{{ url_for('admin_cashiers') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_cashiers' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
+
+                    <span class="sidebar-icon">
+                        💰
+                    </span>
+
+                    <span>
+                        View Finance
+                    </span>
+
+                </a>
+
+
+                <!-- ADD ACCOUNT -->
+
+                <a href="{{ url_for('admin_add_accounts') }}"
+                    class="sidebar-item {% if request.endpoint == 'admin_add_accounts' %}active{% endif %}"
+                    onclick="closeAdminSidebar()">
+
+                    <span class="sidebar-icon">
+                        ➕
+                    </span>
+
+                    <span>
+                        Add Account
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+            <!-- =====================================
+             SIDEBAR LOGOUT
+        ====================================== -->
+
+            <div class="sidebar-bottom">
+
+
+                <a href="javascript:void(0)" class="sidebar-item" onclick="closeAdminSidebar(); openLogoutModal();">
+
+                    <span class="sidebar-icon">
+                        🚪
+                    </span>
+
+                    <span>
+                        Logout
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+        </aside>
+
+
+        <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+        <main class="admin-content">
+
+
+            <!-- =====================================
+             TOP BAR
+        ====================================== -->
+
+            <header class="admin-topbar">
 
 
                 <div>
 
-                    <strong>
-                        {{ user.name }}
-                    </strong>
+                    <h2>
+                        Admin Dashboard
+                    </h2>
 
-                    <small>
-                        Administrator
-                    </small>
-
-                </div>
-
-
-                <div class="profile-icon">
-
-                    {{ user.name[0] }}
+                    <p>
+                        System overview
+                    </p>
 
                 </div>
 
 
-            </div>
+                <!-- ADMIN PROFILE AND ACCOUNT SETTINGS -->
+
+                <div class="admin-profile">
+
+                    <div>
+                        <strong>
+                            {{ user.name }}
+                        </strong>
+
+                        <small>
+                            Administrator
+                        </small>
+                    </div>
+
+                    <a href="{{ url_for('account_settings') }}" class="profile-icon account-settings-link"
+                        title="Account Settings" aria-label="Open Account Settings">
+                        {{ user.name[0]|upper }}
+                    </a>
+
+                </div>
 
 
-        </header>
+            </header>
 
 
-        <!-- =====================================
+            <!-- =====================================
              PAGE CONTENT
         ====================================== -->
 
-        <div class="page-content">
+            <div class="page-content">
 
 
-            <!-- =================================
+                <!-- =================================
                  WELCOME
             ================================== -->
 
-            <section class="welcome-section">
+                <section class="welcome-section">
 
 
-                <h1>
-                    Welcome, {{ user.name }}
-                </h1>
+                    <h1>
+                        Welcome, {{ user.name }}
+                    </h1>
 
 
-                <p>
-                    Student Queue System administration.
-                </p>
+                    <p>
+                        Student Queue System administration.
+                    </p>
 
 
-            </section>
+                </section>
 
 
-            <!-- =================================
+                <!-- =================================
                  STATISTICS
             ================================== -->
 
-            <div class="admin-stats">
+                <div class="admin-stats">
 
 
-                <!-- STUDENTS -->
+                    <!-- STUDENTS -->
 
-                <div class="admin-stat-card">
+                    <div class="admin-stat-card">
 
 
-                    <div class="stat-icon">
-                        👨‍🎓
+                        <div class="stat-icon">
+                            👨‍🎓
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+                                {{ student_count }}
+                            </h2>
+
+                            <p>
+                                All Students
+                            </p>
+
+                        </div>
+
+
                     </div>
 
 
-                    <div>
+                    <!-- CASHIERS -->
 
-                        <h2>
-                            {{ student_count }}
-                        </h2>
+                    <div class="admin-stat-card">
 
-                        <p>
-                            All Students
-                        </p>
+
+                        <div class="stat-icon">
+                            💰
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+                                {{ cashier_count }}
+                            </h2>
+
+                            <p>
+                                All Cashiers
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- QUEUE RECORDS -->
+
+                    <div class="admin-stat-card">
+
+
+                        <div class="stat-icon">
+                            📋
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+                                {{ latest_queues|length }}
+                            </h2>
+
+                            <p>
+                                Latest Queue Records
+                            </p>
+
+                        </div>
+
 
                     </div>
 
@@ -313,276 +328,209 @@
                 </div>
 
 
-                <!-- CASHIERS -->
+                <!-- =================================
+                 LATEST QUEUE
+            ================================== -->
 
-                <div class="admin-stat-card">
-
-
-                    <div class="stat-icon">
-                        💰
-                    </div>
+                <section class="admin-section">
 
 
-                    <div>
-
-                        <h2>
-                            {{ cashier_count }}
-                        </h2>
-
-                        <p>
-                            All Cashiers
-                        </p>
-
-                    </div>
+                    <div class="section-title">
 
 
-                </div>
+                        <div>
+
+                            <h2>
+                                Latest Queue
+                            </h2>
 
 
-                <!-- QUEUE RECORDS -->
+                            <p>
+                                Recently created queue records.
+                            </p>
 
-                <div class="admin-stat-card">
+                        </div>
 
-
-                    <div class="stat-icon">
-                        📋
-                    </div>
-
-
-                    <div>
-
-                        <h2>
-                            {{ latest_queues|length }}
-                        </h2>
-
-                        <p>
-                            Latest Queue Records
-                        </p>
 
                     </div>
 
 
-                </div>
+                    <div class="admin-card table-card">
+
+
+                        <div class="table-wrapper">
+
+
+                            <table>
+
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Queue
+                                        </th>
+
+                                        <th>
+                                            Student
+                                        </th>
+
+                                        <th>
+                                            Date
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+
+                                    {% for q in latest_queues %}
+
+
+                                    <tr>
+
+
+                                        <td>
+
+                                            <strong>
+                                                CKCM - {{ q.queue_number }}
+                                            </strong>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ q.student.name }}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ q.schedule.date }}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <span class="status {{ q.status|lower }}">
+
+                                                {{ q.status }}
+
+                                            </span>
+
+                                        </td>
+
+
+                                    </tr>
+
+
+                                    {% else %}
+
+
+                                    <tr>
+
+                                        <td colspan="4" class="empty-state">
+
+                                            <div>
+                                                📋
+                                            </div>
+
+                                            <h3>
+                                                No Queue Records
+                                            </h3>
+
+                                            <p>
+                                                No queue records have been created yet.
+                                            </p>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    {% endfor %}
+
+
+                                </tbody>
+
+
+                            </table>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
 
 
             </div>
 
 
-            <!-- =================================
-                 LATEST QUEUE
-            ================================== -->
+        </main>
 
-            <section class="admin-section">
 
+    </div>
 
-                <div class="section-title">
 
-
-                    <div>
-
-                        <h2>
-                            Latest Queue
-                        </h2>
-
-
-                        <p>
-                            Recently created queue records.
-                        </p>
-
-                    </div>
-
-
-                </div>
-
-
-                <div class="admin-card table-card">
-
-
-                    <div class="table-wrapper">
-
-
-                        <table>
-
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>
-                                        Queue
-                                    </th>
-
-                                    <th>
-                                        Student
-                                    </th>
-
-                                    <th>
-                                        Date
-                                    </th>
-
-                                    <th>
-                                        Status
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody>
-
-
-                                {% for q in latest_queues %}
-
-
-                                <tr>
-
-
-                                    <td>
-
-                                        <strong>
-                                            CKCM - {{ q.queue_number }}
-                                        </strong>
-
-                                    </td>
-
-
-                                    <td>
-
-                                        {{ q.student.name }}
-
-                                    </td>
-
-
-                                    <td>
-
-                                        {{ q.schedule.date }}
-
-                                    </td>
-
-
-                                    <td>
-
-                                        <span
-                                            class="status {{ q.status|lower }}"
-                                        >
-
-                                            {{ q.status }}
-
-                                        </span>
-
-                                    </td>
-
-
-                                </tr>
-
-
-                                {% else %}
-
-
-                                <tr>
-
-                                    <td
-                                        colspan="4"
-                                        class="empty-state"
-                                    >
-
-                                        <div>
-                                            📋
-                                        </div>
-
-                                        <h3>
-                                            No Queue Records
-                                        </h3>
-
-                                        <p>
-                                            No queue records have been created yet.
-                                        </p>
-
-                                    </td>
-
-                                </tr>
-
-
-                                {% endfor %}
-
-
-                            </tbody>
-
-
-                        </table>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </section>
-
-
-        </div>
-
-
-    </main>
-
-
-</div>
-
-
-<!-- =========================================
+    <!-- =========================================
      LOGOUT CONFIRMATION MODAL
 ========================================== -->
 
-<div
-    id="logoutModal"
-    class="logout-modal"
->
+    <div id="logoutModal" class="logout-modal">
 
 
-    <div class="logout-modal-card">
+        <div class="logout-modal-card">
 
 
-        <div class="logout-modal-icon">
-            🚪
-        </div>
+            <div class="logout-modal-icon">
+                🚪
+            </div>
 
 
-        <h2>
-            Logout?
-        </h2>
+            <h2>
+                Logout?
+            </h2>
 
 
-        <p>
+            <p>
 
-            Are you sure you want to logout?
+                Are you sure you want to logout?
 
-            <br>
+                <br>
 
-            You will need to login again to access your account.
+                You will need to login again to access your account.
 
-        </p>
-
-
-        <div class="logout-modal-actions">
+            </p>
 
 
-            <button
-                type="button"
-                class="logout-cancel"
-                onclick="closeLogoutModal()"
-            >
-                Cancel
-            </button>
+            <div class="logout-modal-actions">
 
 
-            <a
-                href="{{ url_for('logout') }}"
-                class="logout-confirm"
-            >
-                Logout
-            </a>
+                <button type="button" class="logout-cancel" onclick="closeLogoutModal()">
+                    Cancel
+                </button>
+
+
+                <a href="{{ url_for('logout') }}" class="logout-confirm">
+                    Logout
+                </a>
+
+
+            </div>
 
 
         </div>
@@ -591,169 +539,166 @@
     </div>
 
 
-</div>
-
-
-<!-- =========================================
+    <!-- =========================================
      JAVASCRIPT
 ========================================== -->
 
-<script>
+    <script>
 
-/* =========================================
-   LOGOUT MODAL
-========================================= */
+        /* =========================================
+           LOGOUT MODAL
+        ========================================= */
 
-function openLogoutModal() {
+        function openLogoutModal() {
 
-    const modal =
-        document.getElementById("logoutModal");
+            const modal =
+                document.getElementById("logoutModal");
 
-    modal.classList.add("show");
-
-}
-
-
-function closeLogoutModal() {
-
-    const modal =
-        document.getElementById("logoutModal");
-
-    modal.classList.remove("show");
-
-}
-
-
-/* CLOSE LOGOUT MODAL WHEN CLICKING OUTSIDE */
-
-document
-    .getElementById("logoutModal")
-    .addEventListener("click", function(event) {
-
-        if (event.target === this) {
-
-            closeLogoutModal();
+            modal.classList.add("show");
 
         }
 
-    });
 
+        function closeLogoutModal() {
 
-/* =========================================
-   MOBILE ADMIN SIDEBAR
-========================================= */
+            const modal =
+                document.getElementById("logoutModal");
 
-function openAdminSidebar() {
-
-    const sidebar =
-        document.getElementById("adminSidebar");
-
-    const overlay =
-        document.getElementById("mobileSidebarOverlay");
-
-    const button =
-        document.getElementById("mobileMenuButton");
-
-
-    sidebar.classList.add("mobile-open");
-
-    overlay.classList.add("show");
-
-    button.setAttribute(
-        "aria-expanded",
-        "true"
-    );
-
-    button.innerHTML = "✕";
-
-}
-
-
-function closeAdminSidebar() {
-
-    const sidebar =
-        document.getElementById("adminSidebar");
-
-    const overlay =
-        document.getElementById("mobileSidebarOverlay");
-
-    const button =
-        document.getElementById("mobileMenuButton");
-
-
-    sidebar.classList.remove("mobile-open");
-
-    overlay.classList.remove("show");
-
-    button.setAttribute(
-        "aria-expanded",
-        "false"
-    );
-
-    button.innerHTML = "☰";
-
-}
-
-
-function toggleAdminSidebar() {
-
-    const sidebar =
-        document.getElementById("adminSidebar");
-
-
-    if (
-        sidebar.classList.contains("mobile-open")
-    ) {
-
-        closeAdminSidebar();
-
-    } else {
-
-        openAdminSidebar();
-
-    }
-
-}
-
-
-/* =========================================
-   ESCAPE KEY
-========================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (event.key === "Escape") {
-
-            closeAdminSidebar();
-
-            closeLogoutModal();
+            modal.classList.remove("show");
 
         }
 
-    }
-);
+
+        /* CLOSE LOGOUT MODAL WHEN CLICKING OUTSIDE */
+
+        document
+            .getElementById("logoutModal")
+            .addEventListener("click", function (event) {
+
+                if (event.target === this) {
+
+                    closeLogoutModal();
+
+                }
+
+            });
 
 
-/* =========================================
-   CLOSE SIDEBAR WHEN RETURNING TO DESKTOP
-========================================= */
+        /* =========================================
+           MOBILE ADMIN SIDEBAR
+        ========================================= */
 
-window.addEventListener(
-    "resize",
-    function() {
+        function openAdminSidebar() {
 
-        if (window.innerWidth > 900) {
+            const sidebar =
+                document.getElementById("adminSidebar");
 
-            closeAdminSidebar();
+            const overlay =
+                document.getElementById("mobileSidebarOverlay");
+
+            const button =
+                document.getElementById("mobileMenuButton");
+
+
+            sidebar.classList.add("mobile-open");
+
+            overlay.classList.add("show");
+
+            button.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+            button.innerHTML = "✕";
 
         }
 
-    }
-);
 
-</script>
+        function closeAdminSidebar() {
+
+            const sidebar =
+                document.getElementById("adminSidebar");
+
+            const overlay =
+                document.getElementById("mobileSidebarOverlay");
+
+            const button =
+                document.getElementById("mobileMenuButton");
+
+
+            sidebar.classList.remove("mobile-open");
+
+            overlay.classList.remove("show");
+
+            button.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            button.innerHTML = "☰";
+
+        }
+
+
+        function toggleAdminSidebar() {
+
+            const sidebar =
+                document.getElementById("adminSidebar");
+
+
+            if (
+                sidebar.classList.contains("mobile-open")
+            ) {
+
+                closeAdminSidebar();
+
+            } else {
+
+                openAdminSidebar();
+
+            }
+
+        }
+
+
+        /* =========================================
+           ESCAPE KEY
+        ========================================= */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+
+                    closeAdminSidebar();
+
+                    closeLogoutModal();
+
+                }
+
+            }
+        );
+
+
+        /* =========================================
+           CLOSE SIDEBAR WHEN RETURNING TO DESKTOP
+        ========================================= */
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (window.innerWidth > 900) {
+
+                    closeAdminSidebar();
+
+                }
+
+            }
+        );
+
+    </script>
 
 
 </body>

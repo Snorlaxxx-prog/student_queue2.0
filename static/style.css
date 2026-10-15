@@ -1850,3 +1850,255 @@
             font-size: 22px;
         }
     }
+
+
+    .account-settings-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    .account-settings-link:hover {
+        background-color: #1d4ed8;
+        transform: scale(1.05);
+    }
+
+    .account-settings-link:focus-visible {
+        outline: 3px solid #93c5fd;
+        outline-offset: 3px;
+    }
+
+
+    /* =========================================
+   ACCOUNT SETTINGS — YELLOW/ORANGE THEME
+========================================= */
+
+    .account-settings-page {
+        min-height: 100vh;
+        padding: 35px 20px;
+        background: linear-gradient(135deg,
+                #fff3e8 0%,
+                #fff8dc 45%,
+                #ffffff 100%);
+    }
+
+    .account-settings-container {
+        width: 100%;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .account-settings-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .account-settings-header h1 {
+        font-size: 28px;
+        color: #222222;
+        margin: 0;
+    }
+
+    .account-settings-header p {
+        margin-top: 5px;
+        color: #666666;
+        font-size: 15px;
+    }
+
+    .account-settings-header a {
+        color: #ff4b00;
+        text-decoration: none;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .account-settings-header a:hover {
+        color: #e64100;
+        text-decoration: underline;
+    }
+
+    .account-settings-card {
+        background: #ffffff;
+        padding: 28px;
+        margin-bottom: 22px;
+        border-radius: 16px;
+        border: 1px solid #ffe0bd;
+        box-shadow: 0 8px 25px rgba(255, 107, 0, 0.08);
+    }
+
+    .account-settings-card h2 {
+        color: #222222;
+        font-size: 21px;
+        margin-bottom: 8px;
+    }
+
+    .account-settings-card>p {
+        color: #666666;
+        font-size: 15px;
+        margin-bottom: 22px;
+        line-height: 1.6;
+    }
+
+    .account-settings-card label {
+        display: block;
+        margin-bottom: 7px;
+        color: #333333;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .account-settings-card input {
+        display: block;
+        width: 100%;
+        padding: 12px 14px;
+        margin-bottom: 18px;
+        border: 1px solid #e5d5c5;
+        border-radius: 9px;
+        background: #fffdf9;
+        color: #222222;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .account-settings-card input:focus {
+        border-color: #ffb000;
+        box-shadow: 0 0 0 3px rgba(255, 176, 0, 0.15);
+        background: #ffffff;
+    }
+
+    .account-settings-card button {
+        width: 100%;
+        padding: 13px 18px;
+        border: none;
+        border-radius: 9px;
+        background: #ff4b00;
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    .account-settings-card button:hover {
+        background: #e64100;
+        transform: translateY(-1px);
+    }
+
+    /* Success and error messages */
+
+    .account-settings-page .alert.success {
+        padding: 13px 16px;
+        margin-bottom: 18px;
+        border: 1px solid #bbf7d0;
+        border-radius: 9px;
+        background: #dcfce7;
+        color: #166534;
+        font-size: 14px;
+    }
+
+    .account-settings-page .alert.error {
+        padding: 13px 16px;
+        margin-bottom: 18px;
+        border: 1px solid #fecaca;
+        border-radius: 9px;
+        background: #fee2e2;
+        color: #991b1b;
+        font-size: 14px;
+    }
+
+    /* Confirmation and error modal theme */
+
+    .account-settings-page .modal-content {
+        border-top: 5px solid #ffb000;
+    }
+
+    .account-settings-page .confirm-btn {
+        background: #ff4b00;
+        color: #ffffff;
+    }
+
+    .account-settings-page .confirm-btn:hover {
+        background: #e64100;
+    }
+
+    .account-settings-page .cancel-btn {
+        background: #fff0d6;
+        color: #663c00;
+    }
+
+    .account-settings-page .cancel-btn:hover {
+        background: #ffe2ad;
+    }
+
+    @media (max-width: 600px) {
+        .account-settings-page {
+            padding: 22px 14px;
+        }
+
+        .account-settings-header {
+            align-items: flex-start;
+        }
+
+        .account-settings-header h1 {
+            font-size: 23px;
+        }
+
+        .account-settings-card {
+            padding: 20px;
+            border-radius: 13px;
+        }
+    }
+
+
+    /* =========================================
+   ACCOUNT SETTINGS — DASHBOARD COLORS ONLY
+========================================= */
+
+    /* Background matching the Admin Dashboard */
+    .account-settings-page {
+        min-height: 100vh;
+        background: linear-gradient(135deg,
+                #ff6a00 0%,
+                #ff8c42 35%,
+                #fff3e8 70%,
+                #ffffff 100%);
+        background-attachment: fixed;
+    }
+
+    /* Orange buttons matching the dashboard */
+    .account-settings-page button,
+    .account-settings-page .btn,
+    .account-settings-page .primary,
+    .account-settings-page .confirm-btn {
+        background: #ff4b00;
+        color: #ffffff;
+        border: none;
+    }
+
+    /* Button hover effect */
+    .account-settings-page button:hover,
+    .account-settings-page .btn:hover,
+    .account-settings-page .primary:hover,
+    .account-settings-page .confirm-btn:hover {
+        background: #e64100;
+    }
+
+    /* Keep cancel buttons neutral */
+    .account-settings-page .cancel-btn {
+        background: #e2e8f0;
+        color: #1e293b;
+    }
+
+    .account-settings-page .cancel-btn:hover {
+        background: #cbd5e1;
+    }

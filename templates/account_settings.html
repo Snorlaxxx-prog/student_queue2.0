@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings | Student Queue System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff4b00;
+            --primary-hover: #e64100;
+            --sidebar: #1e293b;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #cbd5e1;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 20px;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: var(--text);
+
+            background: linear-gradient(135deg,
+                    #ff6a00 0%,
+                    #ff8c42 35%,
+                    #fff3e8 70%,
+                    #ffffff 100%);
+
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .header h2 {
+            margin: 0;
+            color: #222222;
+        }
+
+        .back {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .back:hover {
+            color: var(--primary-hover);
+        }
+
+        .intro {
+            margin-bottom: 24px;
+            color: #555555;
+            font-size: 14px;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #ffe0bd;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #222222;
+        }
+
+        .card-description {
+            margin: -5px 0 20px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--text);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #ffffff;
+            color: var(--text);
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ffb000;
+            box-shadow: 0 0 0 3px rgba(255, 176, 0, 0.15);
+        }
+
+        button {
+            margin-top: 18px;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 9px;
+            background: var(--primary);
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .message {
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .success {
+            background: #dcfce7;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+        }
+
+        .error {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        /* =========================================
+           CONFIRMATION AND ERROR MODALS
+           Styled like Admin Edit and Logout Modals
+        ========================================= */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 420px;
+            max-width: 100%;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            animation: modalShow 0.25s ease;
+        }
+
+        .modal-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #fff3e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .modal-content h3 {
+            margin: 0 0 10px;
+            color: #222222;
+            font-size: 23px;
+        }
+
+        .modal-content p {
+            margin: 0 auto 25px;
+            color: #666666;
+            font-size: 15px;
+            line-height: 1.6;
+            max-width: 340px;
+            overflow-wrap: anywhere;
+        }
+
+        .modal-content strong {
+            color: #ff4b00;
+            overflow-wrap: anywhere;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .modal-actions button {
+            margin: 0;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .cancel-btn {
+            background: #eeeeee;
+            color: #333333;
+        }
+
+        .cancel-btn:hover {
+            background: #dddddd;
+            color: #333333;
+        }
+
+        .confirm-btn {
+            background: #ff4b00;
+            color: #ffffff;
+        }
+
+        .confirm-btn:hover {
+            background: #e64100;
+            color: #ffffff;
+        }
+
+        .error-modal-icon {
+            background: #fff0ed;
+        }
+
+        .error-modal-icon span {
+            color: #e53935;
+        }
+
+        @keyframes modalShow {
+            from {
+                opacity: 0;
+                transform: scale(0.92) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .modal-content {
+                padding: 25px 20px;
+            }
+
+            .modal-content h3 {
+                font-size: 21px;
+            }
+
+            .modal-actions {
+                flex-direction: column-reverse;
+            }
+
+            .modal-actions button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <div class="header">
+            <h2>Account Settings</h2>
+
+            <a class="back" href="{{ url_for(
+                'student_dashboard'
+                if user.role == 'student'
+                else 'cashier_dashboard'
+                if user.role == 'cashier'
+                else 'admin_dashboard'
+            ) }}">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+        <p class="intro">
+            Manage your account, {{ user.name }}.
+        </p>
+
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+        <div class="message {{ category }}" role="status">
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        <!-- Username Settings -->
+        <section class="card">
+            <h3>Edit Username</h3>
+
+            <p class="card-description">
+                Update the username you use to log in to your account.
+            </p>
+
+            <form id="usernameForm" method="POST">
+                <input type="hidden" name="action" value="username">
+
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" value="{{ user.username }}" required maxlength="80"
+                    autocomplete="username">
+
+                <button type="button" onclick="confirmUsername()">
+                    Save Username
+                </button>
+            </form>
+        </section>
+
+        <!-- Password Settings -->
+        <section class="card">
+            <h3>Change Password</h3>
+
+            <p class="card-description">
+                Change your password to help keep your account secure.
+            </p>
+
+            <form id="passwordForm" method="POST">
+                <input type="hidden" name="action" value="password">
+
+                <label for="current_password">Current Password</label>
+                <input id="current_password" type="password" name="current_password" autocomplete="current-password"
+                    required>
+
+                <label for="new_password">New Password</label>
+                <input id="new_password" type="password" name="new_password" minlength="2" autocomplete="new-password"
+                    required>
+
+                <label for="confirm_password">Confirm New Password</label>
+                <input id="confirm_password" type="password" name="confirm_password" minlength="2"
+                    autocomplete="new-password" required>
+
+                <button type="button" onclick="confirmPassword()">
+                    Change Password
+                </button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Username Confirmation Modal -->
+    <div class="modal" id="usernameModal">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="usernameModalTitle">
+            <div class="modal-icon">👤</div>
+
+            <h3 id="usernameModalTitle">Confirm Username Change</h3>
+
+            <p>
+                Are you sure you want to change your username to
+                <strong id="newUsernamePreview"></strong>?
+            </p>
+
+            <div class="modal-actions">
+                <button type="button" class="cancel-btn" onclick="closeModal('usernameModal')">
+                    Cancel
+                </button>
+
+                <button type="button" class="confirm-btn" onclick="submitForm('usernameForm')">
+                    Yes, Save Username
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Confirmation Modal -->
+    <div class="modal" id="passwordModal">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="passwordModalTitle">
+            <div class="modal-icon">🔐</div>
+
+            <h3 id="passwordModalTitle">Confirm Password Change</h3>
+
+            <p>
+                Are you sure you want to change your password?
+                You will need to use your new password the next time you log in.
+            </p>
+
+            <div class="modal-actions">
+                <button type="button" class="cancel-btn" onclick="closeModal('passwordModal')">
+                    Cancel
+                </button>
+
+                <button type="button" class="confirm-btn" onclick="submitForm('passwordForm')">
+                    Yes, Change Password
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal" id="errorModal">
+        <div class="modal-content" role="alertdialog" aria-modal="true" aria-labelledby="errorModalTitle">
+            <div class="modal-icon error-modal-icon">
+                <span>!</span>
+            </div>
+
+            <h3 id="errorModalTitle">Please Check Your Information</h3>
+
+            <p id="errorMessage">
+                Something went wrong. Please try again.
+            </p>
+
+            <div class="modal-actions">
+                <button type="button" class="confirm-btn" onclick="closeModal('errorModal')">
+                    Okay
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function confirmUsername() {
+            const form = document.getElementById("usernameForm");
+
+            if (!form.reportValidity()) {
+                return;
+            }
+
+            const username =
+                document.getElementById("username").value.trim();
+
+            if (!username) {
+                showError("Username cannot be empty.");
+                return;
+            }
+
+            document.getElementById("newUsernamePreview").textContent =
+                username;
+
+            document.getElementById("usernameModal").classList.add("show");
+        }
+
+        function confirmPassword() {
+            const form = document.getElementById("passwordForm");
+
+            if (!form.reportValidity()) {
+                return;
+            }
+
+            const currentPassword =
+                document.getElementById("current_password").value;
+
+            const newPassword =
+                document.getElementById("new_password").value;
+
+            const confirmPasswordValue =
+                document.getElementById("confirm_password").value;
+
+            if (newPassword.length < 2) {
+                showError(
+                    "Your new password must be at least 2 characters."
+                );
+                return;
+            }
+
+            if (newPassword !== confirmPasswordValue) {
+                showError("The new passwords do not match.");
+                return;
+            }
+
+            if (newPassword === currentPassword) {
+                showError(
+                    "Choose a different password from your current one."
+                );
+                return;
+            }
+
+            document.getElementById("passwordModal").classList.add("show");
+        }
+
+        function showError(message) {
+            document.getElementById("errorMessage").textContent = message;
+            document.getElementById("errorModal").classList.add("show");
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove("show");
+        }
+
+        function submitForm(formId) {
+            document.getElementById(formId).requestSubmit();
+        }
+
+        // Close a modal when clicking its backdrop.
+        document.querySelectorAll(".modal").forEach(function (modal) {
+            modal.addEventListener("click", function (event) {
+                if (event.target === modal) {
+                    modal.classList.remove("show");
+                }
+            });
+        });
+
+        // Close open modals with Escape.
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                document.querySelectorAll(".modal.show").forEach(
+                    function (modal) {
+                        modal.classList.remove("show");
+                    }
+                );
+            }
+        });
+    </script>
+
+</body>
+
+</html>
