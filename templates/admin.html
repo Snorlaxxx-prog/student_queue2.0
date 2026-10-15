@@ -204,7 +204,10 @@
 
                     <a href="{{ url_for('account_settings') }}" class="profile-icon account-settings-link"
                         title="Account Settings" aria-label="Open Account Settings">
-                        {{ user.name[0]|upper }}
+
+                        <img src="{{ url_for('static', filename='images/my_picture.jpg') }}" alt="My Profile"
+                            class="profile-photo">
+
                     </a>
 
                 </div>
