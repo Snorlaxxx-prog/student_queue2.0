@@ -2102,3 +2102,14 @@
     .account-settings-page .cancel-btn:hover {
         background: #cbd5e1;
     }
+
+
+    /* Login page background */
+    body.login-page {
+        background: linear-gradient(135deg,
+                #ff6a00 0%,
+                #ff8c42 35%,
+                #fff3e8 70%,
+                #ffffff 100%);
+        background-attachment: fixed;
+    }
