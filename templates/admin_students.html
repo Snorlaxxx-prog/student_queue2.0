@@ -831,15 +831,14 @@
         aria-labelledby="activeQueueTitle">
         <div class="active-queue-modal-card">
             <div class="active-queue-modal-icon">⚠️</div>
-            <h2 id="activeQueueTitle">Cannot Delete Account</h2>
-            <p>This account cannot be deleted because it has an active queue. Please complete or cancel the active queue
-                first.</p>
+            <h2 id="activeQueueTitle">Delete this student account anyway?</h2>
+            <p>This student account has an active queue. If you delete it anyway, related queue records may remain. Are
+                you sure you want to continue?</p>
             <div class="active-queue-modal-actions">
                 <button type="button" class="active-queue-ok" onclick="closeActiveQueueModal()">OK</button>
                 <form id="deleteStudentAnywayForm" method="POST">
                     <input type="hidden" name="force_delete" value="1">
-                    <button type="submit" class="active-queue-force"
-                        onclick="return confirm('Delete this student account anyway?')">
+                    <button type="submit" class="active-queue-force">
                         Delete Anyway
                     </button>
                 </form>
